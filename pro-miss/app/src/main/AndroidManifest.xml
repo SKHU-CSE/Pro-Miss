@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyPageActivity"></activity>
+        <activity android:name=".AttendingActivity"></activity>
+        <activity android:name=".MyPageActivity" />
         <activity android:name=".appointment" />
         <activity android:name=".MainActivity">
             <intent-filter>
