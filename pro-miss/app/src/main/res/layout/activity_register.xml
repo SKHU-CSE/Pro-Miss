@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_Id"
+        android:padding="13dp"
+        android:lines="1"
+        android:textSize="18sp"
+        android:inputType="text"
+        android:layout_margin="20dp"
+        android:hint="아이디"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="이름"
+        android:lines="1"
+        android:inputType="textPassword"
+        android:layout_below="@id/register_Id"
+        android:layout_margin="20dp"
+        android:padding="13dp"
+        android:textSize="18sp"
+        android:id="@+id/register_Name"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호"
+        android:lines="1"
+        android:inputType="textPassword"
+        android:layout_below="@id/register_Name"
+        android:layout_margin="20dp"
+        android:padding="13dp"
+        android:textSize="18sp"
+        android:id="@+id/register_pwd"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호확인"
+        android:lines="1"
+        android:inputType="textPassword"
+        android:layout_below="@id/register_pwd"
+        android:layout_margin="20dp"
+        android:padding="13dp"
+        android:textSize="18sp"
+        android:id="@+id/register_pwd_Check"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="완료"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/register_success"/>
+</RelativeLayout>
