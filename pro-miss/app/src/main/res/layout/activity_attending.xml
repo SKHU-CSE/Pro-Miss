@@ -36,7 +36,7 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/attending_cardview"
+                android:id="@+id/atteding_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/frg_appoint1_card1"
@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+
                     <TextView
                         android:id="@+id/attending_CardTitle"
                         android:layout_width="wrap_content"
@@ -75,8 +76,8 @@
                         android:id="@+id/attending_CardDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/attending_CardTitle"
-                        android:layout_alignLeft="@id/attending_CardTitle"
+                        android:layout_below="@id/alert_CardTitle"
+                        android:layout_alignLeft="@id/alert_CardTitle"
                         android:layout_marginTop="10dp"
                         android:text="2019/03/15"
                         app:layout_constraintStart_toStartOf="@+id/attending_CardTitle"
@@ -134,7 +135,7 @@
                         android:background="#ffffff"
                         app:layout_constraintBottom_toTopOf="@+id/attending_LeftTime"
                         app:layout_constraintEnd_toEndOf="@+id/attending_LeftTime"
-                        app:layout_constraintTop_toTopOf="@+id/attending_CardTitle"
+                        app:layout_constraintTop_toTopOf="@+id/alert_CardTitle"
                         app:srcCompat="@android:drawable/ic_menu_send" />
 
 
@@ -159,7 +160,7 @@
                 app:cardElevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/attending_cardview">
+                app:layout_constraintTop_toBottomOf="@+id/alert_cardview">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
