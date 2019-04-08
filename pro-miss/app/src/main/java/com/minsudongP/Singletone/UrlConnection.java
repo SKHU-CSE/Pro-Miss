@@ -16,7 +16,6 @@ public class UrlConnection {
 
 
     private String Mainurl="http://106.10.58.28/";
-    private String SpeekUrl="https://naveropenapi.apigw.ntruss.com/voice/v1/tts";
 
     private UrlConnection(){
         this.client=new OkHttpClient();
@@ -55,17 +54,11 @@ public class UrlConnection {
 
 
             FormBody body = new FormBody.Builder()
-                    .add("speaker", "mijin")
-                    .add("speed", "0")
-                    .add("text", Text)
+                    .add("message", Text)
                     .build();
 
             Request request = new Request.Builder()
-                    .addHeader("Content-Type","application/x-www-form-urlencoded")
-                    .addHeader("charset","UTF-8")
-                    .addHeader("X-NCP-APIGW-API-KEY-ID", "733fhqom8j")
-                    .addHeader("X-NCP-APIGW-API-KEY", "jwxEUZxCO1lKD0c1R1CDcahGlgm4iy7jLZHVRaAP")
-                    .url(SpeekUrl)
+                    .url(Mainurl+"api/ai")
                     .post(body)
                     .build();
             client.newCall(request).enqueue(callback);
