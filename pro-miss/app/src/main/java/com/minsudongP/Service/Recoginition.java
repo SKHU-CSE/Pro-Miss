@@ -1,6 +1,8 @@
 package com.minsudongP.Service;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -36,12 +38,16 @@ public class Recoginition extends RecognitionService {
     public static final int MSG_VOICE_RECO_RESTART=2;
     private SpeechRecognizer mSrRecognizer;
     boolean mBoolVoiceRecoStarted;
+    boolean hasQuestion;
+    protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startListening();
+        hasQuestion=false;
     }
 
     @Override
@@ -89,12 +95,18 @@ public class Recoginition extends RecognitionService {
     public void startListening()
     {
 
-        if(mediaPlayer.isPlaying()) {
+        if(mediaPlayer!=null&&mediaPlayer.isPlaying()) {
             mHdrVoiceRecoState.sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART,500);
         }else {
+            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
+            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
+            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+            mAudioManager.setStreamMute(AudioManager.STREAM_RING, true);
+            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
 
             if (mBoolVoiceRecoStarted == false) {
                 if (mSrRecognizer == null) {
+
                     mSrRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
                     mSrRecognizer.setRecognitionListener(mClsRecoListener);
                 }
@@ -112,9 +124,14 @@ public class Recoginition extends RecognitionService {
 
     public void stopListening()
     {
+
         try
         {
-
+            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -166,25 +183,29 @@ public class Recoginition extends RecognitionService {
             mResult.toArray(rs);
             Log.d("key",rs[0]);
 
+            if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")||hasQuestion) {
+                if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스"))
+                    hasQuestion=true;
+                else
+                    hasQuestion=false;
+                new Thread() {
 
-            new Thread() {
+                    @Override
+                    public void run() {
+                        UrlConnection connection = UrlConnection.shardUrl;
+                        connection.PostSpeekRequest(rs[0], new
 
-                @Override
-                public void run() {
-                    UrlConnection connection= UrlConnection.shardUrl;
-                    connection.PostSpeekRequest(rs[0],new
+                                okhttp3.Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
 
-                            okhttp3.Callback() {
-                                @Override
-                                public void onFailure (Call call, IOException e){
+                                    }
 
-                                }
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
 
-                                @Override
-                                public void onResponse (Call call, Response response) throws IOException {
-
-                                    Log.d("code",""+response.code());
-                                    if (response.code() == 200) {
+                                        Log.d("code", "" + response.code());
+                                        if (response.code() == 200) {
 
 /*
                                             InputStream is = response.body().byteStream();
@@ -203,29 +224,28 @@ public class Recoginition extends RecognitionService {
                                             is.close();
                                             */
 
-                                         // response.body().string()은 한번밖에 호출 못함
-                                        byte[] bytes= Base64.decode(response.body().string(),0);
-                                        Log.d("code",""+bytes.length);
-                                        File f = new File(getApplicationContext().getFilesDir().getPath().toString()+ "speek"+ ".mp3");
+                                            // response.body().string()은 한번밖에 호출 못함
+                                            byte[] bytes = Base64.decode(response.body().string(), 0);
+                                            Log.d("code", "" + bytes.length);
+                                            File f = new File(getApplicationContext().getFilesDir().getPath().toString() + "speek" + ".mp3");
 
-                                        FileOutputStream outputStream = new FileOutputStream(f);
+                                            FileOutputStream outputStream = new FileOutputStream(f);
 
-                                        Log.d("result",""+bytes.length);
-                                        outputStream.write(bytes,0,bytes.length);
-                                        outputStream.flush();
-                                        outputStream.close();
+                                            Log.d("result", "" + bytes.length);
+                                            outputStream.write(bytes, 0, bytes.length);
+                                            outputStream.flush();
+                                            outputStream.close();
 
-                                        FileInputStream fs = new FileInputStream(f);
+                                            FileInputStream fs = new FileInputStream(f);
 
 
-
-                                        mediaPlayer = new MediaPlayer();
-                                        mediaPlayer.setDataSource(fs.getFD());
-                                        //mediaPlayer.prepare();
-                                        mediaPlayer.prepare();
-                                        fs.close();
-                                        // mediaPlayer.prepareAsync();
-                                        mediaPlayer.start();
+                                            mediaPlayer = new MediaPlayer();
+                                            mediaPlayer.setDataSource(fs.getFD());
+                                            //mediaPlayer.prepare();
+                                            mediaPlayer.prepare();
+                                            fs.close();
+                                            // mediaPlayer.prepareAsync();
+                                            mediaPlayer.start();
 //                                            final SoundPool soundPool=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
 //
 //
@@ -240,11 +260,12 @@ public class Recoginition extends RecognitionService {
 //                                                }
 //                                            });
 
+                                        }
                                     }
-                                }
-                            });
-                }
-            }.start();
+                                });
+                    }
+                }.start();
+            }
 
             //((TextView)(findViewById(R.id.text))).setText("" + rs[index]);
         }
