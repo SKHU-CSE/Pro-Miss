@@ -89,16 +89,16 @@
                     android:text="2019-03-15"/>
 
                 <TextView
+                    android:id="@+id/frg_appoint1_card1_TimeText"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/frg_appoint1_card1_date"
+                    android:layout_alignLeft="@id/frg_appoint1_card1_time"
+                    android:layout_toRightOf="@id/frg_appoint1_card1_view"
+                    android:text="AM 00 : 00"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_below="@id/frg_appoint1_card1_date"
-                    android:layout_toRightOf="@id/frg_appoint1_card1_view"
-                    android:layout_alignLeft="@id/frg_appoint1_card1_time"
-                    android:id="@+id/frg_appoint1_card1_TimeText"
-                    android:layout_height="wrap_content"
-                    android:text="2019-03-15"/>
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
