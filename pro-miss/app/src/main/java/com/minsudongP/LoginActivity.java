@@ -1,6 +1,8 @@
 package com.minsudongP;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,14 +20,15 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         startService(new Intent(this, Recoginition.class));
-        Intent intent=new Intent(LoginActivity.this,SiriActivity.class);
-        startActivity(intent);
+
         ((Button)findViewById(R.id.login_gotoregister)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,37 +2,57 @@ package com.minsudongP;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
+import android.os.Message;
 import android.os.PowerManager;
+import android.os.ResultReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dnkilic.waveform.WaveView;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class SiriActivity extends Activity {
 
     private WaveView mWaveView;
     PowerManager powerManager;
 
+    final int RequsetCheck=1;
+    boolean hasRequest=true;
     PowerManager.WakeLock wakeLock;
 
+    LinearLayout linearLayout;
+    ArrayList<TextView> arrayList=new ArrayList<>();
     @SuppressLint("InvalidWakeLockTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_siri);
-        mWaveView=findViewById(R.id.vw2);
+        mWaveView = findViewById(R.id.vw2);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
+        linearLayout=findViewById(R.id.siri_textlist);
 
-        powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
 
         wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WAKELOCK");
@@ -41,29 +61,50 @@ public class SiriActivity extends Activity {
 
         wakeLock.release(); // WakeLock 해제
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 start(new View(getApplicationContext()));
                 startSpeech(new View(getApplicationContext()));
             }
-        }, 500);// 0.5초 정도 딜레이를 준 후 시작
+        }, 1000);// 0.5초 정도 딜레이를 준 후 시작
 
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                finish();
-            }
-        }, 5500);// 0.5초 정도 딜레이를 준 후 시작
+        mHdrVoiceRecoState.sendEmptyMessage(RequsetCheck);
     }
+    private Handler mHdrVoiceRecoState = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what)
+            {
+
+                case RequsetCheck:
+                {
+                    if(hasRequest==false)
+                        finish();
+                    else
+                        hasRequest=false;
+                    sendEmptyMessageDelayed(RequsetCheck, 15000);
+                    break;
+                }
+
+                default:
+                    super.handleMessage(msg);
+            }
+
+        }
+    };
 
     public void reset() {
+
         mWaveView.stop();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               finish();
+            }
+        }, 5000);// 5초 정도 딜레이를 준 후 시작
     }
 
     public void start(View v) {
@@ -82,5 +123,70 @@ public class SiriActivity extends Activity {
 
     public void pauseSpeech() {
         mWaveView.speechPaused();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+               mMessageReceiver ,new IntentFilter("Promiss-event-name")
+        );
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver()
+    { @Override public void onReceive(Context context, Intent intent) {
+        // TODO Auto-generated method stub // Get extra data included in the
+
+        String bysend= intent.getStringExtra("send");
+        if(bysend.equals("start"))
+            startSpeech(null);
+        else if(bysend.equals("reset")){
+            reset();
+        }
+        else { //send is equal (my or chatbot)
+            hasRequest=true;
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+            TextView view=new TextView(SiriActivity.this);
+            view.setText(message);
+            view.setTextSize(18.0f);
+            if(arrayList.size()>4)
+            {
+                TextView tv=arrayList.get(0);
+                arrayList.remove(tv);
+                linearLayout.removeView(tv);
+            }
+
+
+            LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(layoutParams);
+            linearLayout.addView(view,layoutParams);
+
+
+            arrayList.add(view);
+            if(bysend.equals("my"))
+            {
+                view.setGravity(Gravity.RIGHT);
+            }else
+            {
+                view.setGravity(Gravity.LEFT);
+            }
+        }
+
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

@@ -47,7 +47,7 @@ public class UrlConnection {
 
     }
 
-    public void PostSpeekRequest(String Text,Callback callback)
+    public void PostSpeekRequest(String Text,String Id,Callback callback)
     {
 
 
@@ -55,10 +55,11 @@ public class UrlConnection {
 
             FormBody body = new FormBody.Builder()
                     .add("message", Text)
+                    .add("id",""+Id)
                     .build();
 
             Request request = new Request.Builder()
-                    .url(Mainurl+"api/ai")
+                    .url(Mainurl+"api/promiss/ai")
                     .post(body)
                     .build();
             client.newCall(request).enqueue(callback);

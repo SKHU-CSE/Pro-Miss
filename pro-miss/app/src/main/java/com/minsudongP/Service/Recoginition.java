@@ -1,23 +1,39 @@
 package com.minsudongP.Service;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.ResultReceiver;
 import android.speech.RecognitionListener;
 import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.TextView;
-
+import android.support.v4.app.NotificationCompat.Builder;
+import com.minsudongP.MainActivity;
+import com.minsudongP.R;
 import com.minsudongP.Singletone.UrlConnection;
+import com.minsudongP.Singletone.UserInfor;
 import com.minsudongP.SiriActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +59,7 @@ public class Recoginition extends RecognitionService {
     protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
     Intent intent;
+     ResultReceiver receiver;
 
     @Override
     public void onCreate() {
@@ -52,6 +69,7 @@ public class Recoginition extends RecognitionService {
         hasQuestion=false;
         intent=new Intent(this, SiriActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
     }
 
     @Override
@@ -63,6 +81,14 @@ public class Recoginition extends RecognitionService {
         }
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void sendMessage(String send,String message){
+        Log.d("messageService", "Broadcasting message");
+        Intent intent = new Intent("Promiss-event-name");
+        intent.putExtra("send",send);
+        intent.putExtra("message", message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -131,11 +157,7 @@ public class Recoginition extends RecognitionService {
 
         try
         {
-            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -159,6 +181,11 @@ public class Recoginition extends RecognitionService {
     protected void onStopListening(Callback listener) {
         try
         {
+            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -173,8 +200,11 @@ public class Recoginition extends RecognitionService {
     private RecognitionListener mClsRecoListener = new RecognitionListener() {
         @Override
         public void onRmsChanged(float rmsdB) {
-            if(rmsdB>6.0&&hasQuestion)
-            startActivity(intent);
+            if(rmsdB==8.5&&hasQuestion)
+            {
+                sendMessage("start","");
+            }
+
             Log.d("sound",""+rmsdB);
         }
 
@@ -190,16 +220,21 @@ public class Recoginition extends RecognitionService {
             Log.d("key",rs[0]);
 
             if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")||hasQuestion) {
-                if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스"))
-                    hasQuestion=true;
-                else
-                    hasQuestion=false;
+                if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")) {
+                    hasQuestion = true;
+                    startActivity(intent);
+
+
+                }
+                sendMessage("start","");
+                sendMessage("my",rs[0]);
                 new Thread() {
 
                     @Override
                     public void run() {
+                        UserInfor userInfor=UserInfor.shared;
                         UrlConnection connection = UrlConnection.shardUrl;
-                        connection.PostSpeekRequest(rs[0], new
+                        connection.PostSpeekRequest(rs[0],userInfor.getID(), new
 
                                 okhttp3.Callback() {
                                     @Override
@@ -210,62 +245,50 @@ public class Recoginition extends RecognitionService {
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
 
+                                        String s=response.body().string();
                                         Log.d("code", "" + response.code());
                                         if (response.code() == 200) {
 
-/*
-                                            InputStream is = response.body().byteStream();
-                                            int read = 0;
-                                            byte[] bytes = new byte[1024];
-                                            // Creates randomly named MP3 files
-                                           // String tempname = Long.valueOf(new Date().getTime()).toString();
-                                            File f = new File(getApplicationContext().getFilesDir().getPath().toString()+ "speek"+ ".mp3");
-                                            f.createNewFile();
-                                            OutputStream outputStream = new FileOutputStream(f);
-                                            while ((read = is.read(bytes)) != -1) {
-                                                outputStream.write(bytes, 0, read);
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(s);
+
+
+
+                                                JSONObject data=jsonObject.getJSONObject("data");
+
+                                                sendMessage("chatbot",data.getString("message"));
+                                                // response.body().string()은 한번밖에 호출 못함
+
+                                                if(jsonObject.getInt("result")==1000) {
+                                                    hasQuestion = false;
+                                                    sendMessage("reset","");
+                                                }
+                                                byte[] bytes = Base64.decode(data.getString("voice"), 0);
+                                                Log.d("code", "" + bytes.length);
+                                                File f = new File(getApplicationContext().getFilesDir().getPath().toString() + "speek" + ".mp3");
+
+                                                FileOutputStream outputStream = new FileOutputStream(f);
+
+                                                Log.d("result", "" + bytes.length);
+                                                outputStream.write(bytes, 0, bytes.length);
+                                                outputStream.flush();
+                                                outputStream.close();
+
+                                                FileInputStream fs = new FileInputStream(f);
+
+
+                                                mediaPlayer = new MediaPlayer();
+                                                mediaPlayer.setDataSource(fs.getFD());
+                                                //mediaPlayer.prepare();
+                                                mediaPlayer.prepare();
+                                                fs.close();
+                                                // mediaPlayer.prepareAsync();
+                                                mediaPlayer.start();
+
+                                            }catch (JSONException e)
+                                            {
+                                                e.printStackTrace();
                                             }
-                                            outputStream.flush();
-                                            outputStream.close();
-                                            is.close();
-                                            */
-
-                                            // response.body().string()은 한번밖에 호출 못함
-                                            byte[] bytes = Base64.decode(response.body().string(), 0);
-                                            Log.d("code", "" + bytes.length);
-                                            File f = new File(getApplicationContext().getFilesDir().getPath().toString() + "speek" + ".mp3");
-
-                                            FileOutputStream outputStream = new FileOutputStream(f);
-
-                                            Log.d("result", "" + bytes.length);
-                                            outputStream.write(bytes, 0, bytes.length);
-                                            outputStream.flush();
-                                            outputStream.close();
-
-                                            FileInputStream fs = new FileInputStream(f);
-
-
-                                            mediaPlayer = new MediaPlayer();
-                                            mediaPlayer.setDataSource(fs.getFD());
-                                            //mediaPlayer.prepare();
-                                            mediaPlayer.prepare();
-                                            fs.close();
-                                            // mediaPlayer.prepareAsync();
-                                            mediaPlayer.start();
-//                                            final SoundPool soundPool=new SoundPool(1, AudioManager.STREAM_MUSIC,0);
-//
-//
-//                                            final int music=soundPool.load(outputStream.getFD(),0,f.length(),1);
-//                                           // int music=soundPool.load("speek.mp3",1);
-//
-//
-//                                            MainActivity.this.runOnUiThread(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    soundPool.play(music, 1f, 1f, 1, 0, 1f);
-//                                                }
-//                                            });
-
                                         }
                                     }
                                 });
