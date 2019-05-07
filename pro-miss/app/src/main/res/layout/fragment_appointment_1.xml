@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:name="com.naver.maps.map.MapFragment" />
+
         <Button
             android:id="@+id/appointment_backButton"
             android:layout_width="60dp"
@@ -27,6 +33,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView" />
 
         <EditText
+            android:layout_below="@id/map"
             android:id="@+id/frg_appoint1_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

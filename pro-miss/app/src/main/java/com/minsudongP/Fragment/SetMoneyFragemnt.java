@@ -40,7 +40,7 @@ public class SetMoneyFragemnt extends Fragment {
 
                switch (view.getId()){
                    case R.id.frg_appoint2_deletebtn:
-
+                        if (layout.getChildCount()<1) break;
                        try{
                            final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
                            money.animate()
@@ -68,10 +68,13 @@ public class SetMoneyFragemnt extends Fragment {
                                        }
                                    });
 
-                       }catch (IndexOutOfBoundsException e)
-                       {
+                       }catch (IndexOutOfBoundsException e) {
                            e.printStackTrace();
                        }
+                       break;
+                   case R.id.frg_appoint2_cancelbtn:
+                       for(int i = layout.getChildCount()-1 ; i >=0 ; i--)
+                           layout.removeView(layout.getChildAt(i));
                        break;
                    default:
 
@@ -91,8 +94,17 @@ public class SetMoneyFragemnt extends Fragment {
 
 
         ((Button)view.findViewById(R.id.frg_appoint2_onebtn)).setOnClickListener(listener);
-        ((Button)view.findViewById(R.id.frg_appoint2_deletebtn)).setOnClickListener(listener);
         ((Button)view.findViewById(R.id.frg_appoint2_twobtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_threebtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_fourbtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_fivebtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_sixbtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_sevenbtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_eightbtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_ninebtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_zerobtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_deletebtn)).setOnClickListener(listener);
+        ((Button)view.findViewById(R.id.frg_appoint2_cancelbtn)).setOnClickListener(listener);
     }
 
 }

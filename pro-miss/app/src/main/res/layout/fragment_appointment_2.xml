@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <TextView
+        android:id="@+id/frg_appoint2_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="벌금 금액"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:id="@+id/frg_appoint2_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:text="벌금 금액"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:textStyle="bold" />
 
 
     <LinearLayout
+        android:id="@+id/frg_appoint2_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/frg_appoint2_money"
-        android:layout_marginHorizontal="25dp"
         android:layout_below="@id/frg_appoint2_title"
         android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
 
         <LinearLayout
+            android:id="@+id/frg_appoint2_addmoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/frg_appoint2_addmoney"
-            android:orientation="horizontal"
             android:gravity="right"
-            >
+            android:orientation="horizontal">
 
         </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="원"
-        android:textColor="#70ad47"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textColor="#70ad47"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <View
+        android:id="@+id/frg_appoint2_moneybar"
         android:layout_width="wrap_content"
         android:layout_height="1.5dp"
-        android:background="#70ad47"
-        android:id="@+id/frg_appoint2_moneybar"
+        android:layout_below="@id/frg_appoint2_money"
         android:layout_alignLeft="@id/frg_appoint2_money"
         android:layout_alignRight="@id/frg_appoint2_money"
-        android:layout_below="@id/frg_appoint2_money"
-        android:layout_marginTop="10dp"></View>
+        android:layout_marginTop="10dp"
+        android:background="#70ad47"></View>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/frg_appoint2_moneybar"
         android:layout_marginHorizontal="50dp"
-        android:orientation="vertical"
-        >
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,71 +72,76 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1"
                 android:id="@+id/frg_appoint2_onebtn"
-                android:layout_margin="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
-
-            <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
+                android:text="1"
+                android:textSize="20sp" />
+
+            <Button
                 android:id="@+id/frg_appoint2_twobtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="2"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_threebtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="3"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/frg_appoint2_fourbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="4"
-                android:layout_margin="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_fivebtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="5"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_sixbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="6"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,33 +149,37 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/frg_appoint2_sevenbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="7"
-                android:layout_margin="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_eightbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="8"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_ninebtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:text="9"
+                android:layout_weight="1"
                 android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:text="9"
+                android:textSize="20sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -179,32 +187,34 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/frg_appoint2_cancelbtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="취소"
-                android:layout_margin="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_zerobtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
                 android:text="0"
-                android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
+                android:id="@+id/frg_appoint2_deletebtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/frg_appoint2_deletebtn"
                 android:layout_margin="10dp"
-                android:text="지우기"
+                android:layout_weight="1"
                 android:background="?selectableItemBackgroundBorderless"
-                android:textSize="20sp"/>
+                android:text="지우기"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </LinearLayout>

@@ -1,11 +1,11 @@
 package com.minsudongP.Fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,20 +17,21 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.minsudongP.DialogSelectTimer;
-import com.minsudongP.LoginActivity;
-import com.minsudongP.MainActivity;
 import com.minsudongP.R;
-import com.minsudongP.RegisterActivity;
+import com.minsudongP.SetDestinyActivity;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.MapFragment;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.OnMapReadyCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 
-public class AppointmentFragemnt extends Fragment {
+public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback {
     long mNow;
     Date mDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,6 +41,14 @@ public class AppointmentFragemnt extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_appointment_1, null);
+
+        // 지도 객체 받아오기
+        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance();
+            getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
 
 
         final TextView tvDate = view.findViewById(R.id.frg_appoint1_card1_DateText);
@@ -103,7 +112,6 @@ public class AppointmentFragemnt extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -137,8 +145,6 @@ public class AppointmentFragemnt extends Fragment {
             }
         };
         ((Button) getActivity().findViewById(R.id.appointment_backButton)).setOnClickListener(AppointmentListener);
-
-
     }
 
 
@@ -149,4 +155,15 @@ public class AppointmentFragemnt extends Fragment {
     }
 
 
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+                Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
 }
