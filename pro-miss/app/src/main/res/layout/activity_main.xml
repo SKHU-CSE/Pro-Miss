@@ -15,6 +15,7 @@
         android:layout_margin="14dp">
 
         <ImageView
+            android:id="@+id/main_alertbtn"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginTop="5dp"

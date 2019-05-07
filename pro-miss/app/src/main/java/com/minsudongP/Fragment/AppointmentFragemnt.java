@@ -1,7 +1,9 @@
 package com.minsudongP.Fragment;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -115,7 +118,35 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        View.OnClickListener AppointmentListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
+                alert_ex.setMessage("취소하고 메인페이지로 돌아갑니다.");
+
+                alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+                    }
+                });
+                alert_ex.setTitle("작성을 취소하시겠습니까?");
+                AlertDialog alert = alert_ex.create();
+                alert.show();
+
+            }
+        };
+        ((Button) getActivity().findViewById(R.id.appointment_backButton)).setOnClickListener(AppointmentListener);
     }
+
 
     private String getTime() {
         mNow = System.currentTimeMillis();

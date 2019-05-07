@@ -29,13 +29,31 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        View.OnClickListener SettingsListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MyPageActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        };
+
+        View.OnClickListener MainListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        };
+        ((Button)findViewById(R.id.mypage_backButton)).setOnClickListener(MainListener);
+
+
         adapter=new AllRecyclerAdapter(arrayList,getApplicationContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         ((Button)findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
+        ((Button)findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
 
 
-        arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
+              arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
 
         arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","구동섭"));
 
