@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.minsudongP.Singletone.UrlConnection;
+import com.minsudongP.SiriActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,7 @@ public class Recoginition extends RecognitionService {
     boolean hasQuestion;
     protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
+    Intent intent;
 
     @Override
     public void onCreate() {
@@ -48,6 +50,8 @@ public class Recoginition extends RecognitionService {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         startListening();
         hasQuestion=false;
+        intent=new Intent(this, SiriActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     @Override
@@ -169,6 +173,8 @@ public class Recoginition extends RecognitionService {
     private RecognitionListener mClsRecoListener = new RecognitionListener() {
         @Override
         public void onRmsChanged(float rmsdB) {
+            if(rmsdB>6.0&&hasQuestion)
+            startActivity(intent);
             Log.d("sound",""+rmsdB);
         }
 

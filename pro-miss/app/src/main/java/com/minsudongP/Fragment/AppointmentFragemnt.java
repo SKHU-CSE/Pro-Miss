@@ -20,11 +20,8 @@ import android.widget.Toast;
 
 
 import com.minsudongP.DialogSelectTimer;
-import com.minsudongP.LoginActivity;
-import com.minsudongP.MainActivity;
-
 import com.minsudongP.R;
-import com.minsudongP.RegisterActivity;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
