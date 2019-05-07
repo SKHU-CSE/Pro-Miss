@@ -158,6 +158,11 @@ public class Recoginition extends RecognitionService {
         try
         {
 
+            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
+            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -181,11 +186,7 @@ public class Recoginition extends RecognitionService {
     protected void onStopListening(Callback listener) {
         try
         {
-            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -211,7 +212,7 @@ public class Recoginition extends RecognitionService {
 
         @Override
         public void onResults(Bundle results) {
-            mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
+
             String key = "";
             key = SpeechRecognizer.RESULTS_RECOGNITION;
             ArrayList<String> mResult = results.getStringArrayList(key);
@@ -295,7 +296,7 @@ public class Recoginition extends RecognitionService {
                     }
                 }.start();
             }
-
+            mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
             //((TextView)(findViewById(R.id.text))).setText("" + rs[index]);
         }
 
