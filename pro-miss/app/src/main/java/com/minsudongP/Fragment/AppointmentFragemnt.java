@@ -100,7 +100,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             }
 
         });
-        final TextView tvTimer = view.findViewById(R.id.frg_appoint1_timer_t2);
+        final TextView tvTimer = view.findViewById(R.id.atd_detail_timer_t2);
         tvTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
