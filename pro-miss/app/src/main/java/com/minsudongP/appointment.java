@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.minsudongP.Fragment.AppointmentFragemnt;
+import com.minsudongP.Fragment.MemberFragment;
 import com.minsudongP.Fragment.SetMoneyFragemnt;
 
 public class appointment extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class appointment extends AppCompatActivity {
 
         viewpagerAdapter.addItem(new AppointmentFragemnt());
         viewpagerAdapter.addItem(new SetMoneyFragemnt());
+        viewpagerAdapter.addItem(new MemberFragment());
 
         viewpagerAdapter.notifyDataSetChanged();
     }
