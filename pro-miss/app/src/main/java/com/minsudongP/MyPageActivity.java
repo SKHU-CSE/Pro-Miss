@@ -53,7 +53,7 @@ public class MyPageActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
 
 
-              arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
+        arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
 
         arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","구동섭"));
 

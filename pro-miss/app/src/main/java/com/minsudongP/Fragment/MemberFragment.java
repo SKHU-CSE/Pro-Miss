@@ -1,6 +1,7 @@
 package com.minsudongP.Fragment;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.minsudongP.FriendListActivity;
 import com.minsudongP.R;
 import com.minsudongP.SettingsActivity;
 
@@ -36,9 +39,15 @@ public class MemberFragment extends Fragment {
                 getActivity().finish();
             }
         };
+        View.OnClickListener addMemberListenr=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FriendListActivity.class);
+                startActivity(intent);
+            }
+        };
         ((Button)getActivity().findViewById(R.id.frg_appoint3_confirmBtn)).setOnClickListener(MainListener);
-
-
+        ((ImageButton)getActivity().findViewById(R.id.frg_appoint3_addButton)).setOnClickListener(addMemberListenr);
     }
 
 }
