@@ -59,6 +59,7 @@ public class Recoginition extends RecognitionService {
     protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
     Intent intent;
+
      ResultReceiver receiver;
 
     @Override
@@ -125,14 +126,24 @@ public class Recoginition extends RecognitionService {
     public void startListening()
     {
 
+
+
         if(mediaPlayer!=null&&mediaPlayer.isPlaying()) {
             mHdrVoiceRecoState.sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART,500);
         }else {
-            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
-            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
-            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-            mAudioManager.setStreamMute(AudioManager.STREAM_RING, true);
-            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_RING, true);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!mAudioManager.isStreamMute(AudioManager.STREAM_MUSIC)) {
+
+                    mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
+                }
+            } else {
+                mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+            }
 
             if (mBoolVoiceRecoStarted == false) {
                 if (mSrRecognizer == null) {
@@ -158,11 +169,15 @@ public class Recoginition extends RecognitionService {
         try
         {
 
-            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
-            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
+//            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
+//            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
+
+
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
                 mSrRecognizer.stopListening();
@@ -277,6 +292,15 @@ public class Recoginition extends RecognitionService {
 
                                                 FileInputStream fs = new FileInputStream(f);
 
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                                                    mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);
+
+                                                } else {
+                                                    // Note that this must be the same instance of audioManager that mutes
+                                                    // http://stackoverflow.com/questions/7908962/setstreammute-never-unmutes?rq=1
+                                                    mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+                                                }
 
                                                 mediaPlayer = new MediaPlayer();
                                                 mediaPlayer.setDataSource(fs.getFD());
@@ -296,6 +320,7 @@ public class Recoginition extends RecognitionService {
                     }
                 }.start();
             }
+
             mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
             //((TextView)(findViewById(R.id.text))).setText("" + rs[index]);
         }
@@ -307,6 +332,7 @@ public class Recoginition extends RecognitionService {
 
         @Override
         public void onEndOfSpeech() {
+
         }
 
         @Override
