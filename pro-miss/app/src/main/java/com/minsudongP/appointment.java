@@ -29,4 +29,9 @@ public class appointment extends AppCompatActivity {
 
         viewpagerAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

@@ -11,17 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AttendingDetailActivity"></activity>
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_maps_key" />
 
+        <activity android:name=".AttendingDetailActivity"></activity>
+
+        <activity android:name=".LoadingActivity"/>
+        <activity android:name=".PastActivity" />
+        <activity android:name=".FriendListActivity" />
         <activity android:name=".SetDestinyActivity" />
         <activity android:name=".AlertActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".AttendingActivity" />
         <activity android:name=".MyPageActivity" />
         <activity android:name=".appointment" />
