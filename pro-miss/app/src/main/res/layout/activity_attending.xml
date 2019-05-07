@@ -17,6 +17,17 @@
             android:layout_height="match_parent"
             android:minHeight="450dp">
 
+            <Button
+                android:id="@+id/attending_backButton"
+                android:layout_width="60dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:background="@drawable/ic_keyboard_backspace_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/attending_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/attending_title" />
+
             <TextView
                 android:id="@+id/attending_title"
                 android:layout_width="wrap_content"
@@ -36,10 +47,10 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/atteding_cardview"
+                android:id="@+id/attending_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/frg_appoint1_card1"
+                android:layout_below="@id/atd_detail_card_date"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -56,7 +67,6 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
 
                     <TextView
                         android:id="@+id/attending_CardTitle"
@@ -76,8 +86,8 @@
                         android:id="@+id/attending_CardDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/alert_CardTitle"
-                        android:layout_alignLeft="@id/alert_CardTitle"
+                        android:layout_below="@id/attending_CardTitle"
+                        android:layout_alignLeft="@id/attending_CardTitle"
                         android:layout_marginTop="10dp"
                         android:text="2019/03/15"
                         app:layout_constraintStart_toStartOf="@+id/attending_CardTitle"
@@ -135,7 +145,7 @@
                         android:background="#ffffff"
                         app:layout_constraintBottom_toTopOf="@+id/attending_LeftTime"
                         app:layout_constraintEnd_toEndOf="@+id/attending_LeftTime"
-                        app:layout_constraintTop_toTopOf="@+id/alert_CardTitle"
+                        app:layout_constraintTop_toTopOf="@+id/attending_CardTitle"
                         app:srcCompat="@android:drawable/ic_menu_send" />
 
 
@@ -148,7 +158,7 @@
                 android:id="@+id/attending_cardview2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/frg_appoint1_card1"
+                android:layout_below="@id/atd_detail_card_date"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -160,7 +170,7 @@
                 app:cardElevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alert_cardview">
+                app:layout_constraintTop_toBottomOf="@+id/attending_cardview">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

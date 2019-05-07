@@ -1,4 +1,3 @@
-
 package com.minsudongP;
 
 import android.support.v7.app.AppCompatActivity;
@@ -6,19 +5,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class AlertActivity extends AppCompatActivity {
+public class PastActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alert);
+        setContentView(R.layout.activity_past);
 
-        View.OnClickListener AlertListener=new View.OnClickListener() {
+
+        View.OnClickListener BackListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         };
-        ((Button)findViewById(R.id.alert_backButton)).setOnClickListener(AlertListener);
+        ((Button)findViewById(R.id.past_backButton)).setOnClickListener(BackListener);
     }
 }

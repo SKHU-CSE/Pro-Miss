@@ -1,9 +1,12 @@
 package com.minsudongP.Fragment;
 
+import android.app.AlertDialog;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +19,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 
 import com.minsudongP.DialogSelectTimer;
 import com.minsudongP.R;
+
+import com.minsudongP.SetDestinyActivity;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.MapFragment;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.OnMapReadyCallback;
 
 
 import java.text.SimpleDateFormat;
@@ -28,15 +36,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class AppointmentFragemnt extends Fragment {
 
-
-    boolean  mLocationPermissionGranted;
-    public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION=20;
-    public final int  DEFAULT_ZOOM=18;
-    private static final String KEY_CAMERA_POSITION = "camera_position";
-    private static final String KEY_LOCATION = "location";
-    public final String TAG="AppointFragment";
+public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback {
 
     long mNow;
     Date mDate;
@@ -48,6 +49,14 @@ public class AppointmentFragemnt extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_appointment_1, null);
+
+        // 지도 객체 받아오기
+        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance();
+            getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
 
 
         final TextView tvDate = view.findViewById(R.id.frg_appoint1_card1_DateText);
@@ -99,7 +108,7 @@ public class AppointmentFragemnt extends Fragment {
             }
 
         });
-        final TextView tvTimer = view.findViewById(R.id.frg_appoint1_timer_t2);
+        final TextView tvTimer = view.findViewById(R.id.atd_detail_timer_t2);
         tvTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,13 +120,40 @@ public class AppointmentFragemnt extends Fragment {
             }
         });
 
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
+        View.OnClickListener AppointmentListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
+                alert_ex.setMessage("취소하고 메인페이지로 돌아갑니다.");
+
+                alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+                    }
+                });
+                alert_ex.setTitle("작성을 취소하시겠습니까?");
+                AlertDialog alert = alert_ex.create();
+                alert.show();
+
+            }
+        };
+        ((Button) getActivity().findViewById(R.id.appointment_backButton)).setOnClickListener(AppointmentListener);
 
     }
 
@@ -129,5 +165,16 @@ public class AppointmentFragemnt extends Fragment {
     }
 
 
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+                Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
 
 }

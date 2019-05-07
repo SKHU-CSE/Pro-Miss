@@ -11,11 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-
+import com.minsudongP.Service.Recoginition;
 import com.minsudongP.Singletone.UrlConnection;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        startService(new Intent(this, Recoginition.class)); //음성인식 서비스 실행
 
         // OnClick
 
@@ -76,11 +77,21 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+        View.OnClickListener AlertListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,AlertActivity.class);
+                startActivity(intent);
+            }
+        };
+
+
         ((ImageButton)findViewById(R.id.main_MakeProtocal)).setOnClickListener(MakeProtocalListenr);
         ((TextView)findViewById(R.id.main_MakeProtocal_text)).setOnClickListener(MakeProtocalListenr);
         ((LinearLayout)findViewById(R.id.main_MyPage)).setOnClickListener(MyPageListener);
         ((TextView)findViewById(R.id.main_MyPage_text)).setOnClickListener(MyPageListener);
         ((ImageButton)findViewById(R.id.main_ShowProtocal)).setOnClickListener(AttendingListener);
+        ((ImageView)findViewById(R.id.main_alertbtn)).setOnClickListener(AlertListener);
 
     }
 }

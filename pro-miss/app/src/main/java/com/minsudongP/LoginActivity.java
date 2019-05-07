@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        startService(new Intent(this, Recoginition.class));
+
 
         ((Button)findViewById(R.id.login_gotoregister)).setOnClickListener(new View.OnClickListener() {
             @Override

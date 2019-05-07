@@ -25,7 +25,6 @@ public class MyPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(MyPageActivity.this,AttendingActivity.class);
                 startActivity(intent);
-                finish();
             }
         };
 
@@ -33,6 +32,14 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MyPageActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        };
+
+        View.OnClickListener PastListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MyPageActivity.this,PastActivity.class);
                 startActivity(intent);
             }
         };
@@ -51,6 +58,7 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         ((Button)findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
         ((Button)findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
+        ((Button)findViewById(R.id.mypage_pastButton)).setOnClickListener(PastListener);
 
 
         arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
