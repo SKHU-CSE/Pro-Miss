@@ -151,6 +151,9 @@ public class SiriActivity extends Activity {
             startSpeech(null);
         else if(bysend.equals("reset")){
             reset();
+        }else if(bysend.equals("pause"))
+        {
+            pauseSpeech();
         }
         else { //send is equal (my or chatbot)
             hasRequest=true;
@@ -158,7 +161,7 @@ public class SiriActivity extends Activity {
             Log.d("receiver", "Got message: " + message);
             TextView view=new TextView(SiriActivity.this);
             view.setText(message);
-            view.setTextSize(18.0f);
+            view.setTextSize(18.5f);
             if(arrayList.size()>4)
             {
                 TextView tv=arrayList.get(0);

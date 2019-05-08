@@ -216,9 +216,12 @@ public class Recoginition extends RecognitionService {
     private RecognitionListener mClsRecoListener = new RecognitionListener() {
         @Override
         public void onRmsChanged(float rmsdB) {
-            if(rmsdB==8.5&&hasQuestion)
+            if(rmsdB>=8.5&&hasQuestion)
             {
                 sendMessage("start","");
+            }else if(rmsdB>=5.5&&hasQuestion)
+            {
+                sendMessage("pause","");
             }
 
             Log.d("sound",""+rmsdB);
@@ -235,14 +238,13 @@ public class Recoginition extends RecognitionService {
             mResult.toArray(rs);
             Log.d("key",rs[0]);
 
+
             if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")||hasQuestion) {
-                if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")) {
+                if(!hasQuestion) {
                     hasQuestion = true;
                     startActivity(intent);
-
-
                 }
-                sendMessage("start","");
+
                 sendMessage("my",rs[0]);
                 new Thread() {
 
