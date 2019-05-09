@@ -34,6 +34,7 @@ public class SiriActivity extends Activity {
     PowerManager powerManager;
 
     final int RequsetCheck=1;
+    final int SET_TEXT_REQUEST=2;
     boolean hasRequest=true;
     PowerManager.WakeLock wakeLock;
 
@@ -88,6 +89,10 @@ public class SiriActivity extends Activity {
                     sendEmptyMessageDelayed(RequsetCheck, 15000);
                     break;
                 }
+                case SET_TEXT_REQUEST:
+                {
+
+                }
 
                 default:
                     super.handleMessage(msg);
@@ -137,9 +142,36 @@ public class SiriActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+    }
+
+    public void AddTextView(String send, String message){
+        TextView view=new TextView(SiriActivity.this);
+        view.setText(message);
+        view.setTextSize(18.5f);
+        if(arrayList.size()>4)
+        {
+            TextView tv=arrayList.get(0);
+            arrayList.remove(tv);
+            linearLayout.removeView(tv);
+        }
+
+
+        LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(layoutParams);
+        linearLayout.addView(view,layoutParams);
+
+
+        arrayList.add(view);
+        if(send.equals("my"))
+        {
+            view.setGravity(Gravity.RIGHT);
+        }else
+        {
+            view.setGravity(Gravity.LEFT);
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver()
@@ -159,34 +191,13 @@ public class SiriActivity extends Activity {
             hasRequest=true;
             String message = intent.getStringExtra("message");
             Log.d("receiver", "Got message: " + message);
-            TextView view=new TextView(SiriActivity.this);
-            view.setText(message);
-            view.setTextSize(18.5f);
-            if(arrayList.size()>4)
-            {
-                TextView tv=arrayList.get(0);
-                arrayList.remove(tv);
-                linearLayout.removeView(tv);
-            }
 
-
-            LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(layoutParams);
-            linearLayout.addView(view,layoutParams);
-
-
-            arrayList.add(view);
-            if(bysend.equals("my"))
-            {
-                view.setGravity(Gravity.RIGHT);
-            }else
-            {
-                view.setGravity(Gravity.LEFT);
-            }
+            AddTextView(bysend,message);
         }
 
         }
     };
+
 
     @Override
     public void onBackPressed() {

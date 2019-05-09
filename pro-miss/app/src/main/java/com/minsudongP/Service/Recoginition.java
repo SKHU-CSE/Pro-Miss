@@ -41,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -48,17 +49,28 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.speech.SpeechRecognizer.ERROR_AUDIO;
+import static android.speech.SpeechRecognizer.ERROR_CLIENT;
+import static android.speech.SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS;
+import static android.speech.SpeechRecognizer.ERROR_NETWORK;
+import static android.speech.SpeechRecognizer.ERROR_NO_MATCH;
+import static android.speech.SpeechRecognizer.ERROR_RECOGNIZER_BUSY;
+import static android.speech.SpeechRecognizer.ERROR_SERVER;
+import static android.speech.SpeechRecognizer.ERROR_SPEECH_TIMEOUT;
+import static android.speech.tts.TextToSpeech.ERROR_NETWORK_TIMEOUT;
+
 public class Recoginition extends RecognitionService {
 
     public static final int MSG_VOICE_RECO_READY=0;
     public static final int MSG_VOICE_RECO_END=1;
     public static final int MSG_VOICE_RECO_RESTART=2;
     private SpeechRecognizer mSrRecognizer;
-    boolean mBoolVoiceRecoStarted;
-    boolean hasQuestion;
+    boolean mBoolVoiceRecoStarted=false;
+    boolean hasQuestion; // 프로미스라고 사용자가 말했을 때
     protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
-    Intent intent;
+    Intent intent; //Siri Activity 실행할 Activity
+    Intent itIntent;//음성인식 Intent
 
      ResultReceiver receiver;
 
@@ -72,6 +84,7 @@ public class Recoginition extends RecognitionService {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -125,17 +138,11 @@ public class Recoginition extends RecognitionService {
     };
     public void startListening()
     {
-
-
-
-        if(mediaPlayer!=null&&mediaPlayer.isPlaying()) {
+        if(mediaPlayer!=null&&mediaPlayer.isPlaying()) { //현재 아나운서가 말하고 있다면
             mHdrVoiceRecoState.sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART,500);
         }else {
-//            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_RING, true);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+//
+            //음성인식을 시작하기 위해 Mute
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!mAudioManager.isStreamMute(AudioManager.STREAM_MUSIC)) {
 
@@ -145,49 +152,42 @@ public class Recoginition extends RecognitionService {
                 mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
             }
 
-            if (mBoolVoiceRecoStarted == false) {
+
+            if (mBoolVoiceRecoStarted == false) { // 최초의 실행이거나 인식이 종료된 후에 다시 인식을 시작하려 할 때
                 if (mSrRecognizer == null) {
 
                     mSrRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
                     mSrRecognizer.setRecognitionListener(mClsRecoListener);
+
+                    if (mSrRecognizer.isRecognitionAvailable(getApplicationContext())) { //시스템에서 음성인식 서비스 실행이 가능하다면
+                        itIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                        itIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+                        itIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN.toString());
+                        itIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 50);
+
+                    }
+
                 }
-                if (mSrRecognizer.isRecognitionAvailable(getApplicationContext())) {
-                    Intent itItent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                    itItent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
-                    itItent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN.toString());
-                    itItent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 50);
-                    mSrRecognizer.startListening(itItent);
-                }
+                mSrRecognizer.startListening(itIntent);
             }
-            mBoolVoiceRecoStarted = true;
+            mBoolVoiceRecoStarted = true;  //음성인식 서비스 실행 중
         }
     }
 
-    public void stopListening()
+    public void stopListening() //Override 함수가 아닌 한번만 호출되는 함수 음성인식이 중단될 때
     {
-
         try
         {
-
-
-//            mAudioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_ALARM, false);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_RING, false);
-//            mAudioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
-
-
-
             if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
             {
-                mSrRecognizer.stopListening();
+                mSrRecognizer.stopListening(); //음성인식 Override 중단을 호출
             }
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
         }
-        mBoolVoiceRecoStarted = false;
+        mBoolVoiceRecoStarted = false;  //음성인식 종료
     }
 
 
@@ -198,20 +198,8 @@ public class Recoginition extends RecognitionService {
     }
 
     @Override
-    protected void onStopListening(Callback listener) {
-        try
-        {
-
-            if (mSrRecognizer != null && mBoolVoiceRecoStarted == true)
-            {
-                mSrRecognizer.stopListening();
-            }
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        mBoolVoiceRecoStarted = false;
+    protected void onStopListening(Callback listener) { //음성인식 Override 함수의 종료부분
+        mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_RESTART); //음성인식 서비스 다시 시작
     }
     private RecognitionListener mClsRecoListener = new RecognitionListener() {
         @Override
@@ -231,21 +219,25 @@ public class Recoginition extends RecognitionService {
         @Override
         public void onResults(Bundle results) {
 
+
+            //Recognizer KEY를 사용하여 인식한 결과값을 가져오는 코드
             String key = "";
             key = SpeechRecognizer.RESULTS_RECOGNITION;
             ArrayList<String> mResult = results.getStringArrayList(key);
             final String[] rs = new String[mResult.size()];
             mResult.toArray(rs);
-            Log.d("key",rs[0]);
+            Log.d("key", Arrays.toString(rs));
 
 
-            if(rs[0].equals("프로미스")||rs[0].equals("프루미스")||rs[0].equals("포로미스")||hasQuestion) {
+
+            //Background에서 인식은 항상 하고 있지만 특정 키워드이후에 동작하기 위해 if문으로 동작
+            if(rs[0].contains("프로미스")||rs[0].contains("프루미스")||rs[0].contains("포로미스")||hasQuestion) {
                 if(!hasQuestion) {
                     hasQuestion = true;
                     startActivity(intent);
                 }
 
-                sendMessage("my",rs[0]);
+                sendMessage("my",rs[0]); //사용자의 질문을 보냄
                 new Thread() {
 
                     @Override
@@ -275,12 +267,16 @@ public class Recoginition extends RecognitionService {
                                                 JSONObject data=jsonObject.getJSONObject("data");
 
                                                 sendMessage("chatbot",data.getString("message"));
+                                               //Chatbot에서 전달한 Message를 UI에 띄어주기 위하여
                                                 // response.body().string()은 한번밖에 호출 못함
 
                                                 if(jsonObject.getInt("result")==1000) {
                                                     hasQuestion = false;
                                                     sendMessage("reset","");
+
+                                                    //Chatbot이 사용자의 질문을 이해하지 못했을 때 종료
                                                 }
+
                                                 byte[] bytes = Base64.decode(data.getString("voice"), 0);
                                                 Log.d("code", "" + bytes.length);
                                                 File f = new File(getApplicationContext().getFilesDir().getPath().toString() + "speek" + ".mp3");
@@ -294,6 +290,7 @@ public class Recoginition extends RecognitionService {
 
                                                 FileInputStream fs = new FileInputStream(f);
 
+                                                //Chatbot의 음성을 들려주기 위하여 Mute했던 소리를 킴
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                                                     mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);
@@ -323,7 +320,7 @@ public class Recoginition extends RecognitionService {
                 }.start();
             }
 
-            mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
+            mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END); //음성인식 종료
             //((TextView)(findViewById(R.id.text))).setText("" + rs[index]);
         }
 
@@ -339,7 +336,40 @@ public class Recoginition extends RecognitionService {
 
         @Override
         public void onError(int intError) {
-            mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
+
+            switch (intError) {
+
+                case ERROR_NETWORK_TIMEOUT:
+                    //네트워크 타임아웃
+                    break;
+
+
+                case ERROR_NETWORK:
+                    break;
+
+                case ERROR_AUDIO:
+                //녹음 에러
+                    break;
+                case ERROR_SERVER:
+                //서버에서 에러를 보냄
+                    break;
+                case ERROR_CLIENT:
+                //클라이언트 에러
+                    break;
+                case ERROR_SPEECH_TIMEOUT:
+                //아무 음성도 듣지 못했을 때
+                    break;
+                case ERROR_NO_MATCH:
+                //적당한 결과를 찾지 못했을 때
+                    break;
+                case ERROR_RECOGNIZER_BUSY:
+                //RecognitionService가 바쁠 때
+                    break;
+                case ERROR_INSUFFICIENT_PERMISSIONS:
+                //uses - permission(즉 RECORD_AUDIO) 이 없을 때
+                    break;
+
+            }
         }
 
         @Override
@@ -355,7 +385,13 @@ public class Recoginition extends RecognitionService {
         }
 
         @Override
-        public void onPartialResults(Bundle partialResults) {
+        public void onPartialResults(Bundle partialResults) { //부분 인식을 성공 했을 때
+            String key = "";
+            key = SpeechRecognizer.RESULTS_RECOGNITION;
+            ArrayList<String> mResult = partialResults.getStringArrayList(key);
+            final String[] rs = new String[mResult.size()];
+            mResult.toArray(rs);
+            Log.d("key", Arrays.toString(rs));
         }
     };
 }
