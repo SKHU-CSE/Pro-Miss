@@ -65,7 +65,7 @@ public class Recoginition extends RecognitionService {
     public static final int MSG_VOICE_RECO_END=1;
     public static final int MSG_VOICE_RECO_RESTART=2;
     private SpeechRecognizer mSrRecognizer;
-    boolean mBoolVoiceRecoStarted=false;
+    boolean mBoolVoiceRecoStarted;
     boolean hasQuestion; // 프로미스라고 사용자가 말했을 때
     protected AudioManager mAudioManager;
     MediaPlayer mediaPlayer;
@@ -159,13 +159,14 @@ public class Recoginition extends RecognitionService {
                     mSrRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
                     mSrRecognizer.setRecognitionListener(mClsRecoListener);
 
-                    if (mSrRecognizer.isRecognitionAvailable(getApplicationContext())) { //시스템에서 음성인식 서비스 실행이 가능하다면
-                        itIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                        itIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
-                        itIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN.toString());
-                        itIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 50);
 
-                    }
+
+                }
+                if (mSrRecognizer.isRecognitionAvailable(getApplicationContext())) { //시스템에서 음성인식 서비스 실행이 가능하다면
+                    itIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    itIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+                    itIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN.toString());
+                    itIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 50);
 
                 }
                 mSrRecognizer.startListening(itIntent);
@@ -358,9 +359,11 @@ public class Recoginition extends RecognitionService {
                     break;
                 case ERROR_SPEECH_TIMEOUT:
                 //아무 음성도 듣지 못했을 때
+                    mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
                     break;
                 case ERROR_NO_MATCH:
                 //적당한 결과를 찾지 못했을 때
+                    mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
                     break;
                 case ERROR_RECOGNIZER_BUSY:
                 //RecognitionService가 바쁠 때
