@@ -360,10 +360,12 @@ public class Recoginition extends RecognitionService {
                 case ERROR_SPEECH_TIMEOUT:
                 //아무 음성도 듣지 못했을 때
                     mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
+                    hasQuestion = false;
                     break;
                 case ERROR_NO_MATCH:
                 //적당한 결과를 찾지 못했을 때
                     mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_END);
+                    hasQuestion = false;
                     break;
                 case ERROR_RECOGNIZER_BUSY:
                 //RecognitionService가 바쁠 때
