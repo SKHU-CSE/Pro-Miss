@@ -20,6 +20,9 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="SelectableItemBackground">
+        <item name="android:colorControlHighlight">@color/colorGreen</item>
+    </style>
 
 
 </resources>

@@ -71,7 +71,8 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_gravity="center"
-            android:background="@null"
+            android:background="?selectableItemBackgroundBorderless"
+            android:theme="@style/SelectableItemBackground"
             android:scaleType="fitXY"
             android:src="@drawable/bt_add" />
 
@@ -93,7 +94,8 @@
             android:layout_height="90dp"
             android:layout_below="@id/main_MakeProtocal"
             android:layout_gravity="center"
-            android:background="@null"
+            android:background="?selectableItemBackgroundBorderless"
+            android:theme="@style/SelectableItemBackground"
             android:scaleType="fitXY"
             android:src="@drawable/bt_more" />
 

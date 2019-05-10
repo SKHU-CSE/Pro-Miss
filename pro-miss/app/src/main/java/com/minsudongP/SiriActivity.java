@@ -89,10 +89,7 @@ public class SiriActivity extends Activity {
                     sendEmptyMessageDelayed(RequsetCheck, 15000);
                     break;
                 }
-                case SET_TEXT_REQUEST:
-                {
 
-                }
 
                 default:
                     super.handleMessage(msg);

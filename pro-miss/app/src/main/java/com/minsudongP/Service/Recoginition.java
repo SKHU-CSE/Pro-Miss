@@ -85,6 +85,26 @@ public class Recoginition extends RecognitionService {
 
     }
 
+    private Handler mHdrVoiceRecoState = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what)
+            {
+                case MSG_VOICE_RECO_READY	: break;
+                case MSG_VOICE_RECO_END		:
+                {
+                    stopListening();
+                    sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART, 1000);
+                    break;
+                }
+                case MSG_VOICE_RECO_RESTART	: startListening();	break;
+                default:
+                    super.handleMessage(msg);
+            }
+
+        }
+    };
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -116,26 +136,8 @@ public class Recoginition extends RecognitionService {
 
     }
 
-    private Handler mHdrVoiceRecoState = new Handler()
-    {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what)
-            {
-                case MSG_VOICE_RECO_READY	: break;
-                case MSG_VOICE_RECO_END		:
-                {
-                    stopListening();
-                    sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART, 1000);
-                    break;
-                }
-                case MSG_VOICE_RECO_RESTART	: startListening();	break;
-                default:
-                    super.handleMessage(msg);
-            }
 
-        }
-    };
+
     public void startListening()
     {
         if(mediaPlayer!=null&&mediaPlayer.isPlaying()) { //현재 아나운서가 말하고 있다면
@@ -232,7 +234,7 @@ public class Recoginition extends RecognitionService {
 
 
             //Background에서 인식은 항상 하고 있지만 특정 키워드이후에 동작하기 위해 if문으로 동작
-            if(rs[0].contains("프로미스")||rs[0].contains("프루미스")||rs[0].contains("포로미스")||hasQuestion) {
+            if(rs[0].contains("프로미스")||rs[0].contains("프루미스")||rs[0].contains("포로미스")||rs[0].contains("프로미쓰")||rs[0].contains("프롬있스")||hasQuestion) {
                 if(!hasQuestion) {
                     hasQuestion = true;
                     startActivity(intent);
@@ -400,3 +402,5 @@ public class Recoginition extends RecognitionService {
         }
     };
 }
+
+
