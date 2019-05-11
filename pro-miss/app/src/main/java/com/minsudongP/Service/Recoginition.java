@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.ResultReceiver;
 import android.speech.RecognitionListener;
@@ -58,6 +59,7 @@ import static android.speech.SpeechRecognizer.ERROR_RECOGNIZER_BUSY;
 import static android.speech.SpeechRecognizer.ERROR_SERVER;
 import static android.speech.SpeechRecognizer.ERROR_SPEECH_TIMEOUT;
 import static android.speech.tts.TextToSpeech.ERROR_NETWORK_TIMEOUT;
+import static com.minsudongP.App.CHAANEL_ID;
 
 public class Recoginition extends RecognitionService {
 
@@ -73,6 +75,8 @@ public class Recoginition extends RecognitionService {
     Intent itIntent;//음성인식 Intent
 
      ResultReceiver receiver;
+
+
 
     @Override
     public void onCreate() {
@@ -109,12 +113,22 @@ public class Recoginition extends RecognitionService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(intent==null)
-        {
-            return Service.START_STICKY;
-        }
 
-        return super.onStartCommand(intent, flags, startId);
+        Intent notificationIntent=new Intent(this,MainActivity.class);
+
+        PendingIntent pendingIntent=PendingIntent.getActivity(this
+        ,0,notificationIntent,0); //알람을 눌렀을 때 해당 엑티비티로
+
+            Notification notification=new NotificationCompat.Builder(this,CHAANEL_ID)
+                    .setContentTitle("Promiss Service")
+                    .setContentText("프로미스를 불러주세요")
+                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setContentIntent(pendingIntent)
+                    .build();
+
+            startForeground(1,notification);
+
+            return START_NOT_STICKY;
     }
 
     private void sendMessage(String send,String message){

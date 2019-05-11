@@ -2,6 +2,7 @@ package com.minsudongP;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -119,10 +120,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                 String message;
 
-                if (isChecked)
+                if (isChecked) {
                     message = "백그라운드 음성인식이 켜졌습니다";
-                else
+                    Intent service=new Intent(SettingsActivity.this,Recoginition.class);
+                    ContextCompat.startForegroundService(SettingsActivity.this,service);
+                }
+                else {
+                    Intent service=new Intent(SettingsActivity.this,Recoginition.class);
+                    stopService(service);
                     message = "백그라운드 음성인식이 꺼졌습니다";
+
+                }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 
             }
