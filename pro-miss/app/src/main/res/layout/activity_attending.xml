@@ -23,7 +23,7 @@
                 android:layout_height="55dp"
                 android:layout_marginStart="36dp"
                 android:layout_marginLeft="36dp"
-                android:background="@drawable/ic_keyboard_backspace_black_24dp"
+                android:background="@drawable/backspace"
                 app:layout_constraintBottom_toBottomOf="@+id/attending_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/attending_title" />

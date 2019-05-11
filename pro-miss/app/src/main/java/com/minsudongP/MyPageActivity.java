@@ -7,6 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.minsudongP.Singletone.UserInfor;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -19,6 +25,22 @@ public class MyPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
         RecyclerView recyclerView=findViewById(R.id.mypage_recycleview);
+
+        UserInfor infor= UserInfor.shared;
+
+        ((TextView)findViewById(R.id.mypage_name)).setText(infor.getName());
+        ((TextView)findViewById(R.id.mypage_money_value)).setText(infor.getMoney()+"원");
+        if(infor.getAppoint_num()!=0) {
+            ((TextView) findViewById(R.id.mypage_rangeNum_text)).setText("" + (infor.getSuccess_appoint_num() / infor.getAppoint_num() * 100) + "%");
+            ((TextView) findViewById(R.id.mypage_rangePercent_text)).setText(infor.getSuccess_appoint_num() + "/" + infor.getAppoint_num());
+            ((ProgressBar)findViewById(R.id.mypage_range_progress)).setProgress((infor.getSuccess_appoint_num()/infor.getAppoint_num())*100);
+        }else
+        {
+            ((TextView) findViewById(R.id.mypage_rangeNum_text)).setText("0%");
+            ((TextView) findViewById(R.id.mypage_rangePercent_text)).setText("0/0");
+            ((ProgressBar)findViewById(R.id.mypage_range_progress)).setProgress(0);
+        }
+
 
         View.OnClickListener AttendingListener=new View.OnClickListener() {
             @Override
