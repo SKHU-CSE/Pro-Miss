@@ -3,30 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/login_layout"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".LoginActivity">
 
 
     <EditText
+        android:id="@+id/login_Id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_Id"
-        android:padding="13dp"
-        android:lines="1"
-        android:textSize="18sp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/login_stroke"
+        android:fontFamily="@font/bamin_font"
+        android:hint="아이디"
         android:inputType="text"
-        android:layout_margin="20dp"
-        android:hint="아이디"/>
+        android:lines="1"
+        android:padding="13dp"
+        android:textSize="18sp" />
 
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="비밀번호"
+        android:background="@drawable/login_stroke"
         android:lines="1"
-        android:inputType="textPassword"
+        android:inputType="textVisiblePassword"
         android:layout_below="@id/login_Id"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:fontFamily="@font/bamin_font"
         android:padding="13dp"
         android:textSize="18sp"
         android:id="@+id/login_pwd"/>
@@ -35,24 +45,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="로그인"
+        android:layout_alignRight="@id/login_pwd"
         android:background="@null"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/login_pwd"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
         android:textSize="17dp"
+        android:gravity="right|center_vertical"
+        android:fontFamily="@font/bamin_font"
+        android:paddingRight="5dp"
         android:id="@+id/login_login"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorGreen"/>
 
+
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/login_rotateloading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:loading_width="5dp"
+        app:loading_color="@color/colorGreen"
+        android:layout_centerInParent="true"/>
     <Button
         android:id="@+id/login_gotoregister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/login_pwd"
         android:background="@null"
+        android:gravity="left|center_vertical"
+        android:layout_below="@id/login_pwd"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp"
+        android:fontFamily="@font/bamin_font"
         android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
         android:text="회원가입"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorGreen"
         android:textSize="17sp" />
 
 </RelativeLayout>

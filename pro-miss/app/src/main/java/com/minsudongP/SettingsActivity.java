@@ -11,13 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.minsudongP.Service.Recoginition;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        final Intent intent=new Intent(SettingsActivity.this, Recoginition.class);
         View.OnClickListener MYPageListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,10 +102,12 @@ public class SettingsActivity extends AppCompatActivity {
                     message = "음성인식이 켜졌습니다";
                     swbackground.setClickable(true);
                     swbackground.setChecked(true);
+                    startService(intent);//음성인식 서비스 실행
                 } else {
                     message = "음성인식이 꺼졌습니다";
                     swbackground.setClickable(false);
                     swbackground.setChecked(false);
+                    stopService(intent);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 

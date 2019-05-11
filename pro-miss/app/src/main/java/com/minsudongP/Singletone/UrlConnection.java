@@ -8,6 +8,7 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class UrlConnection {
@@ -34,7 +35,21 @@ public class UrlConnection {
 
     public void PostRequest(String PHP,  Callback callback, HashMap<String,String> map)
     {
+        String url=Mainurl+PHP;
 
+        FormBody.Builder bodybuilder= new FormBody.Builder();
+        for (String key:map.keySet()) {
+
+            bodybuilder.add(key,map.get(key));
+        }
+        RequestBody body=bodybuilder.build();
+
+        Request request=new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(callback);
     }
 
     public void DeleteRequest(String PHP,  Callback callback, HashMap<String,String> map)
