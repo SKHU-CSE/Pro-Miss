@@ -17,9 +17,7 @@ pro-miss/bin/
 pro-miss/gen/
 pro-miss/out/
 
-# Gradle files
-pro-miss/.gradle/
-pro-miss/build/
+
 
 # Local configuration file (sdk path, etc)
 pro-miss/local.properties
