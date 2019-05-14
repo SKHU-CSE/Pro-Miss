@@ -32,7 +32,7 @@ public class FriendListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView=findViewById(R.id.friend_recycleview);
 
-        adapter=new AllRecyclerAdapter(arrayList,getApplicationContext());
+        adapter=new AllRecyclerAdapter(arrayList,FriendListActivity.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 

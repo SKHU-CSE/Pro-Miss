@@ -75,7 +75,7 @@ public class MyPageActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.mypage_backButton)).setOnClickListener(MainListener);
 
 
-        adapter=new AllRecyclerAdapter(arrayList,getApplicationContext());
+        adapter=new AllRecyclerAdapter(arrayList,MyPageActivity.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         ((Button)findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
