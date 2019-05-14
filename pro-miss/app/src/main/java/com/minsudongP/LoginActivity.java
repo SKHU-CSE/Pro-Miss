@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kakao.auth.ApiErrorCode;
+import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -170,6 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                     }.start();
 
                 }
+
             }
         });
     }
@@ -212,6 +214,8 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(MeV2Response result) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    // 회원 정보가 없다면 db에 값 넣기
+                    // 회원 정보가 있다면 로그인 : 싱글톤에 정보 넣기
                     intent.putExtra("name", result.getNickname());
                     intent.putExtra("profile", result.getProfileImagePath());
                     startActivity(intent);
