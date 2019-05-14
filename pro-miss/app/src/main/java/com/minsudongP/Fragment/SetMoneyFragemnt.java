@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.minsudongP.R;
@@ -20,6 +22,8 @@ import org.w3c.dom.Text;
 
 public class SetMoneyFragemnt extends Fragment {
     private LinearLayout layout;
+    ArrayAdapter<String> Minadapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,67 +34,72 @@ public class SetMoneyFragemnt extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-       layout=view.findViewById(R.id.frg_appoint2_addmoney);
+        final Spinner spMin = (Spinner) view.findViewById(R.id.fragment_spMin);
+        Minadapter=new ArrayAdapter<String>(getContext(),R.layout.spinnertext, getResources().getStringArray(R.array.moneymin));
+        spMin.setAdapter(Minadapter);
+
+        layout=view.findViewById(R.id.frg_appoint2_addmoney);
 
 
 
-       View.OnClickListener listener=new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+        View.OnClickListener listener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-               switch (view.getId()){
-                   case R.id.frg_appoint2_deletebtn:
-                        if (layout.getChildCount()<1) break;
-                       try{
-                           final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
-                           money.animate()
-                                   .alpha(0.1f)
-                                   .setDuration(200)
-                                   .setListener(new Animator.AnimatorListener() {
-                                       @Override
-                                       public void onAnimationStart(Animator animation) {
 
-                                       }
+                switch (view.getId()){
+                    case R.id.frg_appoint2_cancelbtn:
+                        layout.removeAllViews();
+                        break;
+                    case R.id.frg_appoint2_deletebtn:
 
-                                       @Override
-                                       public void onAnimationEnd(Animator animation) {
-                                           layout.removeView(money);
-                                       }
+                        try{
+                            final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
+                            money.animate()
+                                    .alpha(0.1f)
+                                    .setDuration(200)
+                                    .setListener(new Animator.AnimatorListener() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
 
-                                       @Override
-                                       public void onAnimationCancel(Animator animation) {
+                                        }
 
-                                       }
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            layout.removeView(money);
+                                        }
 
-                                       @Override
-                                       public void onAnimationRepeat(Animator animation) {
+                                        @Override
+                                        public void onAnimationCancel(Animator animation) {
 
-                                       }
-                                   });
+                                        }
 
-                       }catch (IndexOutOfBoundsException e) {
-                           e.printStackTrace();
-                       }
-                       break;
-                   case R.id.frg_appoint2_cancelbtn:
-                       for(int i = layout.getChildCount()-1 ; i >=0 ; i--)
-                           layout.removeView(layout.getChildAt(i));
-                       break;
-                   default:
+                                        @Override
+                                        public void onAnimationRepeat(Animator animation) {
 
-                       if(layout.getChildCount()<9) {
-                           TextView money2 = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.addmoneytextview, null, false);
-                           money2.setText(((Button) view).getText());
+                                        }
+                                    });
 
-                           AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
-                           animation.setDuration(400);
-                           money2.startAnimation(animation);
-                           layout.addView(money2);
-                       }
-                       break;
-               }
-           }
-       };
+                        }catch (IndexOutOfBoundsException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+
+                        if(layout.getChildCount()<9) {
+                            TextView money2 = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.addmoneytextview, null, false);
+                            money2.setText(((Button) view).getText());
+
+                            AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+                            animation.setDuration(400);
+                            money2.startAnimation(animation);
+                            layout.addView(money2);
+                        }
+                        break;
+                }
+            }
+        };
 
 
         ((Button)view.findViewById(R.id.frg_appoint2_onebtn)).setOnClickListener(listener);
@@ -105,6 +114,7 @@ public class SetMoneyFragemnt extends Fragment {
         ((Button)view.findViewById(R.id.frg_appoint2_zerobtn)).setOnClickListener(listener);
         ((Button)view.findViewById(R.id.frg_appoint2_deletebtn)).setOnClickListener(listener);
         ((Button)view.findViewById(R.id.frg_appoint2_cancelbtn)).setOnClickListener(listener);
+
     }
 
 }

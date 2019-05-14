@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.minsudongP.Service.Recoginition;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -141,9 +143,15 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(SettingsActivity.this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
 
-                Intent intent=new Intent(SettingsActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
+                // 카카오 로그아웃
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
