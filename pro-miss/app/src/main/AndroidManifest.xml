@@ -8,19 +8,25 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
-        <activity android:name=".SiriActivity" android:theme="@style/Theme.Transparent" android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".Appointment_Game_Activity"
+            android:label="@string/title_activity_appointment__search_"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SiriActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent" />
         <activity android:name=".AlertActivity" />
 
         <service
@@ -38,16 +44,15 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_maps_key" />
 
-        <activity android:name=".AttendingDetailActivity"></activity>
-
-        <activity android:name=".LoadingActivity"/>
+        <activity android:name=".AttendingDetailActivity" />
+        <activity android:name=".LoadingActivity" />
         <activity android:name=".PastActivity" />
         <activity android:name=".FriendListActivity" />
-        <activity android:name=".SetDestinyActivity" />
-
+        <activity android:name=".SetDestinyActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,12 +62,11 @@
         <activity android:name=".AttendingActivity" />
         <activity android:name=".MyPageActivity" />
         <activity android:name=".appointment" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
 
-        </activity>
-
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

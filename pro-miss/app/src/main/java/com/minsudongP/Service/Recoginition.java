@@ -142,6 +142,7 @@ public class Recoginition extends RecognitionService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_READY); //음성인식 서비스 다시 시작
         Log.d("service","destory");
     }
 

@@ -1,31 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SetDestinyActivity">
 
-    <FrameLayout
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <fragment
-            android:id="@+id/setDestiny_map"
-            android:name="com.naver.maps.map.MapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
-        <EditText
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/whilte_corner"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="#ffffff"
-            android:hint="  검색"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:lines="1"
-            android:padding="10dp" />
-    </FrameLayout>
+            android:orientation="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/set_destiny_edit"
+                android:background="@null"
+                android:hint="검색"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
+                android:padding="10dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingLeft="5dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_add_alarm_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
+            android:id="@+id/set_destiny_search_layout"
+            android:layout_height="210dp">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/set_destiny_recle"
+                ></android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/map_position" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_blue"
+        android:text="이 위치를 목적지로 설정"
+        android:textColor="#ffffff" />
+</FrameLayout>

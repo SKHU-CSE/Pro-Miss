@@ -43,6 +43,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     Date mDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    NaverMap naverMap;
 
 
     @Nullable
@@ -56,6 +57,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             mapFragment = MapFragment.newInstance();
             getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
         }
+
         mapFragment.getMapAsync(this);
 
 
@@ -167,7 +169,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-        naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+        this.naverMap=naverMap;
+        this.naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
                 Intent intent = new Intent(getActivity(), SetDestinyActivity.class);

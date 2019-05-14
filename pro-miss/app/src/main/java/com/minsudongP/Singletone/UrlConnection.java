@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -61,6 +62,20 @@ public class UrlConnection {
     {
 
     }
+
+    public void MapSearch(String address,String gps, Callback callback)
+    {
+        String url="https://naveropenapi.apigw.ntruss.com/map-place/v1/search?query="+address+"&coordinate="+gps;
+
+        Request request=new Request.Builder()
+                .url(url)
+                .addHeader("X-NCP-APIGW-API-KEY-ID","v8pi3ri8py")
+                .addHeader("X-NCP-APIGW-API-KEY","dbddNRMIFlG5fzD0KJDNOCewQluZKjEOOFyCyX5X")
+                .build();
+
+        client.newCall(request).enqueue(callback);
+    }
+
 
     public void PostSpeekRequest(String Text,String Id,Callback callback)
     {
