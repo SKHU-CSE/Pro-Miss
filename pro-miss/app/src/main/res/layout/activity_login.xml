@@ -8,12 +8,36 @@
     android:background="#ffffff"
     tools:context=".LoginActivity">
 
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRO-MISS"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:fontFamily="@font/bamin_font"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"/>
+
+    <TextView
+        android:id="@+id/login_logintText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/login_title"
+        android:fontFamily="@font/bamin_font"
+        android:layout_marginTop="50dp"/>
 
     <EditText
         android:id="@+id/login_Id"
+        android:layout_below="@id/login_logintText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/login_stroke"
@@ -87,11 +111,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_gotoregister"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginHorizontal="30dp"
         android:background="@drawable/kakaologin">
 
     </com.kakao.usermgmt.LoginButton>
-
 
 </RelativeLayout>
