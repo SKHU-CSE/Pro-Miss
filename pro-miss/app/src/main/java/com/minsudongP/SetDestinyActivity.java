@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.minsudongP.Singletone.UrlConnection;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
@@ -30,6 +33,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.AllPermission;
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,12 +47,22 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
     AllRecyclerAdapter adapter;
     EditText editText;
     NaverMap mMap;
+    InputMethodManager imm;
     LinearLayout linearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_destiny);
 
+
+        MapFragment mapFragment = (MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance();
+            getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        }
+
+        imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        mapFragment.getMapAsync(this);
         recyclerView=findViewById(R.id.set_destiny_recle);
         adapter=new AllRecyclerAdapter(arrayList,SetDestinyActivity.this);
 
@@ -56,6 +70,33 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
         linearLayout=findViewById(R.id.set_destiny_search_layout);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         editText=findViewById(R.id.set_destiny_edit);
+
+
+        findViewById(R.id.set_destiny_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
+            @Override
+            public void OnClick(View view, int position) {
+
+                imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                Double longitude=Double.parseDouble(arrayList.get(position).getPositionX());
+                Double latitude=Double.parseDouble(arrayList.get(position).getPositionY());
+
+                arrayList.clear();
+                editText.setText("");
+                adapter.notifyDataSetChanged();
+                linearLayout.setVisibility(View.GONE);
+                LatLng latLng=new LatLng(latitude,longitude);
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(latLng)
+                        .animate(CameraAnimation.Easing);
+                mMap.moveCamera(cameraUpdate);
+
+            }
+        });
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -69,6 +110,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
                 {
                     @Override
                     public void run() {
+                        if(!editText.getText().toString().equals(""))
                         GetSearchPlace();
                     }
                 }.run();
@@ -87,13 +129,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
                 return true;
             }
         });
-        MapFragment mapFragment = (MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
-        }
 
-        mapFragment.getMapAsync(this);
     }
 
 

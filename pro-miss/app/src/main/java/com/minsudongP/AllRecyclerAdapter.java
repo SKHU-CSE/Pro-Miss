@@ -112,13 +112,13 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
-    void BindSearchList(RecyclerView.ViewHolder viewHolder,int position){
+    void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){
         SearchViewHolder holder=(SearchViewHolder)viewHolder;
 
         holder.address.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                click.OnClick(v,position);
             }
         });
 

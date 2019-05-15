@@ -10,17 +10,17 @@
         android:id="@+id/setting_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="설정"
-        android:textSize="35dp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/setting_backButton"
-        android:layout_width="60dp"
-        android:layout_height="55dp"
+        android:layout_width="40dp"
+        android:layout_height="35dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:background="@drawable/backspace"
@@ -36,7 +36,7 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="72dp"
         android:text="알림"
-        android:textSize="25dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_Title" />
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
         android:text="음성인식"
-        android:textSize="25dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/setting_text1"
         app:layout_constraintTop_toBottomOf="@+id/setting_text1" />
 
@@ -180,7 +180,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="로그아웃"
-            android:textSize="25dp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
