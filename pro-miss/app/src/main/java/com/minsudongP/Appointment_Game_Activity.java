@@ -2,6 +2,8 @@ package com.minsudongP;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,7 +20,12 @@ import com.naver.maps.map.overlay.OverlayImage;
 
 public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
+    public static final int PROMISS_GAME_READY=0;
+    public static final int PROMISS_GAME_DC_CIRCLE=1;//점점 줄어드는 원
+    public static final int PROMISS_GAME_STOP_CIRCLE=2;//페이지 시 멈출 때
     NaverMap mMap;
+    CircleOverlay circle; //줄어들 원
+    int radius=500;
 //    LocationOverlay locationOverlay;//줄어들 원
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,24 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     }
 
 
+    Handler CircleHandler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what)
+            {
+                case PROMISS_GAME_DC_CIRCLE:
+                    if(radius>30)
+                    MapReSetting();
+                    else sendEmptyMessage(PROMISS_GAME_READY);
+                    break;
+                case PROMISS_GAME_READY:
+                    break;
+                case PROMISS_GAME_STOP_CIRCLE:
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -58,24 +83,28 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         marker.setPosition(new LatLng(37.5670135, 126.9783740));
         marker.setMap(naverMap);
 
-//        locationOverlay=naverMap.getLocationOverlay();
-//        locationOverlay.setCircleRadius(300);
-//        locationOverlay.setPosition(new LatLng(37.5670135, 126.9783740));
-//        locationOverlay.setCircleOutlineColor(Color.GREEN);
-//        locationOverlay.setCircleOutlineWidth(5);
-//        locationOverlay.setIcon(OverlayImage.fromResource(R.drawable.ic_add_alarm_black_24dp));
-//        locationOverlay.setVisible(true);
-
-
-        CircleOverlay circle = new CircleOverlay();
-        circle.setCenter(new LatLng(37.5666102, 126.9783881));
-        circle.setRadius(500);
-        circle.setColor(Color.alpha(0)); //투명 
+        circle = new CircleOverlay();
+        circle.setCenter(new LatLng(37.5666102, 126.9783881)); // 약속 장소 위치
+        circle.setRadius(radius); // 타이머에 따른 크기
+        circle.setColor(Color.alpha(0)); //투명
         circle.setOutlineWidth(5);
         circle.setOutlineColor(Color.GREEN);
-        circle.setMap(naverMap);
+        circle.setMap(mMap);
+
+        MapReSetting();
 
 
         mMap.setCameraPosition(new CameraPosition(coord, 17.0)); // 카메라 위치 셋팅
+    }
+
+
+    public void MapReSetting()
+    {
+
+        radius -=10;
+        circle.setMap(null);
+        circle.setRadius(radius);
+        circle.setMap(mMap);
+        CircleHandler.sendEmptyMessageDelayed(PROMISS_GAME_DC_CIRCLE,1000);
     }
 }
