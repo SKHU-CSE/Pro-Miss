@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+
 
     <android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:background="#ffffff"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="[4/30]"
                 android:textColor="@color/colorGreen"
                 android:textSize="15sp"
@@ -96,7 +94,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/safe_text" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/safe_Member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -114,9 +112,8 @@
                 android:text="입니다."
                 android:textColor="#000000"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView16"
-                app:layout_constraintStart_toEndOf="@+id/textView16" />
+                app:layout_constraintBottom_toBottomOf="@+id/safe_Member"
+                app:layout_constraintStart_toEndOf="@+id/safe_Member" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
-</android.support.constraint.ConstraintLayout>

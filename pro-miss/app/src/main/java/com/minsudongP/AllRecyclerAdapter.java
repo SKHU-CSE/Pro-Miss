@@ -7,11 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.minsudongP.ViewHolder.AcceptViewHolder;
+import com.minsudongP.ViewHolder.AppointStartViewHolder;
+import com.minsudongP.ViewHolder.CancelViewHolder;
+import com.minsudongP.ViewHolder.FollowViewHolder;
 import com.minsudongP.ViewHolder.FriendViewHolder;
 
+import com.minsudongP.ViewHolder.LateMemberViewHolder;
 import com.minsudongP.ViewHolder.SearchViewHolder;
 
 import com.minsudongP.ViewHolder.NewAppointViewHolder;
+import com.minsudongP.ViewHolder.TimeLateViewHolder;
 
 
 import java.util.ArrayList;
@@ -68,6 +74,37 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 view=activity.getLayoutInflater().inflate(R.layout.alert_invite,viewGroup,false);
                 viewHolder=new NewAppointViewHolder(view);
                 break;
+
+            case Time_Late:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_late,viewGroup,false);
+                viewHolder=new TimeLateViewHolder(view);
+                break;
+
+            case Accept:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_accept,viewGroup,false);
+                viewHolder=new AcceptViewHolder(view);
+                break;
+
+            case Cancel:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_cancel,viewGroup,false);
+                viewHolder=new CancelViewHolder(view);
+                break;
+
+            case Appoint_START:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_timer,viewGroup,false);
+                viewHolder=new AppointStartViewHolder(view);
+                break;
+
+            case Late_Member:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_safe,viewGroup,false);
+                viewHolder=new LateMemberViewHolder(view);
+                break;
+
+            case Follow:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_follow,viewGroup,false);
+                viewHolder=new FollowViewHolder(view);
+                break;
+
             default:
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
                 viewHolder=new FriendViewHolder(view);
@@ -93,13 +130,31 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case FriendLIst:
                 BindFriendLIst(viewHolder,i);
                 break;
-
             case SearchList:
                 BindSearchList(viewHolder,i);
                 break;
             case New_Appoint:
                 BindNew_Appoint(viewHolder,i);
                 break;
+            case Time_Late:
+                BindTime_Late(viewHolder,i);
+                break;
+            case Accept:
+                BindAccept(viewHolder,i);
+                break;
+            case Cancel:
+                BindCancel(viewHolder,i);
+                break;
+            case Appoint_START:
+                BindAppointStart(viewHolder,i);
+                break;
+            case Late_Member:
+                BindLateMember(viewHolder,i);
+                break;
+            case Follow:
+                BindFollow(viewHolder,i);
+                break;
+
             default:
                 break;
         }
@@ -134,6 +189,64 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getPlace());
     }
+
+    void BindTime_Late(RecyclerView.ViewHolder viewHolder,int position)
+    {
+        TimeLateViewHolder holder=(TimeLateViewHolder)viewHolder;
+
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getPlace());
+        holder.money.setText(arrayList.get(position).getMoney());
+
+    }
+
+    void BindAccept(RecyclerView.ViewHolder viewHolder,int position)
+    {
+        AcceptViewHolder holder=(AcceptViewHolder)viewHolder;
+
+        holder.name.setText(arrayList.get(position).getName());
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getPlace());
+    }
+
+    void BindCancel(RecyclerView.ViewHolder viewHolder,int position)
+    {
+        CancelViewHolder holder=(CancelViewHolder)viewHolder;
+
+        holder.name.setText(arrayList.get(position).getName());
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getPlace());
+    }
+
+    void BindAppointStart(RecyclerView.ViewHolder viewHolder,int position)//약속이 시작됩니다
+    {
+        AppointStartViewHolder holder=(AppointStartViewHolder) viewHolder;
+
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getPlace());
+    }
+
+    void BindLateMember(RecyclerView.ViewHolder viewHolder,int position)//지각한 멤버는 *** 입니다
+    {
+        LateMemberViewHolder holder=(LateMemberViewHolder)viewHolder;
+
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getPlace());
+        holder.member.setText(arrayList.get(position).getMember());
+    }
+
+    void BindFollow(RecyclerView.ViewHolder viewHolder,int position)
+    {
+        FollowViewHolder holder=(FollowViewHolder)viewHolder;
+
+        holder.name.setText(arrayList.get(position).getName());
+    }
+
 
     void BindFriendLIst(RecyclerView.ViewHolder viewHolder,int position){
 
