@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PointF;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,9 @@ import com.minsudongP.R;
 
 import com.minsudongP.SetDestinyActivity;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
+import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
@@ -35,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.minsudongP.SetDestinyActivity.result_code;
 
 
 public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback {
@@ -42,7 +48,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     long mNow;
     Date mDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    static final int request_code=1;
     NaverMap naverMap;
 
 
@@ -174,10 +180,44 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
                 Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,request_code);
             }
         });
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==request_code)
+        {
+            if(resultCode==result_code)
+            {
+                LatLng latLng=new LatLng(data.getDoubleExtra("latitude",37.5662952),data.getDoubleExtra("longitude",126.97794509999994));
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(latLng)
+                        .animate(CameraAnimation.Easing);
+                naverMap.moveCamera(cameraUpdate);
+                naverMap.setCameraPosition(new CameraPosition(latLng,17));
+
+            }
+        }
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return super.getLifecycle();
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("appoint","resume");
+        //map 위치 다시설정
+    }
+
+
+
 
 }

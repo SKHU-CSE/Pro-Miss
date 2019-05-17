@@ -4,6 +4,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,5 +34,13 @@ public class appointment extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("appoint","actResume");
     }
 }

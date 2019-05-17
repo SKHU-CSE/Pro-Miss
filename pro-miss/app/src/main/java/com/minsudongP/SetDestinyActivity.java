@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
     NaverMap mMap;
     InputMethodManager imm;
     LinearLayout linearLayout;
+    static public int result_code=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,10 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
         findViewById(R.id.set_destiny_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent= new Intent(SetDestinyActivity.this,appointment.class);
+                intent.putExtra("latitude",mMap.getCameraPosition().target.latitude);
+                intent.putExtra("longitude",mMap.getCameraPosition().target.longitude);
+                setResult(result_code,intent);
                 finish();
             }
         });
