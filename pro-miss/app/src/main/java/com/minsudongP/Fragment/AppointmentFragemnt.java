@@ -49,6 +49,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     Date mDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
     static final int request_code=1;
+    public String latitude;
+    public String longitude;
     NaverMap naverMap;
 
 

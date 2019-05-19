@@ -73,7 +73,7 @@ public class Recoginition extends RecognitionService {
     MediaPlayer mediaPlayer;
     Intent intent; //Siri Activity 실행할 Activity
     Intent itIntent;//음성인식 Intent
-
+    boolean end=false;
      ResultReceiver receiver;
 
 
@@ -142,6 +142,7 @@ public class Recoginition extends RecognitionService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        end=true;
         mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_READY); //음성인식 서비스 다시 시작
         Log.d("service","destory");
     }
@@ -152,9 +153,10 @@ public class Recoginition extends RecognitionService {
     }
 
 
-
     public void startListening()
     {
+        if(end)
+            return;
         if(mediaPlayer!=null&&mediaPlayer.isPlaying()) { //현재 아나운서가 말하고 있다면
             mHdrVoiceRecoState.sendEmptyMessageDelayed(MSG_VOICE_RECO_RESTART,500);
         }else {
@@ -183,7 +185,9 @@ public class Recoginition extends RecognitionService {
                     itIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                     itIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
                     itIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN.toString());
-                    itIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 50);
+                    itIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,1500);
+                    itIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS,1500);
+                    itIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
 
                 }
                 mSrRecognizer.startListening(itIntent);

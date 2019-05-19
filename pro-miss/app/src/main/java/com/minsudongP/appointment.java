@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import com.minsudongP.Fragment.SetMoneyFragemnt;
 
 public class appointment extends AppCompatActivity {
 
+    AppointmentFragemnt ap_fragment;
+    SetMoneyFragemnt  sd_fragment;
+    MemberFragment mb_fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,9 +28,12 @@ public class appointment extends AppCompatActivity {
         ViewpagerAdapter viewpagerAdapter=new ViewpagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewpagerAdapter);
 
-        viewpagerAdapter.addItem(new AppointmentFragemnt());
-        viewpagerAdapter.addItem(new SetMoneyFragemnt());
-        viewpagerAdapter.addItem(new MemberFragment());
+        ap_fragment=new AppointmentFragemnt();
+        sd_fragment=new SetMoneyFragemnt();
+        mb_fragment=new MemberFragment();
+        viewpagerAdapter.addItem(ap_fragment);
+        viewpagerAdapter.addItem(sd_fragment);
+        viewpagerAdapter.addItem(mb_fragment);
 
         viewpagerAdapter.notifyDataSetChanged();
     }
@@ -43,4 +50,6 @@ public class appointment extends AppCompatActivity {
 
         Log.d("appoint","actResume");
     }
+
+
 }
