@@ -59,7 +59,7 @@ public class MyPageActivity extends AppCompatActivity {
                 final UrlConnection urlConnection = UrlConnection.shardUrl;
 
                 final HashMap<String, String> hash = new HashMap<>();
-                hash.put("id", infor.getID());
+                hash.put("id", infor.getId_num());
                 hash.put("money", "300");
                 new Thread() {
                     @Override

@@ -216,6 +216,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     // 회원 정보가 없다면 db에 값 넣기
                     // 회원 정보가 있다면 로그인 : 싱글톤에 정보 넣기
+
                     intent.putExtra("name", result.getNickname());
                     intent.putExtra("profile", result.getProfileImagePath());
                     startActivity(intent);

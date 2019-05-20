@@ -51,6 +51,7 @@
             </intent-filter>
         </service>
 
+        <service android:name=".Service.gpsInfo"></service>
 
         <activity android:name=".AttendingDetailActivity" />
         <activity android:name=".LoadingActivity" />
