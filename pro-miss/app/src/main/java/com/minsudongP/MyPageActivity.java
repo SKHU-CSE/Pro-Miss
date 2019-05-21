@@ -1,6 +1,7 @@
 package com.minsudongP;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,13 +32,14 @@ public class MyPageActivity extends AppCompatActivity {
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList=new ArrayList<>();
     TextView money;
+    final int mytocharge=3000;
+    final UserInfor infor= UserInfor.shared;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
         RecyclerView recyclerView=findViewById(R.id.mypage_recycleview);
 
-        final UserInfor infor= UserInfor.shared;
 
         money=findViewById(R.id.mypage_money_value);
         ((TextView)findViewById(R.id.mypage_name)).setText(infor.getName());
@@ -56,18 +58,8 @@ public class MyPageActivity extends AppCompatActivity {
         findViewById(R.id.mypage_money_addbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final UrlConnection urlConnection = UrlConnection.shardUrl;
-
-                final HashMap<String, String> hash = new HashMap<>();
-                hash.put("id", infor.getId_num());
-                hash.put("money", "300");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        urlConnection.PostRequest("api/money/add", callback, hash);
-                    }
-                }.run();
+                Intent intent=new Intent(MyPageActivity.this,ChargeActivity.class);
+                startActivityForResult(intent,mytocharge);
             }
         });
 
@@ -122,6 +114,26 @@ public class MyPageActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode==RESULT_OK){
+            switch (requestCode){
+                case mytocharge:
+
+                    final UrlConnection urlConnection = UrlConnection.shardUrl;
+                    final HashMap<String, String> hash = new HashMap<>();
+                    hash.put("id", infor.getId_num());
+                    hash.put("money", data.getStringExtra("money"));
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            urlConnection.PostRequest("api/money/add", callback, hash);
+                        }
+                    }.run();
+            }
+        }
+    }
 
     private Callback callback=new Callback() {
         @Override
@@ -159,7 +171,10 @@ public class MyPageActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
+
+                                Toast.makeText(MyPageActivity.this,(Integer.parseInt(object.getString("money"))-infor.getMoney())+"원이 충전되었습니다.",Toast.LENGTH_LONG).show();
                                 money.setText(object.getString("money")+"원");
+                                infor.setMoney(Integer.parseInt(object.getString("money")));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
