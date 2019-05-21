@@ -24,6 +24,18 @@ import com.minsudongP.App;
 import com.minsudongP.Appointment_Game_Activity;
 import com.minsudongP.MainActivity;
 import com.minsudongP.R;
+import com.minsudongP.Singletone.UrlConnection;
+import com.minsudongP.Singletone.UserInfor;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import static com.minsudongP.App.CHAANEL_ID;
 
@@ -39,6 +51,7 @@ public class gpsInfo extends Service implements LocationListener {
     // GPS 상태값
     boolean isGetLocation = false;
 
+    UserInfor userInfor;
     Location location;
     double lat; // 위도
     double lon; // 경도
@@ -55,6 +68,7 @@ public class gpsInfo extends Service implements LocationListener {
     @Override
     public void onCreate() {
         super.onCreate();
+        userInfor=UserInfor.shared;
     }
 
     @Override
@@ -86,11 +100,11 @@ public class gpsInfo extends Service implements LocationListener {
 
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    1000,
+                    60000,
                     1,
                     this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                    1000,
+                    60000,
                     1,
                     this);
 
@@ -113,21 +127,70 @@ public class gpsInfo extends Service implements LocationListener {
     }
 
 
-    private void sendMessage(double latitude,double longitude){
+    private void sendGPSMessage(double latitude,double longitude){
         Log.d("GPSService", "Broadcasting message");
         Intent intent = new Intent("GPS-event-name");
+        intent.putExtra("send","gps");
         intent.putExtra("latitude",latitude);
         intent.putExtra("longitude", longitude);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+    private void sendErrorMessage(String message){
+        Log.d("GPSService", "Broadcasting message");
+        Intent intent = new Intent("GPS-event-name");
+        intent.putExtra("send","error");
+        intent.putExtra("message",message);
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         Log.d("gps","LocationChanged");
         this.location=location;
-        sendMessage(location.getLatitude(),location.getLongitude());
+        sendGPSMessage(location.getLatitude(),location.getLongitude());
+
+        new Thread()
+        {
+            @Override
+            public void run() {
+                UrlConnection connection=UrlConnection.shardUrl;
+                HashMap<String,String> hash=new HashMap<>();
+
+                hash.put("id",userInfor.getId_num());
+                hash.put("iatitude",""+location.getLatitude());
+                hash.put("longitude",""+location.getLongitude());
+              connection.PostRequest("api/gps/upload",callback,hash);
+            }
+        }.run();
        // Log.d("gps",location.getLatitude()+","+location.getLongitude());
     }
 
+    private Callback callback=new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            String s=response.body().string();
+
+            JSONObject object= null;
+            try {
+                object = new JSONObject(s);
+                if(object.getInt("result")==2000)
+                {
+
+                }else{
+                    sendErrorMessage(object.getString("message"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("gps","statusChange");

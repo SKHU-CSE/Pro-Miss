@@ -139,8 +139,11 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         @Override public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub // Get extra data included in the
 
-            Toast.makeText(Appointment_Game_Activity.this,"현재 위도는"+intent.getDoubleExtra("latitude",0.0)+", 경도는"+
-                    intent.getDoubleExtra("longitude",0.0),Toast.LENGTH_LONG).show();
+
+            if(intent.getStringExtra("send").equals("error")) {
+                Toast.makeText(Appointment_Game_Activity.this,intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
+
+            }
         }
 
     };
