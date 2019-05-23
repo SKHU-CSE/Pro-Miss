@@ -1,10 +1,6 @@
 package com.minsudongP;
 
 
-
-enum PromissType { FriendLIst  ,New_Appoint,Appoint_START, Time_Late, Accept,Cancel,Late_Member,Follow ,SearchList }
-
-
 public class PromissItem {
     private PromissType Type;
     private String ProfileImageURl;

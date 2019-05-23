@@ -34,6 +34,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원
     int radius=500;
+    Marker Mymarker;
     Intent intent;
 //    LocationOverlay locationOverlay;//줄어들 원
     @Override
@@ -142,6 +143,17 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
             if(intent.getStringExtra("send").equals("error")) {
                 Toast.makeText(Appointment_Game_Activity.this,intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
+            }else
+            {
+                if(Mymarker==null) {
+                    Mymarker = new Marker();
+                }else {
+                    Mymarker.setMap(null);
+                }
+                    Mymarker.setCaptionText("나의 위치");
+
+                    Mymarker.setPosition(new LatLng(intent.getDoubleExtra("latitude",36),intent.getDoubleExtra("longitude",126)));
+                    Mymarker.setMap(mMap);
 
             }
         }

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.minsudongP.R;
+import com.minsudongP.appointment;
 
 import org.w3c.dom.Text;
 
@@ -23,7 +24,8 @@ import org.w3c.dom.Text;
 public class SetMoneyFragemnt extends Fragment {
     private LinearLayout layout;
     ArrayAdapter<String> Minadapter;
-
+    Spinner spMin;
+    StringBuilder builder=new StringBuilder("");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class SetMoneyFragemnt extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Spinner spMin = (Spinner) view.findViewById(R.id.fragment_spMin);
+        spMin = (Spinner) view.findViewById(R.id.fragment_spMin);
         Minadapter=new ArrayAdapter<String>(getContext(),R.layout.spinnertext, getResources().getStringArray(R.array.moneymin));
         spMin.setAdapter(Minadapter);
 
@@ -55,6 +57,7 @@ public class SetMoneyFragemnt extends Fragment {
 
                         try{
                             final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
+                            builder.deleteCharAt(builder.length()-1);
                             money.animate()
                                     .alpha(0.1f)
                                     .setDuration(200)
@@ -91,6 +94,8 @@ public class SetMoneyFragemnt extends Fragment {
                             TextView money2 = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.addmoneytextview, null, false);
                             money2.setText(((Button) view).getText());
 
+                            builder.append(((Button)view).getText().toString());
+
                             AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
                             animation.setDuration(400);
                             money2.startAnimation(animation);
@@ -117,4 +122,11 @@ public class SetMoneyFragemnt extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(builder.toString().equals(""))
+            builder.append(0);
+        ((appointment)getActivity()).setAppointment_role_2(spMin.getSelectedItem().toString(),builder.toString());
+    }
 }

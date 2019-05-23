@@ -109,7 +109,7 @@ public class gpsInfo extends Service implements LocationListener {
                     this);
 
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -158,7 +158,7 @@ public class gpsInfo extends Service implements LocationListener {
                 HashMap<String,String> hash=new HashMap<>();
 
                 hash.put("id",userInfor.getId_num());
-                hash.put("iatitude",""+location.getLatitude());
+                hash.put("latitude",""+location.getLatitude());
                 hash.put("longitude",""+location.getLongitude());
               connection.PostRequest("api/gps/upload",callback,hash);
             }
