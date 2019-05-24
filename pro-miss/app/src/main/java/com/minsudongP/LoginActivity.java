@@ -209,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
             UserManagement.getInstance().me(new MeV2ResponseCallback() {
                 @Override
                 public void onFailure(ErrorResult errorResult) {
+                    clearUserInfo(getApplicationContext());
                     int result = errorResult.getErrorCode();
 
                     if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
@@ -221,6 +222,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onSessionClosed(ErrorResult errorResult) {
+                    clearUserInfo(getApplicationContext());
                     Toast.makeText(getApplicationContext(),"세션이 닫혔습니다. 다시 시도해 주세요: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
                 }
 
@@ -240,6 +242,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSessionOpenFailed(KakaoException e) {
+            clearUserInfo(getApplicationContext());
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: "+e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
