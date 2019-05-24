@@ -89,7 +89,7 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/atd_detail_card_date"
+                android:id="@+id/mypage_range_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="111dp"
                 android:layout_below="@id/atd_detail_title"
@@ -174,7 +174,7 @@
                 app:cardElevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/atd_detail_card_date"
+                app:layout_constraintTop_toBottomOf="@id/mypage_range_cardview"
                 tools:ignore="NotSibling">
 
                 <RelativeLayout
