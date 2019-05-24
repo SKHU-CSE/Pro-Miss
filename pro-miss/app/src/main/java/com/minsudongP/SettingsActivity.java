@@ -1,6 +1,8 @@
 package com.minsudongP;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,11 @@ import android.widget.Toast;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.minsudongP.Service.Recoginition;
+import com.mommoo.permission.MommooPermission;
+import com.mommoo.permission.listener.OnPermissionDenied;
+import com.mommoo.permission.repository.DenyInfo;
+
+import java.util.List;
 
 import static com.minsudongP.SaveSharedPreference.clearUserInfo;
 
@@ -23,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        final Intent intent=new Intent(SettingsActivity.this, Recoginition.class);
+        final Intent intent = new Intent(SettingsActivity.this, Recoginition.class);
         View.OnClickListener MYPageListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,10 +110,38 @@ public class SettingsActivity extends AppCompatActivity {
                 String message;
 
                 if (isChecked) {
-                    message = "음성인식이 켜졌습니다";
-                    swbackground.setClickable(true);
-                    swbackground.setChecked(true);
-                    startService(intent);//음성인식 서비스 실행
+
+                    // 녹음 권한 허용 필요
+                    new MommooPermission.Builder(getApplicationContext())
+                            .setPermissions(Manifest.permission.RECORD_AUDIO)
+                            .setOnPermissionDenied(new OnPermissionDenied() {
+                                @Override
+                                public void onDenied(List<DenyInfo> deniedPermissionList) {
+                                    for (DenyInfo denyInfo : deniedPermissionList) {
+                                        System.out.println("isDenied : " + denyInfo.getPermission() + " , " +
+                                                "userNeverSeeChecked : " + denyInfo.isUserNeverAskAgainChecked());
+                                    }
+                                }
+                            })
+                            .setPreNoticeDialogData("권한 허용 요청",
+                                    "음성 인식 기능을 사용하려면 다음 권한을 허용해주세요.\n" +
+                                            "1. 녹음")
+                            .setOfferGrantPermissionData("[설정] > [권한]으로 이동",
+                                    "1. '설정'에 들어가세요.\n" +
+                                            "2. '권한'을 클릭하세요.\n" +
+                                            "3. 녹음 권한을 허용해주세요.")
+                            .build()
+                            .checkPermissions();
+
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                        message = "음성인식이 켜졌습니다";
+                        swbackground.setClickable(true);
+                        swbackground.setChecked(true);
+                        startService(intent);//음성인식 서비스 실행
+                    } else {
+                        message = "[설정] > [권한]에서 '녹음' 권한을 허용해 주세요.";
+                        swvoice.setChecked(false);
+                    }
                 } else {
                     message = "음성인식이 꺼졌습니다";
                     swbackground.setClickable(false);
@@ -125,11 +160,10 @@ public class SettingsActivity extends AppCompatActivity {
 
                 if (isChecked) {
                     message = "백그라운드 음성인식이 켜졌습니다";
-                    Intent service=new Intent(SettingsActivity.this,Recoginition.class);
-                    ContextCompat.startForegroundService(SettingsActivity.this,service);
-                }
-                else {
-                    Intent service=new Intent(SettingsActivity.this,Recoginition.class);
+                    Intent service = new Intent(SettingsActivity.this, Recoginition.class);
+                    ContextCompat.startForegroundService(SettingsActivity.this, service);
+                } else {
+                    Intent service = new Intent(SettingsActivity.this, Recoginition.class);
                     stopService(service);
                     message = "백그라운드 음성인식이 꺼졌습니다";
 
