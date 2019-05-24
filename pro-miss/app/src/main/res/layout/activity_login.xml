@@ -48,7 +48,6 @@
         android:padding="13dp"
         android:textSize="18sp" />
 
-
     <EditText
         android:id="@+id/login_pwd"
         android:layout_width="match_parent"
@@ -80,6 +79,15 @@
         android:textColor="@color/colorGreen"
         android:textSize="17dp" />
 
+    <CheckBox
+        android:id="@+id/login_autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_login"
+        android:layout_alignRight="@id/login_login"
+        android:layout_marginTop="5dp"
+        android:text="자동로그인"
+        android:textSize="17dp" />
 
     <com.victor.loading.rotate.RotateLoading
         android:id="@+id/login_rotateloading"
@@ -113,7 +121,7 @@
         android:layout_below="@id/login_gotoregister"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="50dp">
 
     </com.kakao.usermgmt.LoginButton>
 

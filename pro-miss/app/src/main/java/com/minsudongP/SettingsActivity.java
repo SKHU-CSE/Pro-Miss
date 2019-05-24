@@ -8,13 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.minsudongP.Service.Recoginition;
+
+import static com.minsudongP.SaveSharedPreference.clearUserInfo;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -152,6 +153,8 @@ public class SettingsActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+                clearUserInfo(getApplicationContext());
             }
         });
     }
