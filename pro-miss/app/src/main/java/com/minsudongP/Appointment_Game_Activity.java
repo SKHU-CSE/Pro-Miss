@@ -43,7 +43,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
 
         intent=new Intent(Appointment_Game_Activity.this, gpsInfo.class);
-        ContextCompat.startForegroundService(Appointment_Game_Activity.this,intent);
+//        ContextCompat.startForegroundService(Appointment_Game_Activity.this,intent);
 
 
         MapFragment mapFragment = (MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
