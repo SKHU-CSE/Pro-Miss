@@ -19,26 +19,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ChargeActivity"></activity>
         <activity
             android:name=".Appointment_Game_Activity"
             android:label="@string/title_activity_appointment__search_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_maps_key" />
-
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
         <activity
             android:name=".SiriActivity"
-            android:theme="@style/Theme.Transparent"
-            android:launchMode="singleInstance"></activity>
-
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent" />
         <activity android:name=".AlertActivity" />
 
         <service
@@ -47,30 +44,32 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.speech.RecognitionService" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-
-        <service android:name=".Service.gpsInfo"></service>
+        <service android:name=".Service.gpsInfo" />
 
         <activity android:name=".AttendingDetailActivity" />
         <activity android:name=".LoadingActivity" />
         <activity android:name=".PastActivity" />
         <activity android:name=".FriendListActivity" />
-        <activity android:name=".SetDestinyActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity
+            android:name=".SetDestinyActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".AttendingActivity" />
         <activity android:name=".MyPageActivity" />
         <activity android:name=".appointment" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

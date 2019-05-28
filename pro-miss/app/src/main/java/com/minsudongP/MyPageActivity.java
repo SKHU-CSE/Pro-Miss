@@ -1,6 +1,7 @@
 package com.minsudongP;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +31,11 @@ public class MyPageActivity extends AppCompatActivity {
 
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();
+
+    // 금액 충전
     TextView money;
+    final int MYPAGE_TO_CHARGE = 3000;
+    final UserInfor infor = UserInfor.shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +43,10 @@ public class MyPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
         RecyclerView recyclerView = findViewById(R.id.mypage_recycleview);
 
-        final UserInfor infor = UserInfor.shared;
-
-        money = findViewById(R.id.mypage_money_value);
+        // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
-        money.setText(infor.getMoney() + "원");
 
+        // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
             ((TextView) findViewById(R.id.mypage_rangeNum_text)).setText("" + (infor.getSuccess_appoint_num() / infor.getAppoint_num() * 100) + "%");
             ((TextView) findViewById(R.id.mypage_rangePercent_text)).setText(infor.getSuccess_appoint_num() + "/" + infor.getAppoint_num());
@@ -63,24 +66,20 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
 
+        // 금액 불러오기
+        money = findViewById(R.id.mypage_money_value);
+        money.setText(infor.getMoney() + "원");
+
+        // 금액 충전 액티비티로 이동
         findViewById(R.id.mypage_money_addbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final UrlConnection urlConnection = UrlConnection.shardUrl;
-
-                final HashMap<String, String> hash = new HashMap<>();
-                hash.put("id", infor.getId_num());
-                hash.put("money", "300");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        urlConnection.PostRequest("api/money/add", callback, hash);
-                    }
-                }.run();
+                Intent intent = new Intent(MyPageActivity.this, ChargeActivity.class);
+                startActivityForResult(intent, MYPAGE_TO_CHARGE);
             }
         });
 
+        // 참여중인 약속
         View.OnClickListener AttendingListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +88,7 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        // 설정
         View.OnClickListener SettingsListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +97,7 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        // 지난 약속
         View.OnClickListener PastListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,31 +106,51 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        // 돌아가기(main)
         View.OnClickListener MainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         };
+
         ((Button) findViewById(R.id.mypage_backButton)).setOnClickListener(MainListener);
-
-
-        adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
         ((Button) findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
         ((Button) findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
         ((Button) findViewById(R.id.mypage_pastButton)).setOnClickListener(PastListener);
 
+        // 팔로우 목록 어뎁터
+        adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // 팔로우 임시 목록
         arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "양민욱"));
-
         arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "구동섭"));
-
         arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "김종인"));
-
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case MYPAGE_TO_CHARGE:
+
+                    final UrlConnection urlConnection = UrlConnection.shardUrl;
+                    final HashMap<String, String> hash = new HashMap<>();
+                    hash.put("id", infor.getId_num());
+                    hash.put("money", data.getStringExtra("money"));
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            urlConnection.PostRequest("api/money/add", callback, hash);
+                        }
+                    }.run();
+            }
+        }
+    }
 
     private Callback callback = new Callback() {
         @Override
@@ -165,7 +186,9 @@ public class MyPageActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
+                                Toast.makeText(MyPageActivity.this, (Integer.parseInt(object.getString("money")) - infor.getMoney()) + "원이 충전되었습니다.", Toast.LENGTH_LONG).show();
                                 money.setText(object.getString("money") + "원");
+                                infor.setMoney(Integer.parseInt(object.getString("money")));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
