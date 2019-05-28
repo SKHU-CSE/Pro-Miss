@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.minsudongP.AlertActivity;
 import com.minsudongP.App;
 import com.minsudongP.Appointment_Game_Activity;
 import com.minsudongP.MainActivity;
@@ -65,38 +66,67 @@ public class gpsInfo extends Service implements LocationListener {
     protected LocationManager locationManager;
 
 
+    //push 알람
+
+    Notification New_Alert; // 새로운 알림이 도착했습니다.
+    Notification Appoitment_End;  // 약속 제목 약속이 종료되었습니다! PendingIntent는 없어도 됨
+    Notification Fine;//벌금이 누적되었습니다.
     @Override
     public void onCreate() {
         super.onCreate();
         userInfor=UserInfor.shared;
+
+        Intent FineIntent=new Intent(this, Appointment_Game_Activity.class);
+
+        Intent AlertIntent= new Intent(this, AlertActivity.class);
+
+
+        PendingIntent FinePendingIntent=PendingIntent.getActivity(this
+                ,0,FineIntent,0); //알람을 눌렀을 때 해당 엑티비티로
+
+        PendingIntent AlertPendingIntent=PendingIntent.getActivity(this
+        , 0,AlertIntent,0);
+
+
+        Fine=new NotificationCompat.Builder(this,CHAANEL_ID)
+                .setContentTitle("약속")
+                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                .setContentText("벌금이 누적되었습니다.")
+                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                .setContentIntent(FinePendingIntent)
+                .build();
+
+        New_Alert=new NotificationCompat.Builder(this,CHAANEL_ID)
+                .setContentTitle("프로미스")
+                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                .setContentText("사용자에게 새로운 알림이 도착했습니다.")
+                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                .setContentIntent(AlertPendingIntent)
+                .build();
+
+        Appoitment_End=new NotificationCompat.Builder(this,CHAANEL_ID)
+                .setContentTitle("프로미스")
+                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                .setContentText("약속이 종료되었습니다.")
+                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                .setContentIntent(FinePendingIntent)
+                .build();
     }
 
+
+    //서비스가 죽었다가 다시 실행이 될 때, 호출되는 함수
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.d("gps","startcommand");
+
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
         }else {
-            Intent notificationIntent=new Intent(this, Appointment_Game_Activity.class);
 
-            PendingIntent pendingIntent=PendingIntent.getActivity(this
-                    ,0,notificationIntent,0); //알람을 눌렀을 때 해당 엑티비티로
 
-            Notification notification=new NotificationCompat.Builder(this,CHAANEL_ID)
-                    .setContentTitle("Game Service")
-                    .setContentText("현재 위치 추적중")
-                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
-                    .setContentIntent(pendingIntent)
-                    .build();
-
-            startForeground(2,notification);
-
+            startForeground(2,new Notification()); //알람을 띄우지 않고 foreground로 실행
             locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-
 
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -109,14 +139,19 @@ public class gpsInfo extends Service implements LocationListener {
                     this);
 
         }
-        return START_STICKY;
+        return START_STICKY;  //서비스가 종료되어도 다시 시작
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(this);//더 이상 필요하지 않을 때, 자원 누락을 방지하기 위해
+        try {
+            locationManager.removeUpdates(this);//더 이상 필요하지 않을 때, 자원 누락을 방지하기 위해
 
+        }catch (NullPointerException e)
+        {
+                //locationmanager가 null일 때
+        }
     }
 
 
@@ -144,6 +179,9 @@ public class gpsInfo extends Service implements LocationListener {
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+
+    //사용자의 gps가 변할 때, 서버와 통신하는 Callback 함수
     @Override
     public void onLocationChanged(final Location location) {
         Log.d("gps","LocationChanged");
@@ -166,6 +204,8 @@ public class gpsInfo extends Service implements LocationListener {
        // Log.d("gps",location.getLatitude()+","+location.getLongitude());
     }
 
+
+    //서버통신 후 JSON 파싱
     private Callback callback=new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
@@ -191,6 +231,9 @@ public class gpsInfo extends Service implements LocationListener {
 
         }
     };
+
+    // LocationListener
+    ////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("gps","statusChange");

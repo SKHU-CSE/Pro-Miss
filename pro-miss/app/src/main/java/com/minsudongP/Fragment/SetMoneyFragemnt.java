@@ -122,11 +122,10 @@ public class SetMoneyFragemnt extends Fragment {
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    public void SendDatatoActivity(){
         if(builder.toString().equals(""))
             builder.append(0);
         ((appointment)getActivity()).setAppointment_role_2(spMin.getSelectedItem().toString(),builder.toString());
     }
+
 }

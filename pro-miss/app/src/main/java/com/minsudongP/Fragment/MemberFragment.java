@@ -55,15 +55,17 @@ public class MemberFragment extends Fragment {
             }
         };
 
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,"","양민욱"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid,13,"","임수현"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid,0,"추가하기","추가하기"));
         adapter.notifyDataSetChanged();
-        View.OnClickListener addMemberListenr=new View.OnClickListener() {
+
+        adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
             @Override
-            public void onClick(View v) {
+            public void OnClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), FriendListActivity.class);
                 startActivity(intent);
             }
-        };
+        });
         ((Button)getActivity().findViewById(R.id.frg_appoint3_confirmBtn)).setOnClickListener(MainListener);
 
     }

@@ -77,7 +77,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
 
 
-        text=view.findViewById(R.id.atd_detail_address);
+        text=view.findViewById(R.id.atd_detail_title);
 
         tvDate = view.findViewById(R.id.frg_appoint1_card1_DateText);
         tvDate.setText(getTime());
@@ -238,18 +238,15 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         time += Integer.parseInt(str[0])*60;
         if(str.length>1)
             time += Integer.parseInt(str[1]);
+
         return time;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        try {
-            ((appointment) getActivity()).setAppointment_role_1(text.getText().toString(), "" + naverMap.getCameraPosition().target.latitude, "" + naverMap.getCameraPosition().target.longitude
-                    , "" + getTime(), tvDate.getText().toString(), date_time);
-        }catch (NullPointerException e)
-        {
-            e.printStackTrace();
-        }
+
+    public void SendDatatoActivity()
+    {
+        ((appointment) getActivity()).setAppointment_role_1(text.getText().toString(), "" + naverMap.getCameraPosition().target.latitude, "" + naverMap.getCameraPosition().target.longitude
+                ,""+getTimer(),tvDate.getText().toString(),date_time);
     }
+
 }

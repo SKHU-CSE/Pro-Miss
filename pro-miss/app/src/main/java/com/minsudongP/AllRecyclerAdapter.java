@@ -34,7 +34,7 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     PromissClick click;
 
-    interface PromissClick{
+    public interface PromissClick{
         public void OnClick(View view,int position);
     }
 
@@ -266,12 +266,20 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder,int position)
+    void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder,  int position)
     {
         Add_FriendVIewHolder holder=(Add_FriendVIewHolder)viewHolder;
 
-//        if(!arrayList.get(position).getProfileImageURl().equals(""))
-//            Gholder.imageView
+        final int p=position;
+        if(arrayList.get(position).getProfileImageURl().equals("추가하기"))
+            holder.imageView.setImageResource(R.drawable.bt_add);
+        holder.imageView.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,p);
+            }
+        });
+
         holder.name.setText(arrayList.get(position).getName());
     }
 }

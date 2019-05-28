@@ -3,6 +3,7 @@ package com.minsudongP;
 
 public class PromissItem {
     private PromissType Type;
+    private int user_id;
     private String ProfileImageURl;
     private String Name;
     private String address;
@@ -10,8 +11,9 @@ public class PromissItem {
     private String positionX;
     private String positionY;
 
-    public PromissItem(PromissType Type,String Profileimage,String Name) //FrendList
+    public PromissItem(PromissType Type,int id,String Profileimage,String Name) //FrendList
     {
+        this.user_id=id;
         this.Type=Type;
         this.ProfileImageURl=Profileimage;
         this.Name=Name;
@@ -34,6 +36,14 @@ public class PromissItem {
 
     public String getTime() {
         return Time;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public void setTime(String time) {
