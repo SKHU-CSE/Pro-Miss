@@ -60,45 +60,45 @@ public class LoginActivity extends AppCompatActivity {
             login(getUserId(getApplicationContext()), getUserPw(getApplicationContext()));
         }
 
-        edit_Id=findViewById(R.id.login_Id);
-        edit_pwd=findViewById(R.id.login_pwd);
-        loading=findViewById(R.id.login_rotateloading);
-        inputMethodManager= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        edit_Id = findViewById(R.id.login_Id);
+        edit_pwd = findViewById(R.id.login_pwd);
+        loading = findViewById(R.id.login_rotateloading);
+        inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        View view=findViewById(R.id.login_layout);
+        View view = findViewById(R.id.login_layout);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //키보드 내리기
-                inputMethodManager.hideSoftInputFromWindow(edit_Id.getWindowToken(),0);
-                inputMethodManager.hideSoftInputFromWindow(edit_pwd.getWindowToken(),0);
+                inputMethodManager.hideSoftInputFromWindow(edit_Id.getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(edit_pwd.getWindowToken(), 0);
             }
         });
 
         // 회원가입 화면으로 이동
-        ((Button)findViewById(R.id.login_gotoregister)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.login_gotoregister)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
 
         // 로그인 버튼 클릭
-        ((Button)findViewById(R.id.login_login)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.login_login)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String id = edit_Id.getText().toString();
                 final String pwd = edit_pwd.getText().toString();
 
                 // 자동로그인이 체크되어 있다면 정보 저장하기
-                if (((CheckBox)findViewById(R.id.login_autoLogin)).isChecked()) {
-                    setUserInfo(getApplicationContext() ,id, pwd);
+                if (((CheckBox) findViewById(R.id.login_autoLogin)).isChecked()) {
+                    setUserInfo(getApplicationContext(), id, pwd);
                 } else { // 체크되어 있지 않다면 정보 삭제하기
                     clearUserInfo(getApplicationContext());
                 }
 
-                inputMethodManager.hideSoftInputFromWindow(edit_Id.getWindowToken(),0);
-                inputMethodManager.hideSoftInputFromWindow(edit_pwd.getWindowToken(),0);
+                inputMethodManager.hideSoftInputFromWindow(edit_Id.getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(edit_pwd.getWindowToken(), 0);
 
                 if (id.isEmpty() || pwd.isEmpty())
                     Toast.makeText(LoginActivity.this, "정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
-    private void login(String id, String pw){
+    private void login(String id, String pw) {
         final HashMap<String, String> hash = new HashMap<>();
         hash.put("Id", id);
         hash.put("password", pw);
@@ -147,15 +147,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String s=response.body().string();
+                        String s = response.body().string();
 
-                        try{
-                            JSONObject result=new JSONObject(s);
+                        try {
+                            JSONObject result = new JSONObject(s);
 
                             // 로그인 성공 시
-                            if(result.getInt("result")==2000) {
-                                JSONObject jsonObject=result.getJSONObject("data");
-                                UserInfor infor=UserInfor.shared;
+                            if (result.getInt("result") == 2000) {
+                                JSONObject jsonObject = result.getJSONObject("data");
+                                UserInfor infor = UserInfor.shared;
                                 infor.setAppoint_num(jsonObject.getInt("appoint_num"));
                                 infor.setID(jsonObject.getString("email"));
                                 infor.setId_num(jsonObject.getString("id"));
@@ -212,18 +212,18 @@ public class LoginActivity extends AppCompatActivity {
                     clearUserInfo(getApplicationContext());
                     int result = errorResult.getErrorCode();
 
-                    if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
+                    if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
                         Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(),"로그인 도중 오류가 발생했습니다: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onSessionClosed(ErrorResult errorResult) {
                     clearUserInfo(getApplicationContext());
-                    Toast.makeText(getApplicationContext(),"세션이 닫혔습니다. 다시 시도해 주세요: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -243,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onSessionOpenFailed(KakaoException e) {
             clearUserInfo(getApplicationContext());
-            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: "+e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

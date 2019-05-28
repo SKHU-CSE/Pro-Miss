@@ -34,30 +34,32 @@ import java.util.List;
 
 public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
-    public static final int PROMISS_GAME_READY=0;
-    public static final int PROMISS_GAME_DC_CIRCLE=1;//점점 줄어드는 원
-    public static final int PROMISS_GAME_STOP_CIRCLE=2;//페이지 시 멈출 때
+    public static final int PROMISS_GAME_READY = 0;
+    public static final int PROMISS_GAME_DC_CIRCLE = 1;//점점 줄어드는 원
+    public static final int PROMISS_GAME_STOP_CIRCLE = 2;//페이지 시 멈출 때
+
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원
-    int radius=500;
+    int radius = 500;
+
+    Marker Mymarker;
     Intent intent;
 //    LocationOverlay locationOverlay;//줄어들 원
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
 
-        intent=new Intent(Appointment_Game_Activity.this, gpsInfo.class);
+        intent = new Intent(Appointment_Game_Activity.this, gpsInfo.class);
 //        ContextCompat.startForegroundService(Appointment_Game_Activity.this,intent);
 
-
-        MapFragment mapFragment = (MapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
-
 
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,20 +67,15 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 //                locationOverlay.setCircleRadius(100);
             }
         });
-
-
     }
 
-
-    Handler CircleHandler=new Handler()
-    {
+    Handler CircleHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what)
-            {
+            switch (msg.what) {
                 case PROMISS_GAME_DC_CIRCLE:
-                    if(radius>30)
-                    MapReSetting();
+                    if (radius > 30)
+                        MapReSetting();
                     else sendEmptyMessage(PROMISS_GAME_READY);
                     break;
                 case PROMISS_GAME_READY:
@@ -89,7 +86,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         }
     };
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -99,13 +95,11 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         //약속 목적지가 중앙
-        mMap=naverMap;
-
-        LatLng coord = new LatLng(37.5662952,126.97794509999994);
+        mMap = naverMap;
+        LatLng coord = new LatLng(37.5662952, 126.97794509999994);
 
         Marker marker = new Marker();
         marker.setCaptionText("목적지");
-
         marker.setPosition(new LatLng(37.5670135, 126.9783740));
         marker.setMap(naverMap);
 
@@ -119,7 +113,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
         MapReSetting();
 
-
         mMap.setCameraPosition(new CameraPosition(coord, 17.0)); // 카메라 위치 셋팅
     }
 
@@ -128,9 +121,8 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         super.onResume();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver ,new IntentFilter("GPS-event-name")
+                mMessageReceiver, new IntentFilter("GPS-event-name")
         );
-
     }
 
     @Override
@@ -139,27 +131,33 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver()
-    {
-        @Override public void onReceive(Context context, Intent intent) {
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub // Get extra data included in the
 
+            if (intent.getStringExtra("send").equals("error")) {
+                Toast.makeText(Appointment_Game_Activity.this, intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
+            } else {
+                if (Mymarker == null) {
+                    Mymarker = new Marker();
+                } else {
+                    Mymarker.setMap(null);
+                }
+                Mymarker.setCaptionText("나의 위치");
 
-            if(intent.getStringExtra("send").equals("error")) {
-                Toast.makeText(Appointment_Game_Activity.this,intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
-
+                Mymarker.setPosition(new LatLng(intent.getDoubleExtra("latitude", 36), intent.getDoubleExtra("longitude", 126)));
+                Mymarker.setMap(mMap);
             }
         }
 
     };
 
-    public void MapReSetting()
-    {
-
-        radius -=1;
+    public void MapReSetting() {
+        radius -= 1;
         circle.setMap(null);
         circle.setRadius(radius);
         circle.setMap(mMap);
-        CircleHandler.sendEmptyMessageDelayed(PROMISS_GAME_DC_CIRCLE,1000);
+        CircleHandler.sendEmptyMessageDelayed(PROMISS_GAME_DC_CIRCLE, 1000);
     }
 }

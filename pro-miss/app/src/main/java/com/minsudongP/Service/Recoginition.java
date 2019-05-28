@@ -128,7 +128,7 @@ public class Recoginition extends RecognitionService {
 
             startForeground(1,notification);
 
-            return START_NOT_STICKY;
+            return START_STICKY;
     }
 
     private void sendMessage(String send,String message){

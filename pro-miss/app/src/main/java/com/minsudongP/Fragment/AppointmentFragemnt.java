@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Lifecycle;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PointF;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -27,6 +29,7 @@ import com.minsudongP.DialogSelectTimer;
 import com.minsudongP.R;
 
 import com.minsudongP.SetDestinyActivity;
+import com.minsudongP.appointment;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
@@ -47,11 +50,16 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
     long mNow;
     Date mDate;
+    TextView tvDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
     static final int request_code=1;
     public String latitude;
     public String longitude;
     NaverMap naverMap;
+    TextView tvTimer;
+    String date_time="00:00";
+    EditText text;
+
 
 
     @Nullable
@@ -69,7 +77,9 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
 
 
-        final TextView tvDate = view.findViewById(R.id.frg_appoint1_card1_DateText);
+        text=view.findViewById(R.id.atd_detail_title);
+
+        tvDate = view.findViewById(R.id.frg_appoint1_card1_DateText);
         tvDate.setText(getTime());
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +112,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
 
+                        date_time=hour+":"+min;
                         String ampm = "AM";
 
                         if (hour >= 12) {
@@ -118,7 +129,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             }
 
         });
-        final TextView tvTimer = view.findViewById(R.id.atd_detail_timer_t2);
+        tvTimer = view.findViewById(R.id.atd_detail_timer_t2);
         tvTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,14 +223,30 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("appoint","resume");
-        //map 위치 다시설정
+
+
+    public int getTimer()
+    {
+        String s=tvTimer.getText().toString();
+
+        s.replaceAll(" ","");
+        s.replaceAll("분","");
+        String str[]=s.split("시간");
+
+
+        int time=0;
+        time += Integer.parseInt(str[0])*60;
+        if(str.length>1)
+            time += Integer.parseInt(str[1]);
+
+        return time;
     }
 
 
-
+    public void SendDatatoActivity()
+    {
+        ((appointment) getActivity()).setAppointment_role_1(text.getText().toString(), "" + naverMap.getCameraPosition().target.latitude, "" + naverMap.getCameraPosition().target.longitude
+                ,""+getTimer(),tvDate.getText().toString(),date_time);
+    }
 
 }

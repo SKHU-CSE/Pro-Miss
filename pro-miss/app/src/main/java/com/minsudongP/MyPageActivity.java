@@ -125,9 +125,9 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // 팔로우 임시 목록
-        arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "양민욱"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "구동섭"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, "urltest", "김종인"));
+        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
+        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
+        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
         adapter.notifyDataSetChanged();
     }
 

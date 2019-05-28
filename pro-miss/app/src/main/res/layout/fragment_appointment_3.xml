@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/frg_appoint3_title"
@@ -20,138 +13,30 @@
                 android:text="멤버 추가"
                 android:textColor="#000000"
                 android:textSize="21sp"
+                android:layout_marginTop="15dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/frg_appoint3_confirmBtn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frg_appoint3_confirmBtn" />
+
+                />
 
             <Button
                 android:id="@+id/frg_appoint3_confirmBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/colorGreen"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
                 android:text="완료"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.783"
-                app:layout_constraintStart_toEndOf="@+id/frg_appoint3_title"
-                app:layout_constraintTop_toTopOf="parent" />
+                />
 
-            <TextView
-                android:id="@+id/frg_appoint3_mem1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:text="나"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-            <TextView
-                android:id="@+id/frg_appoint3_mem2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:text="구동섭"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:id="@+id/frg_appoint3_recycle"
+        android:layout_below="@id/frg_appoint3_confirmBtn"></android.support.v7.widget.RecyclerView>
 
-            <TextView
-                android:id="@+id/frg_appoint3_mem3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:text="양민욱"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-            <TextView
-                android:id="@+id/frg_appoint3_mem4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:text="임수현"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/imageView5"
-                app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorGreen"
-                app:layout_constraintBottom_toTopOf="@+id/frg_appoint3_mem1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frg_appoint3_title"
-                app:srcCompat="@drawable/face"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginEnd="60dp"
-                android:layout_marginRight="60dp"
-                android:background="@color/colorGreen"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView2"
-                app:srcCompat="@drawable/face"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginTop="50dp"
-                android:background="@color/colorGreen"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toBottomOf="@+id/frg_appoint3_mem1"
-                app:srcCompat="@drawable/face"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView4"
-                app:srcCompat="@drawable/face"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/frg_appoint3_addButton"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
-                android:background="@color/colorGreen"
-                android:scaleType="fitStart"
-                android:src="@android:drawable/ic_menu_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toBottomOf="@+id/frg_appoint3_mem3"
-                tools:src="@android:drawable/ic_menu_add" />
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

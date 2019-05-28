@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.minsudongP.ViewHolder.AcceptViewHolder;
+import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
 import com.minsudongP.ViewHolder.CancelViewHolder;
 import com.minsudongP.ViewHolder.FollowViewHolder;
@@ -33,7 +34,7 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     PromissClick click;
 
-    interface PromissClick{
+    public interface PromissClick{
         public void OnClick(View view,int position);
     }
 
@@ -63,6 +64,11 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
 
                 viewHolder=new FriendViewHolder(view);
+                break;
+
+            case FriendList_Grid:
+                view=activity.getLayoutInflater().inflate(R.layout.add_friend_item,viewGroup,false);
+                viewHolder=new Add_FriendVIewHolder(view);
                 break;
             case SearchList:
                 view=activity.getLayoutInflater().inflate(R.layout.searchlist_item,viewGroup,false);
@@ -129,6 +135,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         {
             case FriendLIst:
                 BindFriendLIst(viewHolder,i);
+                break;
+            case FriendList_Grid:
+                BindFriendList_Grid(viewHolder,i);
                 break;
             case SearchList:
                 BindSearchList(viewHolder,i);
@@ -255,5 +264,22 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.friendName.setText(arrayList.get(position).getName());
         holder.friendImage.setImageResource(R.drawable.face);
 
+    }
+
+    void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder,  int position)
+    {
+        Add_FriendVIewHolder holder=(Add_FriendVIewHolder)viewHolder;
+
+        final int p=position;
+        if(arrayList.get(position).getProfileImageURl().equals("추가하기"))
+            holder.imageView.setImageResource(R.drawable.bt_add);
+        holder.imageView.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,p);
+            }
+        });
+
+        holder.name.setText(arrayList.get(position).getName());
     }
 }
