@@ -1,12 +1,13 @@
-package com.minsudongP;
+package com.minsudongP.Model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.R;
 import com.minsudongP.ViewHolder.AcceptViewHolder;
 import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
@@ -22,10 +23,6 @@ import com.minsudongP.ViewHolder.TimeLateViewHolder;
 
 
 import java.util.ArrayList;
-
-import static com.minsudongP.PromissType.FriendLIst;
-import static com.minsudongP.PromissType.New_Appoint;
-import static com.minsudongP.PromissType.SearchList;
 
 public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

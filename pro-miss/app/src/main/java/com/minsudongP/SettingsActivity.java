@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.minsudongP.Service.Recoginition;
@@ -188,6 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
 
+                // 자동 로그인 값 제거
                 clearUserInfo(getApplicationContext());
             }
         });

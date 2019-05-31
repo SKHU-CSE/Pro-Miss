@@ -16,9 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.minsudongP.R;
-import com.minsudongP.appointment;
-
-import org.w3c.dom.Text;
+import com.minsudongP.Model.appointment;
 
 
 public class SetMoneyFragemnt extends Fragment {

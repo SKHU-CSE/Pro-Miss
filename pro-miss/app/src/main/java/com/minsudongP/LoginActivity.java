@@ -3,6 +3,7 @@ package com.minsudongP;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -46,18 +47,23 @@ public class LoginActivity extends AppCompatActivity {
     RotateLoading loading;
     private SessionCallback sessionCallback;
 
+    final String RESULT_OK = "ok";
+    final int RESULT_SUCCESS = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sessionCallback = new SessionCallback();
-        Session.getCurrentSession().addCallback(sessionCallback);
-        Session.getCurrentSession().checkAndImplicitOpen();
+        sessionCallback = new SessionCallback(); //SessionCallback 초기화
+        Session.getCurrentSession().addCallback(sessionCallback); //현재 세션에 콜백 붙임
+        Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
 
         // 저장된 값이 있으면 자동 로그인
         if (getUserId(getApplicationContext()).length() != 0 && getUserPw(getApplicationContext()).length() != 0) {
             login(getUserId(getApplicationContext()), getUserPw(getApplicationContext()));
+            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
+
         }
 
         edit_Id = findViewById(R.id.login_Id);
@@ -101,13 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                 inputMethodManager.hideSoftInputFromWindow(edit_pwd.getWindowToken(), 0);
 
                 if (id.isEmpty() || pwd.isEmpty())
-                    Toast.makeText(LoginActivity.this, "정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "정보를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 else {
                     loading.start();
                     login(edit_Id.getText().toString(), edit_pwd.getText().toString());
-
                 }
-
             }
         });
     }
@@ -123,17 +127,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Session.getCurrentSession().removeCallback(sessionCallback);
+        Session.getCurrentSession().removeCallback(sessionCallback); //현재 액티비티 제거 시 콜백도 같이 제거
     }
 
-    private void login(String id, String pw) {
-        final HashMap<String, String> hash = new HashMap<>();
-        hash.put("Id", id);
-        hash.put("password", pw);
+    private void checkID(final MeV2Response userinfo) {
         new Thread() {
             public void run() {
                 // 파라미터 2개와 미리정의해논 콜백함수를 매개변수로 전달하여 호출
-                UrlConnection.shardUrl.PostRequest("api/userLogin", new Callback() {
+                String php = "api/userId/"+userinfo.getId();
+                Log.d("php = ",php);
+                UrlConnection.shardUrl.GetRequest(php, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         LoginActivity.this.runOnUiThread(new Runnable() {
@@ -149,12 +152,63 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         String s = response.body().string();
 
+                        Log.d("response = ",s);
+                        try {
+                            JSONObject result = new JSONObject(s);
+
+                            // 등록된 아이디가 없으면 회원 등록
+                            if (result.getString("result").equals(RESULT_OK)) {
+                                storeKakaoUser(userinfo);
+                            } else if (result.getInt("result") == 1000) { // 있으면 로그인
+                                login(String.valueOf(userinfo.getId()),String.valueOf(userinfo.getId()));
+                            }
+
+                        } catch (JSONException e) {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    clearUserInfo(getApplicationContext());
+                                    loading.stop();
+                                    Toast.makeText(LoginActivity.this, "서버 통신에 문제가 있습니다.\n 관리자에게 문의주세요", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }.start();
+    }
+
+    private void login(String id, String pw) {
+        final HashMap<String, String> hash = new HashMap<>();
+        hash.put("Id", id);
+        hash.put("password", pw);
+        new Thread() {
+            public void run() {
+                UrlConnection.shardUrl.PostRequest("api/userLogin", new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loading.stop();
+                                Toast.makeText(LoginActivity.this, "서버 통신에 문제가 있습니다.\n 관리자에게 문의주세요", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String s = response.body().string();
                         try {
                             JSONObject result = new JSONObject(s);
 
                             // 로그인 성공 시
-                            if (result.getInt("result") == 2000) {
+                            if (result.getInt("result") == RESULT_SUCCESS) {
                                 JSONObject jsonObject = result.getJSONObject("data");
+
+                                Log.d("json?",jsonObject.toString());
+
                                 UserInfor infor = UserInfor.shared;
                                 infor.setAppoint_num(jsonObject.getInt("appoint_num"));
                                 infor.setID(jsonObject.getString("email"));
@@ -164,16 +218,18 @@ public class LoginActivity extends AppCompatActivity {
                                 infor.setName(jsonObject.getString("name"));
                                 infor.setProfile_img(jsonObject.getString("Image"));
 
-                                // 정보 다 받아오면 UI 스레드에서 화면 갱신
-                                LoginActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        loading.stop();
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                                if(jsonObject.getInt("isKakao") == 0) {
+                                    // 정보 다 받아오면 UI 스레드에서 화면 갱신
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            loading.stop();
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                }
 
                             } else { // 회원정보 없음
                                 LoginActivity.this.runOnUiThread(new Runnable() {
@@ -187,6 +243,83 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    clearUserInfo(getApplicationContext());
+                                    loading.stop();
+                                    Toast.makeText(LoginActivity.this, "서버 통신에 문제가 있습니다.\n 관리자에게 문의주세요", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                }, hash);
+
+            }
+        }.start();
+    }
+
+    private void storeKakaoUser (MeV2Response userinfo){
+        final HashMap<String, String> hash = new HashMap<>();
+        hash.put("email", String.valueOf(userinfo.getId()));
+        hash.put("password", String.valueOf(userinfo.getId()));
+        hash.put("name", String.valueOf(userinfo.getNickname()));
+        hash.put("Image", String.valueOf(userinfo.getProfileImagePath()));
+        hash.put("isKakao", String.valueOf(1));
+
+        new Thread() {
+            public void run() {
+                // 파라미터 2개와 미리정의해논 콜백함수를 매개변수로 전달하여 호출
+                UrlConnection.shardUrl.PostRequest("api/user", new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loading.stop();
+                                Toast.makeText(LoginActivity.this, "서버 통신에 문제가 있습니다.\n 관리자에게 문의주세요", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String s = response.body().string();
+
+                        Log.d("response = ",s);
+                        try {
+                            JSONObject result = new JSONObject(s);
+
+                            // 회원정보 삽입 성공 시
+                            if (result.getInt("result") == RESULT_SUCCESS) {
+                                JSONObject jsonObject = result.getJSONObject("data");
+                                Log.d("json?",jsonObject.toString());
+
+                                // 싱글톤에 값 넣기
+                                UserInfor infor = UserInfor.shared;
+                                infor.setID(jsonObject.getString("email"));
+                                infor.setId_num(jsonObject.getString("id"));
+                                infor.setName(jsonObject.getString("name"));
+                                infor.setProfile_img(jsonObject.getString("Image"));
+                                infor.setMoney(jsonObject.getInt("money"));
+
+                                // 해당 값들은 json에 없으므로 0 삽입
+                                infor.setAppoint_num(0);
+                                infor.setSuccess_appoint_num(0);
+
+                            } else { // 회원정보 없음
+                                LoginActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        clearUserInfo(getApplicationContext());
+                                        loading.stop();
+                                        Toast.makeText(LoginActivity.this, "현재 DB서버가 문제가 있어 관리자에게 문의를 주시길 바랍니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                        } catch (JSONException e) {
+                            Log.d("서버통신 = ","실패");
                             LoginActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -228,14 +361,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    // 회원 정보가 없다면 db에 값 넣기
-                    // 회원 정보가 있다면 로그인 : 싱글톤에 정보 넣기
-
-                    intent.putExtra("name", result.getNickname());
-                    intent.putExtra("profile", result.getProfileImagePath());
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+
+                    // 회원 정보가 있는지 없는지 확인
+                    checkID(result);
                 }
             });
         }

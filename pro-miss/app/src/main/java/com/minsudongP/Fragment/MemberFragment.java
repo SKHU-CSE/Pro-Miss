@@ -1,6 +1,5 @@
 package com.minsudongP.Fragment;
 
-import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,20 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.minsudongP.AllRecyclerAdapter;
+import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.FriendListActivity;
-import com.minsudongP.PromissItem;
-import com.minsudongP.PromissType;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
 import com.minsudongP.R;
-import com.minsudongP.SettingsActivity;
-import com.minsudongP.appointment;
+import com.minsudongP.Model.appointment;
 
 import java.util.ArrayList;
 

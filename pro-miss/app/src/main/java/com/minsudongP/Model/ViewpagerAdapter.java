@@ -1,4 +1,4 @@
-package com.minsudongP;
+package com.minsudongP.Model;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
