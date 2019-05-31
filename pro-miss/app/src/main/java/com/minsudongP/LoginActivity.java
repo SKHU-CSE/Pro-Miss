@@ -207,18 +207,25 @@ public class LoginActivity extends AppCompatActivity {
                             if (result.getInt("result") == RESULT_SUCCESS) {
                                 JSONObject jsonObject = result.getJSONObject("data");
 
-                                Log.d("json?",jsonObject.toString());
+                                if(jsonObject.getInt("isKakao") != 0){ // 카카오 계정일 경우 일반로그인 막기
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            clearUserInfo(getApplicationContext());
+                                            loading.stop();
+                                            Toast.makeText(LoginActivity.this, "해당 정보와 일치하는 \n회원이 없습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    UserInfor infor = UserInfor.shared;
+                                    infor.setAppoint_num(jsonObject.getInt("appoint_num"));
+                                    infor.setID(jsonObject.getString("email"));
+                                    infor.setId_num(jsonObject.getString("id"));
+                                    infor.setMoney(jsonObject.getInt("money"));
+                                    infor.setSuccess_appoint_num(jsonObject.getInt("success_appoint_num"));
+                                    infor.setName(jsonObject.getString("name"));
+                                    infor.setProfile_img(jsonObject.getString("Image"));
 
-                                UserInfor infor = UserInfor.shared;
-                                infor.setAppoint_num(jsonObject.getInt("appoint_num"));
-                                infor.setID(jsonObject.getString("email"));
-                                infor.setId_num(jsonObject.getString("id"));
-                                infor.setMoney(jsonObject.getInt("money"));
-                                infor.setSuccess_appoint_num(jsonObject.getInt("success_appoint_num"));
-                                infor.setName(jsonObject.getString("name"));
-                                infor.setProfile_img(jsonObject.getString("Image"));
-
-                                if(jsonObject.getInt("isKakao") == 0) {
                                     // 정보 다 받아오면 UI 스레드에서 화면 갱신
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override
@@ -230,7 +237,6 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
-
                             } else { // 회원정보 없음
                                 LoginActivity.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -361,6 +367,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
+                    Toast.makeText(LoginActivity.this,"카카오 계정으로 로그인 되었습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
