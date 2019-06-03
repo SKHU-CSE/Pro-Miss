@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.minsudongP.FollowActivity;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.R;
 import com.minsudongP.ViewHolder.AcceptViewHolder;
@@ -58,21 +59,26 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (arrayList.get(viewposition).getType())
         {
             case FriendLIst:
-                view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
-
-                viewHolder=new FriendViewHolder(view);
-                break;
-
+                if (activity.getClass() == new FollowActivity().getClass()) {
+                    view=activity.getLayoutInflater().inflate(R.layout.follow_card,viewGroup,false);
+                    viewHolder=new FriendViewHolder(view);
+                    break;
+                } else {
+                    view = activity.getLayoutInflater().inflate(R.layout.friendlist_card, viewGroup, false);
+                    viewHolder = new FriendViewHolder(view);
+                    break;
+                }
             case FriendList_Grid:
                 view=activity.getLayoutInflater().inflate(R.layout.add_friend_item,viewGroup,false);
                 viewHolder=new Add_FriendVIewHolder(view);
                 break;
+
             case SearchList:
                 view=activity.getLayoutInflater().inflate(R.layout.searchlist_item,viewGroup,false);
                 viewHolder=new SearchViewHolder(view);
                 break;
 
-
+            // -- 알림 카드뷰 -- //
             case New_Appoint:
                 view=activity.getLayoutInflater().inflate(R.layout.alert_invite,viewGroup,false);
                 viewHolder=new NewAppointViewHolder(view);

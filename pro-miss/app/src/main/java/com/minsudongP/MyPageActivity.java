@@ -108,6 +108,15 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        // 팔로우하기
+        View.OnClickListener FollowListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyPageActivity.this, FollowActivity.class);
+                startActivity(intent);
+            }
+        };
+
         // 돌아가기(main)
         View.OnClickListener MainListener = new View.OnClickListener() {
             @Override
@@ -120,6 +129,7 @@ public class MyPageActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
         ((Button) findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
         ((Button) findViewById(R.id.mypage_pastButton)).setOnClickListener(PastListener);
+        ((Button) findViewById(R.id.mypage_addFollow)).setOnClickListener(FollowListener);
 
         // 팔로우 목록 어뎁터
         adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);

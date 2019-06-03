@@ -13,13 +13,11 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
     public ImageView friendImage;
     public TextView friendName;
 
-
-
     public FriendViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        friendImage=itemView.findViewById(R.id.friend_image);
-        friendName=itemView.findViewById(R.id.friend_name);
+        friendImage = itemView.findViewById(R.id.friend_image);
+        friendName = itemView.findViewById(R.id.friend_name);
     }
 
 }

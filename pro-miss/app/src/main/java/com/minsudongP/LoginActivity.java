@@ -40,7 +40,6 @@ import static com.minsudongP.SaveSharedPreference.setUserInfo;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     EditText edit_Id;
     EditText edit_pwd;
     InputMethodManager inputMethodManager;
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // 저장된 값이 있으면 자동 로그인
         if (getUserId(getApplicationContext()).length() != 0 && getUserPw(getApplicationContext()).length() != 0) {
-            login(getUserId(getApplicationContext()), getUserPw(getApplicationContext()));
+            login(getUserId(getApplicationContext()), getUserPw(getApplicationContext()), false);
             Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
 
         }
@@ -110,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "정보를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 else {
                     loading.start();
-                    login(edit_Id.getText().toString(), edit_pwd.getText().toString());
+                    login(edit_Id.getText().toString(), edit_pwd.getText().toString(), false);
                 }
             }
         });
@@ -160,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (result.getString("result").equals(RESULT_OK)) {
                                 storeKakaoUser(userinfo);
                             } else if (result.getInt("result") == 1000) { // 있으면 로그인
-                                login(String.valueOf(userinfo.getId()),String.valueOf(userinfo.getId()));
+                                login(String.valueOf(userinfo.getId()),String.valueOf(userinfo.getId()), true);
                             }
 
                         } catch (JSONException e) {
@@ -179,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void login(String id, String pw) {
+    private void login(String id, String pw, final boolean kakao) {
         final HashMap<String, String> hash = new HashMap<>();
         hash.put("Id", id);
         hash.put("password", pw);
@@ -204,10 +203,10 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject result = new JSONObject(s);
 
                             // 로그인 성공 시
-                            if (result.getInt("result") == RESULT_SUCCESS) {
+                            if (result.getInt("result") == RESULT_SUCCESS ) {
                                 JSONObject jsonObject = result.getJSONObject("data");
 
-                                if(jsonObject.getInt("isKakao") != 0){ // 카카오 계정일 경우 일반로그인 막기
+                                if(jsonObject.getInt("isKakao") != 0 && !kakao){ // 카카오 계정일 경우 일반로그인 막기
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
