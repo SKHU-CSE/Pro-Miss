@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
 import com.mommoo.permission.repository.DenyInfo;
@@ -23,12 +24,16 @@ public class MainActivity extends AppCompatActivity {
     TextView testText;
     boolean isUpdating = false;
 
+
     final int REQUEST_CODE_PERMISSION = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         // 권한 허용 (위치, 녹음)
         new MommooPermission.Builder(this)

@@ -1,12 +1,17 @@
 package com.minsudongP;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.minsudongP.Service.PromissService;
 import com.minsudongP.Service.Recoginition;
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
@@ -25,6 +31,8 @@ import java.util.List;
 import static com.minsudongP.SaveSharedPreference.clearUserInfo;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    PromissService mservice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +69,16 @@ public class SettingsActivity extends AppCompatActivity {
                     swvive.setClickable(true);
                     swsound.setChecked(true);
                     swvive.setChecked(true);
+                    Intent Service = new Intent(SettingsActivity.this, PromissService.class);
+                    bindService(Service, mConnection, Context.BIND_AUTO_CREATE);
+
                 } else {
                     message = "알림이 꺼졌습니다";
                     swsound.setClickable(false);
                     swvive.setClickable(false);
 
                     swsound.setChecked(false);
+                    unbindService(mConnection);
                     swvive.setChecked(false);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -192,4 +204,28 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        // Called when the connection with the service is established
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            PromissService.BindServiceBinder binder = (PromissService.BindServiceBinder) service;
+            //; // get service.
+            mservice=binder.getService();
+            mservice.registerCallback(mCallback); // callback registration
+        }
+        // Called when the connection with the service disconnects unexpectedly
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mservice= null;
+        }
+    };
+
+    private PromissService.ICallback mCallback = new PromissService.ICallback() {
+        @Override
+        public void remoteCall() {
+            Log.d("MainActivity","called by service");
+        }
+    };
 }

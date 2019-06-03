@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -33,39 +34,44 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
-
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import static com.minsudongP.App.CHAANEL_ID;
 
-public class gpsInfo extends Service implements LocationListener {
+public class PromissService extends Service implements LocationListener {
 
+    private final IBinder mBinder= new BindServiceBinder();
 
-    // 현재 GPS 사용유무
-    boolean isGPSEnabled = false;
-
-    // 네트워크 사용유무
-    boolean isNetworkEnabled = false;
-
-    // GPS 상태값
-    boolean isGetLocation = false;
-
-    UserInfor userInfor;
+    private ICallback mCallback;
+    private final String id=UserInfor.shared.getId_num();
     Location location;
-    double lat; // 위도
-    double lon; // 경도
-
-    // 최소 GPS 정보 업데이트 거리 10미터
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
-
-    // 최소 GPS 정보 업데이트 시간 밀리세컨이므로 1분
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
     protected LocationManager locationManager;
 
 
+
+    // declare callback function
+    public interface ICallback {
+        public void remoteCall();
+    }
+
+    public void registerCallback(ICallback cb){
+        mCallback=cb;
+    }
+
+    // service contents
+    public void myServiceFunc(){
+        Log.d("BindService","called by Activity");
+
+        // call callback in Activity
+        mCallback.remoteCall();
+    }
     //push 알람
 
     Notification New_Alert; // 새로운 알림이 도착했습니다.
@@ -74,7 +80,7 @@ public class gpsInfo extends Service implements LocationListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        userInfor=UserInfor.shared;
+
 
         Intent FineIntent=new Intent(this, Appointment_Game_Activity.class);
 
@@ -111,12 +117,33 @@ public class gpsInfo extends Service implements LocationListener {
                 .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
                 .setContentIntent(FinePendingIntent)
                 .build();
+
+
     }
 
 
     //서비스가 죽었다가 다시 실행이 될 때, 호출되는 함수
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //Notification 알람///////////////
+        PusherOptions options = new PusherOptions();
+        options.setCluster("ap3");
+        Pusher pusher = new Pusher("60518d2597abbeaa238c", options);
+
+        Channel channel = pusher.subscribe("ProMiss");
+
+        channel.bind("event_user"+id, new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                System.out.println(data);
+            }
+        });
+
+        pusher.connect();
+
+        /////////////////////////////////////////////////////////////////////////////////////////
 
 
         if ( Build.VERSION.SDK_INT >= 23 &&
@@ -195,7 +222,7 @@ public class gpsInfo extends Service implements LocationListener {
                 UrlConnection connection=UrlConnection.shardUrl;
                 HashMap<String,String> hash=new HashMap<>();
 
-                hash.put("id",userInfor.getId_num());
+                hash.put("id",id);
                 hash.put("latitude",""+location.getLatitude());
                 hash.put("longitude",""+location.getLongitude());
               connection.PostRequest("api/gps/upload",callback,hash);
@@ -247,5 +274,11 @@ public class gpsInfo extends Service implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("gps","providerDisabled");
+    }
+
+    public class BindServiceBinder extends Binder{
+        public PromissService getService(){
+            return PromissService.this;
+        }
     }
 }

@@ -53,4 +53,7 @@ dependencies {
 
     //카카오 친구 리스트
     implementation 'com.kakao.sdk:friends:1.16.0'
+
+    //pusher
+    implementation 'com.pusher:pusher-java-client:1.5.0'
 }

@@ -69,7 +69,8 @@ public class appointment extends AppCompatActivity {
     public void setAppointment_role_3(ArrayList<PromissItem> items)
     {
         this.member=items;
-        viewpagerAdapter.clear();
+//        viewpagerAdapter.clear();
+        Log.d("memberSize",""+member.size());
         member.remove(member.size()-1);
         final UrlConnection connection=UrlConnection.shardUrl;
         final HashMap<String,String> hash=new HashMap<>();
@@ -88,6 +89,7 @@ public class appointment extends AppCompatActivity {
 
         for(int i=0;i<member.size();i++)
         {
+            Log.d("waitting","ok");
             hash.put("member_id"+i,""+member.get(i).getUser_id());
         }
 
@@ -116,6 +118,7 @@ public class appointment extends AppCompatActivity {
         public void onResponse(Call call, Response response) throws IOException {
             String s=response.body().string();
 
+            Log.d("url",s);
             try{
                 final JSONObject object=new JSONObject(s);
 
@@ -149,7 +152,7 @@ public class appointment extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
-            Log.d("url",s);
+
         }
     };
     @Override
@@ -179,15 +182,19 @@ public class appointment extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int i) {
-              switch (i-1)
-              {
-                  case 0:
-                      ((AppointmentFragemnt)viewpagerAdapter.getItem(0)).SendDatatoActivity();
-                      break;
-                  case 1:
-                      ((SetMoneyFragemnt)viewpagerAdapter.getItem(1)).SendDatatoActivity();
-                      break;
-              }
+                try {
+                    switch (i - 1) {
+                        case 0:
+                            ((AppointmentFragemnt) viewpagerAdapter.getItem(0)).SendDatatoActivity();
+                            break;
+                        case 1:
+                            ((SetMoneyFragemnt) viewpagerAdapter.getItem(1)).SendDatatoActivity();
+                            break;
+                    }
+                }catch (IndexOutOfBoundsException e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
 

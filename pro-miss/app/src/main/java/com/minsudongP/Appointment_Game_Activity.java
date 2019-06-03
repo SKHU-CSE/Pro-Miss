@@ -1,6 +1,5 @@
 package com.minsudongP;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,27 +9,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.minsudongP.Service.gpsInfo;
-import com.mommoo.permission.MommooPermission;
-import com.mommoo.permission.listener.OnPermissionDenied;
-import com.mommoo.permission.repository.DenyInfo;
+import com.minsudongP.Service.PromissService;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.CircleOverlay;
-import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.OverlayImage;
-
-import java.util.List;
 
 public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -51,8 +42,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
 
-        intent = new Intent(Appointment_Game_Activity.this, gpsInfo.class);
-//        ContextCompat.startForegroundService(Appointment_Game_Activity.this,intent);
+        intent = new Intent(Appointment_Game_Activity.this, PromissService.class);
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {

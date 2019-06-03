@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-        <service android:name=".Service.gpsInfo" />
+        <service android:name=".Service.PromissService" />
 
         <activity android:name=".AttendingDetailActivity" />
         <activity android:name=".LoadingActivity" />

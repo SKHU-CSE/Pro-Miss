@@ -229,8 +229,9 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     {
         String s=tvTimer.getText().toString();
 
-        s.replaceAll(" ","");
-        s.replaceAll("분","");
+        s=s.replaceAll(" ","");
+        s=s.replaceAll("분","");
+        s=s.trim();
         String str[]=s.split("시간");
 
 
