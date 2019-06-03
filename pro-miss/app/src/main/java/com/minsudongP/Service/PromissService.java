@@ -2,6 +2,7 @@ package com.minsudongP.Service;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -46,104 +48,32 @@ import static com.minsudongP.App.CHAANEL_ID;
 
 public class PromissService extends Service implements LocationListener {
 
-    private final IBinder mBinder= new BindServiceBinder();
-
-    private ICallback mCallback;
     private final String id=UserInfor.shared.getId_num();
+    private final String name=UserInfor.shared.getName();
     Location location;
 
     protected LocationManager locationManager;
 
 
 
-    // declare callback function
-    public interface ICallback {
-        public void remoteCall();
-    }
 
-    public void registerCallback(ICallback cb){
-        mCallback=cb;
-    }
 
-    // service contents
-    public void myServiceFunc(){
-        Log.d("BindService","called by Activity");
-
-        // call callback in Activity
-        mCallback.remoteCall();
-    }
     //push 알람
 
+    NotificationManagerCompat manager;
+    Notification Init;
     Notification New_Alert; // 새로운 알림이 도착했습니다.
     Notification Appoitment_End;  // 약속 제목 약속이 종료되었습니다! PendingIntent는 없어도 됨
     Notification Fine;//벌금이 누적되었습니다.
     @Override
     public void onCreate() {
         super.onCreate();
-
-
-        Intent FineIntent=new Intent(this, Appointment_Game_Activity.class);
-
-        Intent AlertIntent= new Intent(this, AlertActivity.class);
-
-
-        PendingIntent FinePendingIntent=PendingIntent.getActivity(this
-                ,0,FineIntent,0); //알람을 눌렀을 때 해당 엑티비티로
-
-        PendingIntent AlertPendingIntent=PendingIntent.getActivity(this
-        , 0,AlertIntent,0);
-
-
-        Fine=new NotificationCompat.Builder(this,CHAANEL_ID)
-                .setContentTitle("약속")
-                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
-                .setContentText("벌금이 누적되었습니다.")
-                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
-                .setContentIntent(FinePendingIntent)
-                .build();
-
-        New_Alert=new NotificationCompat.Builder(this,CHAANEL_ID)
-                .setContentTitle("프로미스")
-                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
-                .setContentText("사용자에게 새로운 알림이 도착했습니다.")
-                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
-                .setContentIntent(AlertPendingIntent)
-                .build();
-
-        Appoitment_End=new NotificationCompat.Builder(this,CHAANEL_ID)
-                .setContentTitle("프로미스")
-                .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
-                .setContentText("약속이 종료되었습니다.")
-                .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
-                .setContentIntent(FinePendingIntent)
-                .build();
-
-
     }
 
 
     //서비스가 죽었다가 다시 실행이 될 때, 호출되는 함수
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        //Notification 알람///////////////
-        PusherOptions options = new PusherOptions();
-        options.setCluster("ap3");
-        Pusher pusher = new Pusher("60518d2597abbeaa238c", options);
-
-        Channel channel = pusher.subscribe("ProMiss");
-
-        channel.bind("event_user"+id, new SubscriptionEventListener() {
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                System.out.println(data);
-            }
-        });
-
-        pusher.connect();
-
-        /////////////////////////////////////////////////////////////////////////////////////////
 
 
         if ( Build.VERSION.SDK_INT >= 23 &&
@@ -152,7 +82,7 @@ public class PromissService extends Service implements LocationListener {
         }else {
 
 
-            startForeground(2,new Notification()); //알람을 띄우지 않고 foreground로 실행
+
             locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -166,6 +96,76 @@ public class PromissService extends Service implements LocationListener {
                     this);
 
         }
+
+        //알람 등록
+        {
+            manager=NotificationManagerCompat.from(this);
+            Intent FineIntent=new Intent(this, Appointment_Game_Activity.class);
+            Intent AlertIntent= new Intent(this, AlertActivity.class);
+            PendingIntent FinePendingIntent=PendingIntent.getActivity(this
+                    ,0,FineIntent,0); //알람을 눌렀을 때 해당 엑티비티로
+            PendingIntent AlertPendingIntent=PendingIntent.getActivity(this
+                    , 0,AlertIntent,0);
+
+
+            Fine=new NotificationCompat.Builder(this,CHAANEL_ID)
+                    .setContentTitle("약속")
+                    .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                    .setContentText("벌금이 누적되었습니다.")
+                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setContentIntent(FinePendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .build();
+
+            Init=new NotificationCompat.Builder(this,CHAANEL_ID)
+                    .setContentTitle("Pro-Miss")
+                    .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                    .setContentText("반갑습니다. "+name+"님")
+                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setContentIntent(FinePendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .build();
+            New_Alert=new NotificationCompat.Builder(this,CHAANEL_ID)
+                    .setContentTitle("프로미스")
+                    .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                    .setContentText("사용자에게 새로운 알림이 도착했습니다.")
+                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setContentIntent(AlertPendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .build();
+
+            Appoitment_End=new NotificationCompat.Builder(this,CHAANEL_ID)
+                    .setContentTitle("프로미스")
+                    .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
+                    .setContentText("약속이 종료되었습니다.")
+                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setContentIntent(FinePendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .build();
+
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+            //Notification 알람///////////////
+            PusherOptions options = new PusherOptions();
+            options.setCluster("ap3");
+            Pusher pusher = new Pusher("60518d2597abbeaa238c", options);
+
+            Channel channel = pusher.subscribe("ProMiss");
+
+            channel.bind("event_user"+id, new SubscriptionEventListener() {
+                @Override
+                public void onEvent(String channelName, String eventName, final String data) {
+                    System.out.println(data);
+                    manager.notify(0, New_Alert);
+                }
+            });
+
+            pusher.connect();
+        }
+
+        startForeground(10,Init);
+
+      //  manager.notify(30, New_Alert);
         return START_STICKY;  //서비스가 종료되어도 다시 시작
     }
 
@@ -276,9 +276,5 @@ public class PromissService extends Service implements LocationListener {
         Log.d("gps","providerDisabled");
     }
 
-    public class BindServiceBinder extends Binder{
-        public PromissService getService(){
-            return PromissService.this;
-        }
-    }
+
 }

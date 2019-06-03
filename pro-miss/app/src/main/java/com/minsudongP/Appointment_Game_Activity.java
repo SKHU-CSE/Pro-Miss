@@ -42,7 +42,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
 
-        intent = new Intent(Appointment_Game_Activity.this, PromissService.class);
+      
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -79,7 +79,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(intent);
+
     }
 
     @Override

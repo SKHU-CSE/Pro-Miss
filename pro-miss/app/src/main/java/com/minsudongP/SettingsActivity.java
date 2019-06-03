@@ -62,23 +62,21 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 String message;
-
+                Intent Service = new Intent(SettingsActivity.this, PromissService.class);
                 if (isChecked) {
                     message = "알림이 켜졌습니다";
                     swsound.setClickable(true);
                     swvive.setClickable(true);
                     swsound.setChecked(true);
                     swvive.setChecked(true);
-                    Intent Service = new Intent(SettingsActivity.this, PromissService.class);
-                    bindService(Service, mConnection, Context.BIND_AUTO_CREATE);
+                    ContextCompat.startForegroundService(SettingsActivity.this,Service);
 
                 } else {
                     message = "알림이 꺼졌습니다";
                     swsound.setClickable(false);
                     swvive.setClickable(false);
-
+                    stopService(Service);
                     swsound.setChecked(false);
-                    unbindService(mConnection);
                     swvive.setChecked(false);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -149,7 +147,8 @@ public class SettingsActivity extends AppCompatActivity {
                         message = "음성인식이 켜졌습니다";
                         swbackground.setClickable(true);
                         swbackground.setChecked(true);
-                        startService(intent);//음성인식 서비스 실행
+                        Intent service = new Intent(SettingsActivity.this, Recoginition.class);
+                        ContextCompat.startForegroundService(SettingsActivity.this, service);//음성인식 서비스 실행
                     } else {
                         message = "[설정] > [권한]에서 '녹음' 권한을 허용해 주세요.";
                         swvoice.setChecked(false);
@@ -205,27 +204,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
 
-        // Called when the connection with the service is established
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            PromissService.BindServiceBinder binder = (PromissService.BindServiceBinder) service;
-            //; // get service.
-            mservice=binder.getService();
-            mservice.registerCallback(mCallback); // callback registration
-        }
-        // Called when the connection with the service disconnects unexpectedly
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mservice= null;
-        }
-    };
 
-    private PromissService.ICallback mCallback = new PromissService.ICallback() {
-        @Override
-        public void remoteCall() {
-            Log.d("MainActivity","called by service");
-        }
-    };
+
 }

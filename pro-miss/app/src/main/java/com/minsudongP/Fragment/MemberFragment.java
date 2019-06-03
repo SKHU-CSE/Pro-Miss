@@ -55,7 +55,7 @@ public class MemberFragment extends Fragment {
             }
         };
 
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,13,"","임수현"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid,12,"","임수현"));
         arrayList.add(new PromissItem(PromissType.FriendList_Grid,0,"추가하기","추가하기"));
         adapter.notifyDataSetChanged();
 
