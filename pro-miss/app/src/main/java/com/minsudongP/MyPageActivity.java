@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -47,6 +48,17 @@ public class MyPageActivity extends AppCompatActivity {
 
         // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
+
+        // 팔로우 목록 불러오기
+
+        final UrlConnection urlConnection = UrlConnection.shardUrl;
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+            }
+        }.run();
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
@@ -157,14 +169,14 @@ public class MyPageActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             super.run();
-                            urlConnection.PostRequest("api/money/add", callback, hash);
+                            urlConnection.PostRequest("api/money/add", moneyCallback, hash);
                         }
                     }.run();
             }
         }
     }
 
-    private Callback callback = new Callback() {
+    private Callback moneyCallback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
             MyPageActivity.this.runOnUiThread(new Runnable() {
@@ -210,6 +222,29 @@ public class MyPageActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    };
+
+    private Callback followingCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            String s = response.body().string();
+
+            try {
+                final JSONObject jsonObject = new JSONObject(s);
+                if (jsonObject.getInt("result") == 2000) {
+                    Log.d("followers", jsonObject.getString("data"));
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 }
