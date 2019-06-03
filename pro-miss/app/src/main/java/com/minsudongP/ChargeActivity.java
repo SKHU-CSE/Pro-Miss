@@ -27,25 +27,36 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ChargeActivity extends AppCompatActivity {
-    ArrayList<String> moneytext=new ArrayList<>();
+    ArrayList<String> moneytext = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge);
-        final UserInfor infor= UserInfor.shared;
+        final UserInfor infor = UserInfor.shared;
 
+        findViewById(R.id.charge_backButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         findViewById(R.id.charge_chargeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (moneytext.isEmpty()) {
+                    Toast.makeText(ChargeActivity.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String val = "";
-                for(String s: moneytext){
+                for (String s : moneytext) {
                     val += s;
                 }
-                Intent intent=new Intent();
-                intent.putExtra("money",val);
-                setResult(RESULT_OK,intent);
+                Intent intent = new Intent();
+                intent.putExtra("money", val);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -59,6 +70,7 @@ public class ChargeActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.charge_cancelbtn:
                         layout.removeAllViews();
+                        moneytext.removeAll(moneytext);
                         break;
                     case R.id.charge_deletebtn:
 
@@ -76,7 +88,7 @@ public class ChargeActivity extends AppCompatActivity {
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
                                             layout.removeView(money);
-                                            moneytext.remove(moneytext.size()-1);
+                                            moneytext.remove(moneytext.size() - 1);
                                         }
 
                                         @Override
@@ -98,7 +110,7 @@ public class ChargeActivity extends AppCompatActivity {
 
                         if (layout.getChildCount() < 9) {
                             TextView money2 = (TextView) LayoutInflater.from(ChargeActivity.this).inflate(R.layout.addmoneytextview, null, false);
-                            String text = ((Button)view).getText().toString();
+                            String text = ((Button) view).getText().toString();
                             money2.setText(text);
                             AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
                             animation.setDuration(400);
