@@ -19,6 +19,7 @@ import com.minsudongP.Model.PromissType;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,9 +150,9 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // 팔로우 임시 목록
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
         adapter.notifyDataSetChanged();
     }
 
@@ -225,7 +226,7 @@ public class MyPageActivity extends AppCompatActivity {
         }
     };
 
-    private Callback followingCallback = new Callback() {
+    private final Callback followingCallback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
 
@@ -239,9 +240,27 @@ public class MyPageActivity extends AppCompatActivity {
             try {
                 final JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getInt("result") == 2000) {
-                    Log.d("followers", jsonObject.getString("data"));
+                    JSONArray data = jsonObject.getJSONArray("data");
+                    for (int i = 0; i<data.length(); i++) {
+                        JSONObject followerObj = data.getJSONObject(i);
+
+                        int id = followerObj.getInt("Following");
+                        String image = followerObj.getString("Image");
+                        String name = followerObj.getString("name");
+
+                        PromissItem item = new PromissItem(PromissType.FriendLIst, id, image, name);
+                        arrayList.add(item);
+                    }
+
+                    MyPageActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
                 }
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
