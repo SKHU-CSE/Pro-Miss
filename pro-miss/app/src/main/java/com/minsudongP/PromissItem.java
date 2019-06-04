@@ -10,25 +10,78 @@ public class PromissItem {
     private String jibun;
     private String positionX;
     private String positionY;
-
-    public PromissItem(PromissType Type,int id,String Profileimage,String Name) //FrendList
-    {
-        this.user_id=id;
-        this.Type=Type;
-        this.ProfileImageURl=Profileimage;
-        this.Name=Name;
-    }
     private String Date;
     private String Time;
     private String Money;
     private String Member; //지각한 멤버
     private String Place;
 
-    public String getDate() {
-        return Date;
+
+    public PromissItem(PromissType Type, int id, String Profileimage, String Name) //FrendList
+    {
+        this.user_id = id;
+        this.Type = Type;
+        this.ProfileImageURl = Profileimage;
+        this.Name = Name;
+    }
+
+    public PromissItem(PromissType type, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember) {
+
+        if (type == PromissType.SearchList) {
+            this.Type = type;
+            this.jibun = jibunORtime;
+            this.address = addressORdate;
+            this.positionX = positionXORPlace;
+            this.positionY = positionYORmoneyORnameORMember;
+        } else if (type == PromissType.Time_Late) {
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Type = type;
+            this.Money = positionYORmoneyORnameORMember;
+        } else if (type == PromissType.Accept || type == PromissType.Cancel) {
+            this.Name = positionYORmoneyORnameORMember;
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Type = type;
+        } else if (type == PromissType.Late_Member) {
+            this.Type = type;
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Member = positionYORmoneyORnameORMember;
+        } else if (type == PromissType.Follow) {
+            this.Type = type;
+            this.Name = positionYORmoneyORnameORMember;
+        }
+    }
+
+    public PromissItem(PromissType type, String date, String time, String place) //New Appoint, Appoint_Start, Attend_Appoint
+    {
+        if (type == PromissType.New_Appoint) {
+            this.Date = date;
+            this.Time = time;
+            this.Place = place;
+            this.Type = type;
+        } else if (type == PromissType.Attend_Appoint) {
+            this.Date = date;
+            this.Time = time;
+            this.Name= place;
+            this.Type = type;
+        }else{
+            this.Date = date;
+            this.Time = time;
+            this.Place = place;
+            this.Type = type;
+        }
     }
 
 
+
+    public String getDate() {
+        return Date;
+    }
 
     public void setDate(String date) {
         Date = date;
@@ -74,7 +127,6 @@ public class PromissItem {
         Place = place;
     }
 
-
     public String getJibun() {
         return jibun;
     }
@@ -107,47 +159,6 @@ public class PromissItem {
         this.Name = Name;
     }
 
-    public PromissItem(PromissType type, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember)
-    {
-
-        if(type==PromissType.SearchList) {
-            this.Type = type;
-            this.jibun = jibunORtime;
-            this.address = addressORdate;
-            this.positionX = positionXORPlace;
-            this.positionY = positionYORmoneyORnameORMember;
-        }else if(type==PromissType.Time_Late)
-        {
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Type=type;
-            this.Money=positionYORmoneyORnameORMember;
-        }
-        else if(type==PromissType.Accept||type==PromissType.Cancel)
-        {
-            this.Name=positionYORmoneyORnameORMember;
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Type=type;
-        }else if(type==PromissType.Late_Member)
-        {
-            this.Type=type;
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Member=positionYORmoneyORnameORMember;
-        }
-        else if(type==PromissType.Follow)
-        {
-            this.Type=type;
-            this.Name=positionYORmoneyORnameORMember;
-        }
-
-
-    }
-
     public String getAddress() {
         return address;
     }
@@ -171,22 +182,4 @@ public class PromissItem {
     public void setAddress(String address) {
         this.address = address;
     }
-    public PromissItem(PromissType type, String date,String time,String place) //New Appoint, Appoint_Start
-    {
-        if(type==PromissType.New_Appoint) {
-            this.Date = date;
-            this.Time = time;
-            this.Place = place;
-            this.Type = type;
-        }
-        else {
-            this.Date = date;
-            this.Time = time;
-            this.Place = place;
-            this.Type = type;
-        }
-    }
-
-
-
 }
