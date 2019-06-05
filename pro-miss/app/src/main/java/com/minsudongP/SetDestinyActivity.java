@@ -18,7 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.minsudongP.Model.AllRecyclerAdapter;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
+import com.minsudongP.Model.appointment;
 import com.minsudongP.Singletone.UrlConnection;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
@@ -33,9 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.AllPermission;
 import java.util.ArrayList;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -78,7 +79,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
         findViewById(R.id.set_destiny_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(SetDestinyActivity.this,appointment.class);
+                Intent intent= new Intent(SetDestinyActivity.this, appointment.class);
                 intent.putExtra("latitude",mMap.getCameraPosition().target.latitude);
                 intent.putExtra("longitude",mMap.getCameraPosition().target.longitude);
                 setResult(result_code,intent);

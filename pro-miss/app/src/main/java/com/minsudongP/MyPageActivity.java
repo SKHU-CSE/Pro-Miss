@@ -6,18 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.minsudongP.Model.AllRecyclerAdapter;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +49,17 @@ public class MyPageActivity extends AppCompatActivity {
 
         // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
+
+        // 팔로우 목록 불러오기
+
+        final UrlConnection urlConnection = UrlConnection.shardUrl;
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+            }
+        }.run();
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
@@ -106,6 +121,15 @@ public class MyPageActivity extends AppCompatActivity {
             }
         };
 
+        // 팔로우하기
+        View.OnClickListener FollowListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyPageActivity.this, FollowActivity.class);
+                startActivity(intent);
+            }
+        };
+
         // 돌아가기(main)
         View.OnClickListener MainListener = new View.OnClickListener() {
             @Override
@@ -118,6 +142,7 @@ public class MyPageActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.mypage_attendingButton)).setOnClickListener(AttendingListener);
         ((Button) findViewById(R.id.mypage_setButton)).setOnClickListener(SettingsListener);
         ((Button) findViewById(R.id.mypage_pastButton)).setOnClickListener(PastListener);
+        ((Button) findViewById(R.id.mypage_addFollow)).setOnClickListener(FollowListener);
 
         // 팔로우 목록 어뎁터
         adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);
@@ -125,9 +150,9 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // 팔로우 임시 목록
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
-        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
+//        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
         adapter.notifyDataSetChanged();
     }
 
@@ -145,14 +170,14 @@ public class MyPageActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             super.run();
-                            urlConnection.PostRequest("api/money/add", callback, hash);
+                            urlConnection.PostRequest("api/money/add", moneyCallback, hash);
                         }
                     }.run();
             }
         }
     }
 
-    private Callback callback = new Callback() {
+    private Callback moneyCallback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
             MyPageActivity.this.runOnUiThread(new Runnable() {
@@ -198,6 +223,47 @@ public class MyPageActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    };
+
+    private final Callback followingCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            String s = response.body().string();
+
+            try {
+                final JSONObject jsonObject = new JSONObject(s);
+                if (jsonObject.getInt("result") == 2000) {
+                    JSONArray data = jsonObject.getJSONArray("data");
+                    for (int i = 0; i<data.length(); i++) {
+                        JSONObject followerObj = data.getJSONObject(i);
+
+                        int id = followerObj.getInt("Following");
+                        String image = followerObj.getString("Image");
+                        String name = followerObj.getString("name");
+
+                        PromissItem item = new PromissItem(PromissType.FriendLIst, id, image, name);
+                        arrayList.add(item);
+                    }
+
+                    MyPageActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 }

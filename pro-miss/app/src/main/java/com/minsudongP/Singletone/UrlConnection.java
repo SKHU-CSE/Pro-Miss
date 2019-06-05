@@ -22,8 +22,8 @@ public class UrlConnection {
         this.client = new OkHttpClient();
     }
 
-    public void GetRequest(String PHP, Callback callback, HashMap<String, String> map) {
-        String url = Mainurl;
+    public void GetRequest(String PHP, Callback callback) {
+        String url = Mainurl+PHP;
 
         Request request = new Request.Builder()
                 .url(url)

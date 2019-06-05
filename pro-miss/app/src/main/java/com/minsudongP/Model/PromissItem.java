@@ -1,4 +1,4 @@
-package com.minsudongP;
+package com.minsudongP.Model;
 
 
 public class PromissItem {

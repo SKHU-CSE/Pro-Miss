@@ -1,18 +1,15 @@
-package com.minsudongP;
+package com.minsudongP.Model;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.minsudongP.Fragment.AppointmentFragemnt;
 import com.minsudongP.Fragment.MemberFragment;
 import com.minsudongP.Fragment.SetMoneyFragemnt;
+import com.minsudongP.R;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 
