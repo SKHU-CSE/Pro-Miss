@@ -22,6 +22,10 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
 public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -32,7 +36,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원
     int radius = 500;
-
+    Pusher pusher;
     Marker Mymarker;
     Intent intent;
 //    LocationOverlay locationOverlay;//줄어들 원
@@ -42,8 +46,26 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
 
-      
 
+
+
+        //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
+        PusherOptions options = new PusherOptions();
+        options.setCluster("ap3");
+        pusher = new Pusher("60518d2597abbeaa238c", options);
+
+        Channel channel = pusher.subscribe("ProMiss");
+
+        channel.bind("event_game"+getIntent().getStringExtra("id"), new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                System.out.println(data);
+            }
+        });
+
+        pusher.connect();
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
@@ -79,7 +101,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        pusher.disconnect();
     }
 
     @Override
