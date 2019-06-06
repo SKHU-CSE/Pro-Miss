@@ -51,7 +51,21 @@ public class UrlConnection {
     }
 
     public void DeleteRequest(String PHP, Callback callback, HashMap<String, String> map) {
+        String url = Mainurl + PHP;
 
+        FormBody.Builder bodybuilder = new FormBody.Builder();
+        for (String key : map.keySet()) {
+
+            bodybuilder.add(key, map.get(key));
+        }
+        RequestBody body = bodybuilder.build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .delete(body)
+                .build();
+
+        client.newCall(request).enqueue(callback);
     }
 
     public void PutRequest(String PHP, Callback callback, HashMap<String, String> map) {

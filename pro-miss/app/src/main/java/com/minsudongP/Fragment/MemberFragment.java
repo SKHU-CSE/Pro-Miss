@@ -18,7 +18,7 @@ import com.minsudongP.FriendListActivity;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
 import com.minsudongP.R;
-import com.minsudongP.Model.appointment;
+import com.minsudongP.appointment;
 
 import java.util.ArrayList;
 
@@ -48,8 +48,7 @@ public class MemberFragment extends Fragment {
                 ((appointment)getActivity()).setAppointment_role_3(arrayList);
             }
         };
-
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,12,"","임수현"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid,12,"추가하기","임수현"));
         arrayList.add(new PromissItem(PromissType.FriendList_Grid,0,"추가하기","추가하기"));
         adapter.notifyDataSetChanged();
 

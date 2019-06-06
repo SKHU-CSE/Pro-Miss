@@ -23,8 +23,8 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-    void clear(){fragments.clear();}
-    void addItem(Fragment fragment){
+    public void clear(){fragments.clear();}
+    public void addItem(Fragment fragment){
         fragments.add(fragment);
     }
 }

@@ -1,31 +1,108 @@
 
 package com.minsudongP;
 
+import android.renderscript.Allocation;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.gson.JsonIOException;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
+import com.minsudongP.Singletone.UrlConnection;
+import com.minsudongP.Singletone.UserInfor;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class AlertActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList=new ArrayList<>();
+    UrlConnection connection;
+
+
+
+
+    public String GetTime(String time)
+    {
+        String temp[]=time.split(":");
+        String AMorPM="오전";
+        try{
+            int hour=Integer.parseInt(temp[0]);
+            if(hour>=12)
+            {
+                AMorPM="오후 ";
+                temp[0]= hour==12?""+12 :""+(hour-12);
+            }else
+            {
+                AMorPM="오전 ";
+            }
+
+            return AMorPM+temp[0]+":"+temp[1];
+        }catch (IndexOutOfBoundsException e)
+        {
+            return time;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
 
+        connection=UrlConnection.shardUrl;
         recyclerView=findViewById(R.id.alert_recycle);
         adapter=new AllRecyclerAdapter(arrayList,AlertActivity.this);
+
+        adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
+            @Override
+            public void OnClick(View view, int position) {
+                HashMap<String,String> hash=new HashMap<>();
+                try{
+                    if(((Button)view).getText().toString().equals("수락"))
+                    {
+                            // 약속 초대 수락
+                        hash.put("appointment_id",""+arrayList.get(position).getAppointment_id());
+                        hash.put("user_id",UserInfor.shared.getId_num());
+                        hash.put("notification_id",""+arrayList.get(position).getNotification_id());
+                        connection.PostRequest("api/appointment/newMember",deleteNotify,hash);
+                        arrayList.remove(position);
+                        adapter.notifyDataSetChanged();
+
+                    }else{
+                            //해당 테이블 행 삭제
+                        hash.put("id",""+arrayList.get(position).getNotification_id());
+                       connection.DeleteRequest("api/notification/notifyDelete",deleteNotify,hash);
+                       arrayList.remove(position);
+                       adapter.notifyDataSetChanged();
+                    }
+                }catch (ClassCastException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
         View.OnClickListener AlertListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,5 +123,95 @@ public class AlertActivity extends AppCompatActivity {
 //        adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(AlertActivity.this));
         recyclerView.setAdapter(adapter);
+
+        connection.GetRequest("api/notification/myNotify/"+ UserInfor.shared.getId_num(),myNotify);
     }
+
+    private Callback deleteNotify=new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            AlertActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AlertActivity.this,"네트워크 문제로 알람을 삭제할 수 없습니다.",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            String s=response.body().string();
+            Log.d("url",s);
+            try{
+                JSONObject jsonObject=new JSONObject(s);
+            }catch (JSONException e)
+            {
+                AlertActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AlertActivity.this,"네트워크 문제로 알람을 삭제할 수 없습니다.",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+            }
+        }
+    };
+    private Callback myNotify=new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            AlertActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AlertActivity.this,"네트워크 문제로 알람을 불러올 수 없습니다.",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+                String s=response.body().string();
+
+            Log.d("url",s);
+                try{
+
+                    JSONObject jsonObject=new JSONObject(s);
+                    JSONArray notify=jsonObject.getJSONArray("data");
+
+                    for(int i=0;i<notify.length();i++)
+                    {
+                        JSONObject object=notify.getJSONObject(i);
+
+                        switch (object.getInt("type"))
+                        {
+
+                            case 0:
+//                                arrayList.add(new PromissItem(PromissType.New_Appoint,"5/14","오후 07:00","영등포 맛집 탐방"));
+                                arrayList.add(new PromissItem(PromissType.New_Appoint,object.getInt("id"),object.getInt("send_id"),object.getInt("appointment_id"),object.getString("created_at").substring(5,10),object.getString("date").substring(5,10),
+                                        GetTime(object.getString("date_time").substring(0,5)), object.getString("address")));
+                                break;
+                            default:
+                                arrayList.add(new PromissItem(PromissType.New_Appoint,object.getInt("id"),object.getInt("send_id"),object.getInt("appointment_id"),object.getString("created_at").substring(5,10),object.getString("date").substring(5,10),
+                                        GetTime(object.getString("date_time").substring(0,5)), object.getString("address")));
+                        }
+                    }
+                    AlertActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }catch (JSONException e)
+                {
+                    AlertActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(AlertActivity.this,"네트워크 문제로 알람을 불러올 수 없습니다.",Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                }
+        }
+    };
 }

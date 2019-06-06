@@ -53,13 +53,7 @@ public class MyPageActivity extends AppCompatActivity {
         // 팔로우 목록 불러오기
 
         final UrlConnection urlConnection = UrlConnection.shardUrl;
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
-            }
-        }.run();
+
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
@@ -149,11 +143,13 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // 팔로우 임시 목록
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
-        adapter.notifyDataSetChanged();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+            }
+        }.run();
     }
 
     @Override
@@ -230,6 +226,12 @@ public class MyPageActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call call, IOException e) {
 
+            MyPageActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MyPageActivity.this, "네트워크를 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @Override

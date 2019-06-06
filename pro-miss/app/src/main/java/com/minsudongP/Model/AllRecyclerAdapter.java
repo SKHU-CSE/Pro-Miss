@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.minsudongP.App;
 import com.minsudongP.FollowActivity;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.R;
@@ -23,6 +25,7 @@ import com.minsudongP.ViewHolder.NewAppointViewHolder;
 import com.minsudongP.ViewHolder.TimeLateViewHolder;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -179,6 +182,8 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
+
+
     void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){
         SearchViewHolder holder=(SearchViewHolder)viewHolder;
 
@@ -193,10 +198,23 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.jibun.setText(arrayList.get(position).getJibun());
     }
 
-    void BindNew_Appoint(RecyclerView.ViewHolder viewHolder,int position)
+    void BindNew_Appoint(RecyclerView.ViewHolder viewHolder, final int position)
     {
         NewAppointViewHolder holder=(NewAppointViewHolder)viewHolder;
 
+        holder.accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        });
+
+        holder.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        });
         holder.date.setText(arrayList.get(position).getDate());
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getPlace());
@@ -264,8 +282,14 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         FriendViewHolder holder=(FriendViewHolder)viewHolder;
 
+        String url = arrayList.get(position).getProfileImageURl();
+        Glide.with(activity)
+                .load(url)
+                .error(R.drawable.face)
+                .into(holder.friendImage);
+
         holder.friendName.setText(arrayList.get(position).getName());
-        holder.friendImage.setImageResource(R.drawable.face);
+
 
     }
 
@@ -273,15 +297,26 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     {
         Add_FriendVIewHolder holder=(Add_FriendVIewHolder)viewHolder;
 
+
         final int p=position;
-        if(arrayList.get(position).getProfileImageURl().equals("추가하기"))
+        if(arrayList.get(position).getProfileImageURl().equals("추가하기")) {
             holder.imageView.setImageResource(R.drawable.bt_add);
-        holder.imageView.getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                click.OnClick(v,p);
-            }
-        });
+            holder.imageView.getRootView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    click.OnClick(v,p);
+                }
+            });
+        }
+        else
+        {
+            String url = arrayList.get(position).getProfileImageURl();
+            Glide.with(activity)
+                    .load(url)
+                    .error(R.drawable.face)
+                    .into(holder.imageView);
+        }
+
 
         holder.name.setText(arrayList.get(position).getName());
     }
