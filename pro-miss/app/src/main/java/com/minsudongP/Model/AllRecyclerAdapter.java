@@ -12,6 +12,7 @@ import com.minsudongP.R;
 import com.minsudongP.ViewHolder.AcceptViewHolder;
 import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
+import com.minsudongP.ViewHolder.AttendViewHolder;
 import com.minsudongP.ViewHolder.CancelViewHolder;
 import com.minsudongP.ViewHolder.FollowViewHolder;
 import com.minsudongP.ViewHolder.FriendViewHolder;
@@ -114,6 +115,11 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder=new FollowViewHolder(view);
                 break;
 
+            case Attend_Appoint:
+                view=activity.getLayoutInflater().inflate(R.layout.attend_item,viewGroup,false);
+                viewHolder=new AttendViewHolder(view);
+                break;
+
             default:
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
                 viewHolder=new FriendViewHolder(view);
@@ -165,6 +171,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             case Follow:
                 BindFollow(viewHolder,i);
+                break;
+            case Attend_Appoint:
+                BindAttend(viewHolder,i);
                 break;
 
             default:
@@ -258,6 +267,23 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         holder.name.setText(arrayList.get(position).getName());
     }
+
+    void BindAttend(RecyclerView.ViewHolder viewHolder, final int position)//Attend_Appoint
+    {
+        AttendViewHolder holder=(AttendViewHolder)viewHolder;
+
+        holder.place.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        });
+
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.place.setText(arrayList.get(position).getName());
+    }
+
 
 
     void BindFriendLIst(RecyclerView.ViewHolder viewHolder,int position){
