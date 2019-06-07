@@ -10,6 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.minsudongP.Model.AllRecyclerAdapter;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
+
 import java.util.ArrayList;
 
 public class AttendingActivity extends AppCompatActivity {
