@@ -26,7 +26,7 @@ import com.minsudongP.DialogSelectTimer;
 import com.minsudongP.R;
 
 import com.minsudongP.SetDestinyActivity;
-import com.minsudongP.Model.appointment;
+import com.minsudongP.appointment;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;

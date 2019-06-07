@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -36,6 +38,7 @@ public class MyPageActivity extends AppCompatActivity {
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();
 
+    CircleImageView imageView;
     // 금액 충전
     TextView money;
     final int MYPAGE_TO_CHARGE = 3000;
@@ -46,20 +49,18 @@ public class MyPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
         RecyclerView recyclerView = findViewById(R.id.mypage_recycleview);
-
+        imageView=findViewById(R.id.mypage_profile_image);
         // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
 
         // 팔로우 목록 불러오기
 
         final UrlConnection urlConnection = UrlConnection.shardUrl;
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
-            }
-        }.run();
+
+        Glide.with(this)
+                .load(UserInfor.shared.getProfile_img())
+                .error(R.drawable.face)
+                .into(imageView);
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
@@ -149,11 +150,13 @@ public class MyPageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // 팔로우 임시 목록
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 1, "urltest", "양민욱"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 2, "urltest", "구동섭"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst, 3, "urltest", "김종인"));
-        adapter.notifyDataSetChanged();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+            }
+        }.run();
     }
 
     @Override
@@ -230,6 +233,12 @@ public class MyPageActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call call, IOException e) {
 
+            MyPageActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MyPageActivity.this, "네트워크를 확인해주세요.", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @Override

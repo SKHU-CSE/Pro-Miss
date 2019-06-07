@@ -4,7 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
+
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
 
         ImageView iv = (ImageView)findViewById(R.id.loading_imageView);
-        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(iv);
+        DrawableImageViewTarget gifImage = new DrawableImageViewTarget(iv);
         Glide.with(this).load(R.drawable.jumping_location).into(gifImage);
     }
 }

@@ -69,7 +69,7 @@
         </activity>
         <activity android:name=".AttendingActivity" />
         <activity android:name=".MyPageActivity" />
-        <activity android:name=".Model.appointment" />
+        <activity android:name=".appointment" />
         <activity android:name=".MainActivity" />
 
         <uses-library

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
-import com.minsudongP.Model.appointment;
 import com.minsudongP.Singletone.UrlConnection;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;

@@ -1,5 +1,7 @@
-package com.minsudongP.Model;
+package com.minsudongP;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +11,8 @@ import android.widget.Toast;
 import com.minsudongP.Fragment.AppointmentFragemnt;
 import com.minsudongP.Fragment.MemberFragment;
 import com.minsudongP.Fragment.SetMoneyFragemnt;
-import com.minsudongP.R;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.ViewpagerAdapter;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 
@@ -204,7 +207,24 @@ public class appointment extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
+        alert_ex.setMessage("취소하고 메인페이지로 돌아갑니다.");
+
+        alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alert_ex.setTitle("작성을 취소하시겠습니까?");
+        AlertDialog alert = alert_ex.create();
+        alert.show();
     }
 
 
