@@ -48,6 +48,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     long mNow;
     Date mDate;
     TextView tvDate;
+    TextView tvTime ;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
     static final int request_code=1;
     public String latitude;
@@ -83,7 +84,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             public void onClick(View v) {
                 final Calendar cal = Calendar.getInstance();
 
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),  new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
@@ -92,15 +93,13 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 
-                //dialog.getDatePicker().setMaxDate(new Date().getTime());    //입력한 날짜 이후로 클릭 안되게 옵션
+
+                dialog.getDatePicker().setMinDate(cal.getTime().getTime());    //현재 날짜 이전으로 클릭 안되게 옵션 설정
                 dialog.show();
             }
         });
 
-        final TextView tvTime = view.findViewById(R.id.frg_appoint1_card1_TimeText);
-        tvTime.setOnClickListener(new View.OnClickListener() {
-
-
+        View.OnClickListener timerListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -109,15 +108,42 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
 
-                        date_time=hour+":"+min;
-                        String ampm = "AM";
+                        //if()
+//                        long now = System.currentTimeMillis();
+//                        Date date=new Date(now);
 
-                        if (hour >= 12) {
-                            ampm = "PM";
-                            if (hour != 12) hour -= 12;
+                        int currentHour=cal.get(Calendar.HOUR_OF_DAY);
+
+                        int currentMin=cal.get(Calendar.MINUTE);
+                        if(currentHour<hour) {
+
+                            date_time = hour + ":" + min;
+                            String ampm = "AM";
+
+                            if (hour >= 12) {
+                                ampm = "PM";
+                                if (hour != 12) hour -= 12;
+                            }
+                            tvTime.setText(String.format("%s %02d : %02d", ampm, hour, min));
+                        }
+                        else {
+                            AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
+                            alert_ex.setMessage("현재시간 보다 이전시간으로 설정하셨습니다. 다시 설정하세요");
+
+                            alert_ex.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
+                            alert_ex.setTitle("시간설정 오류");
+                            AlertDialog alert = alert_ex.create();
+                            alert.show();
+
                         }
 
-                        tvTime.setText(String.format("%s %02d : %02d", ampm, hour, min));
+
                     }
                 }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);//마지막 boolean 값은 시간을 24시간으로 보일지 아닐지
 
@@ -125,7 +151,9 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
             }
 
-        });
+        };
+        tvTime = view.findViewById(R.id.frg_appoint1_card1_TimeText);
+        tvTime.setOnClickListener(timerListener);
         tvTimer = view.findViewById(R.id.atd_detail_timer_t2);
         tvTimer.setOnClickListener(new View.OnClickListener() {
             @Override
