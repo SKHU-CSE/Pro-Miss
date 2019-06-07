@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.minsudongP.Service.PromissService;
 import com.minsudongP.Singletone.UrlConnection;
+import com.minsudongP.Singletone.UserInfor;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.MapFragment;
@@ -50,7 +51,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     CircleOverlay circle; //줄어들 원
     int radius = 500;
     Pusher pusher;
-    Marker Mymarker;
     HashMap<String,Marker> memberMarker=new HashMap<>();
     Intent intent;
     String appointment_id;
@@ -255,15 +255,16 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
             if (intent.getStringExtra("send").equals("error")) {
                 Toast.makeText(Appointment_Game_Activity.this, intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
             } else {
-                if (Mymarker == null) {
-                    Mymarker = new Marker();
-                } else {
-                    Mymarker.setMap(null);
+                Marker marker=memberMarker.get(UserInfor.shared.getId_num());
+                if (marker != null) {
+                    marker.setMap(null);
                 }
+                Marker Mymarker=new Marker();
                 Mymarker.setCaptionText("나의 위치");
 
                 Mymarker.setPosition(new LatLng(intent.getDoubleExtra("latitude", 36), intent.getDoubleExtra("longitude", 126)));
                 Mymarker.setMap(mMap);
+                memberMarker.put(UserInfor.shared.getId_num(),Mymarker);
             }
         }
 
@@ -287,6 +288,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
             {
 
                 JSONObject user=jsonArray.getJSONObject(i);
+
 
                 Marker marker=new Marker();
                 marker.setCaptionText(user.getString("name"));

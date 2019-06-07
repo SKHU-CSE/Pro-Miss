@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -36,6 +38,7 @@ public class MyPageActivity extends AppCompatActivity {
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();
 
+    CircleImageView imageView;
     // 금액 충전
     TextView money;
     final int MYPAGE_TO_CHARGE = 3000;
@@ -46,7 +49,7 @@ public class MyPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
         RecyclerView recyclerView = findViewById(R.id.mypage_recycleview);
-
+        imageView=findViewById(R.id.mypage_profile_image);
         // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
 
@@ -54,6 +57,10 @@ public class MyPageActivity extends AppCompatActivity {
 
         final UrlConnection urlConnection = UrlConnection.shardUrl;
 
+        Glide.with(this)
+                .load(UserInfor.shared.getProfile_img())
+                .error(R.drawable.face)
+                .into(imageView);
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {

@@ -18,6 +18,7 @@ import com.minsudongP.ViewHolder.CancelViewHolder;
 import com.minsudongP.ViewHolder.FollowViewHolder;
 import com.minsudongP.ViewHolder.FriendViewHolder;
 
+import com.minsudongP.ViewHolder.GPSViewHolder;
 import com.minsudongP.ViewHolder.LateMemberViewHolder;
 import com.minsudongP.ViewHolder.SearchViewHolder;
 
@@ -71,6 +72,10 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     viewHolder = new FriendViewHolder(view);
                     break;
                 }
+            case GPS_ALERT:
+                view=activity.getLayoutInflater().inflate(R.layout.alert_gps,viewGroup,false);
+                viewHolder=new GPSViewHolder(view);
+                break;
             case FriendList_Grid:
                 view=activity.getLayoutInflater().inflate(R.layout.add_friend_item,viewGroup,false);
                 viewHolder=new Add_FriendVIewHolder(view);
@@ -111,20 +116,15 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 view=activity.getLayoutInflater().inflate(R.layout.alert_safe,viewGroup,false);
                 viewHolder=new LateMemberViewHolder(view);
                 break;
-
             case Follow:
                 view=activity.getLayoutInflater().inflate(R.layout.alert_follow,viewGroup,false);
                 viewHolder=new FollowViewHolder(view);
                 break;
-
             default:
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
                 viewHolder=new FriendViewHolder(view);
                 break;
-
         }
-
-
         return viewHolder;
     }
 
@@ -170,6 +170,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 BindFollow(viewHolder,i);
                 break;
 
+            case GPS_ALERT:
+                BindGps(viewHolder,i);
+                break;
             default:
                 break;
         }
@@ -186,22 +189,30 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){
         SearchViewHolder holder=(SearchViewHolder)viewHolder;
-
         holder.address.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click.OnClick(v,position);
             }
         });
-
         holder.address.setText(arrayList.get(position).getAddress());
         holder.jibun.setText(arrayList.get(position).getJibun());
+    }
+
+    void BindGps(RecyclerView.ViewHolder viewHolder,final int position)
+    {
+        GPSViewHolder holder=(GPSViewHolder)viewHolder;
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        });
     }
 
     void BindNew_Appoint(RecyclerView.ViewHolder viewHolder, final int position)
     {
         NewAppointViewHolder holder=(NewAppointViewHolder)viewHolder;
-
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,18 +234,15 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     void BindTime_Late(RecyclerView.ViewHolder viewHolder,int position)
     {
         TimeLateViewHolder holder=(TimeLateViewHolder)viewHolder;
-
         holder.date.setText(arrayList.get(position).getDate());
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getPlace());
         holder.money.setText(arrayList.get(position).getMoney());
-
     }
 
     void BindAccept(RecyclerView.ViewHolder viewHolder,int position)
     {
         AcceptViewHolder holder=(AcceptViewHolder)viewHolder;
-
         holder.name.setText(arrayList.get(position).getName());
         holder.date.setText(arrayList.get(position).getDate());
         holder.time.setText(arrayList.get(position).getTime());
@@ -289,14 +297,11 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 .into(holder.friendImage);
 
         holder.friendName.setText(arrayList.get(position).getName());
-
-
     }
 
     void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder,  int position)
     {
         Add_FriendVIewHolder holder=(Add_FriendVIewHolder)viewHolder;
-
 
         final int p=position;
         if(arrayList.get(position).getProfileImageURl().equals("추가하기")) {
@@ -316,8 +321,6 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     .error(R.drawable.face)
                     .into(holder.imageView);
         }
-
-
         holder.name.setText(arrayList.get(position).getName());
     }
 }

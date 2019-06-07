@@ -44,6 +44,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.app.Notification.VISIBILITY_PUBLIC;
 import static com.minsudongP.App.CHAANEL_ID;
 
 public class PromissService extends Service implements LocationListener {
@@ -54,17 +55,13 @@ public class PromissService extends Service implements LocationListener {
 
     protected LocationManager locationManager;
 
-
-
-
-
     //push 알람
 
     NotificationManagerCompat manager;
-    Notification Init;
-    Notification New_Alert; // 새로운 알림이 도착했습니다.
-    Notification Appoitment_End;  // 약속 제목 약속이 종료되었습니다! PendingIntent는 없어도 됨
-    Notification Fine;//벌금이 누적되었습니다.
+    NotificationCompat.Builder Init;
+    NotificationCompat.Builder New_Alert; // 새로운 알림이 도착했습니다.
+    NotificationCompat.Builder Appoitment_End;  // 약속 제목 약속이 종료되었습니다! PendingIntent는 없어도 됨
+    NotificationCompat.Builder Fine;//벌금이 누적되었습니다.
     @Override
     public void onCreate() {
         super.onCreate();
@@ -81,8 +78,6 @@ public class PromissService extends Service implements LocationListener {
 
         }else {
 
-
-
             locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -94,7 +89,6 @@ public class PromissService extends Service implements LocationListener {
                     60000,
                     1,
                     this);
-
         }
 
         //알람 등록
@@ -112,36 +106,37 @@ public class PromissService extends Service implements LocationListener {
                     .setContentTitle("약속")
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("벌금이 누적되었습니다.")
+                    .setVisibility(VISIBILITY_PUBLIC)
                     .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
                     .setContentIntent(FinePendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .build();
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
             Init=new NotificationCompat.Builder(this,CHAANEL_ID)
                     .setContentTitle("Pro-Miss")
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("반갑습니다. "+name+"님")
+                    .setVisibility(VISIBILITY_PUBLIC)
                     .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
                     .setContentIntent(FinePendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .build();
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
             New_Alert=new NotificationCompat.Builder(this,CHAANEL_ID)
                     .setContentTitle("프로미스")
+                    .setVisibility(VISIBILITY_PUBLIC)
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("사용자에게 새로운 알림이 도착했습니다.")
                     .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
                     .setContentIntent(AlertPendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .build();
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
             Appoitment_End=new NotificationCompat.Builder(this,CHAANEL_ID)
                     .setContentTitle("프로미스")
+                    .setVisibility(VISIBILITY_PUBLIC)
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("약속이 종료되었습니다.")
                     .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
                     .setContentIntent(FinePendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .build();
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
             //////////////////////////////////////////////////////////////////////////////////////////
@@ -155,15 +150,31 @@ public class PromissService extends Service implements LocationListener {
             channel.bind("event_user"+id, new SubscriptionEventListener() {
                 @Override
                 public void onEvent(String channelName, String eventName, final String data) {
-                    System.out.println(data);
-                    manager.notify(0, New_Alert);
+                    //type: 1. 약속초대
+                    try {
+                        JSONObject jsonObject=new JSONObject(data);
+
+                        switch (jsonObject.getString("type"))
+                        {
+                            case "약속초대":
+                            case "gps 경고":
+                                manager.notify(20, New_Alert.setContentText(jsonObject.getString("message")).build());
+                                break;
+                                default:
+                                    break;
+                        }
+
+                    }catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             });
 
             pusher.connect();
         }
 
-        startForeground(10,Init);
+        startForeground(10,Init.build());
 
       //  manager.notify(30, New_Alert);
         return START_STICKY;  //서비스가 종료되어도 다시 시작

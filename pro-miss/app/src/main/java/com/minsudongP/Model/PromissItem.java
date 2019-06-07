@@ -15,6 +15,12 @@ public class PromissItem {
     private String positionX;
     private String positionY;
 
+    public PromissItem(PromissType type,int notification_id)
+    {
+        this.Type=type;
+        this.Notification_id=notification_id;
+    }
+
     public int getAppointment_id() {
         return Appointment_id;
     }
