@@ -257,15 +257,20 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         s=s.replaceAll(" ","");
         s=s.replaceAll("분","");
         s=s.trim();
-        String str[]=s.split("시간");
+        if(s.contains("시간")) {
+            String str[] = s.split("시간");
 
 
-        int time=0;
-        time += Integer.parseInt(str[0])*60;
-        if(str.length>1)
-            time += Integer.parseInt(str[1]);
+            int time = 0;
+            time += Integer.parseInt(str[0]) * 60;
+            if (str.length > 1)
+                time += Integer.parseInt(str[1]);
 
-        return time;
+        }else
+        {
+            s=s.replace("시간","");
+        }
+        return Integer.parseInt(s.trim());
     }
 
 

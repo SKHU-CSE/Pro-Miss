@@ -48,7 +48,7 @@ public class MemberFragment extends Fragment {
                 ((appointment)getActivity()).setAppointment_role_3(arrayList);
             }
         };
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,12,"추가하기","임수현"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid,1435,"추가하기","양민욱"));
         arrayList.add(new PromissItem(PromissType.FriendList_Grid,0,"추가하기","추가하기"));
         adapter.notifyDataSetChanged();
 
