@@ -22,6 +22,7 @@ import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
+import com.mlsdev.animatedrv.AnimatedRecyclerView;
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
 import com.mommoo.permission.listener.OnPermissionGranted;
@@ -46,10 +47,10 @@ import okhttp3.Response;
 
 public class AlertActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList=new ArrayList<>();
     UrlConnection connection;
+    AnimatedRecyclerView recyclerView;
 
     public String GetTime(String time)
     {
@@ -78,8 +79,9 @@ public class AlertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
 
+        recyclerView = (AnimatedRecyclerView)findViewById(R.id.alert_recycle);
         connection=UrlConnection.shardUrl;
-        recyclerView=findViewById(R.id.alert_recycle);
+
         adapter=new AllRecyclerAdapter(arrayList,AlertActivity.this);
 
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
@@ -176,7 +178,7 @@ public class AlertActivity extends AppCompatActivity {
 //        arrayList.add(new PromissItem(PromissType.Time_Late,"5/15","오후 08:00","서울 맛집 탐방","1000"));
 //
 //        adapter.notifyDataSetChanged();
-        recyclerView.setLayoutManager(new LinearLayoutManager(AlertActivity.this));
+
         recyclerView.setAdapter(adapter);
 
         connection.GetRequest("api/notification/myNotify/"+ UserInfor.shared.getId_num(),myNotify);
@@ -288,6 +290,7 @@ public class AlertActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             adapter.notifyDataSetChanged();
+                            recyclerView.scheduleLayoutAnimation();
                         }
                     });
                 }catch (JSONException e)
@@ -299,6 +302,9 @@ public class AlertActivity extends AppCompatActivity {
                             finish();
                         }
                     });
+                }catch (StringIndexOutOfBoundsException e)
+                {
+                    e.printStackTrace();
                 }
         }
     };

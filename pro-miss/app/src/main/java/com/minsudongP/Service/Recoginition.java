@@ -132,7 +132,7 @@ public class Recoginition extends RecognitionService {
     }
 
     private void sendMessage(String send,String message){
-        Log.d("messageService", "Broadcasting message");
+
         Intent intent = new Intent("Promiss-event-name");
         intent.putExtra("send",send);
         intent.putExtra("message", message);
@@ -144,8 +144,9 @@ public class Recoginition extends RecognitionService {
         super.onDestroy();
         end=true;
         mHdrVoiceRecoState.sendEmptyMessage(MSG_VOICE_RECO_READY); //음성인식 서비스 다시 시작
-        Log.d("service","destory");
+
     }
+
 
     @Override
     protected void onStartListening(Intent recognizerIntent, Callback listener) {
@@ -234,7 +235,6 @@ public class Recoginition extends RecognitionService {
                 sendMessage("pause","");
             }
 
-            Log.d("sound",""+rmsdB);
         }
 
 

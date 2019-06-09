@@ -139,10 +139,12 @@ public class SiriActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
+
+
 
     public void AddTextView(String send, String message){
         TextView view=new TextView(SiriActivity.this);

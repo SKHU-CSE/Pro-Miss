@@ -214,13 +214,13 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap=naverMap;
-        this.naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
-                Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
-                startActivityForResult(intent,request_code);
-            }
-        });
+//        this.naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+//                Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
+//                startActivityForResult(intent,request_code);
+//            }
+//        });
 
     }
 
@@ -266,10 +266,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
             if (str.length > 1)
                 time += Integer.parseInt(str[1]);
 
+            return time;
         }else
-        {
-            s=s.replace("시간","");
-        }
         return Integer.parseInt(s.trim());
     }
 

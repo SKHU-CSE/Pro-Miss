@@ -54,7 +54,8 @@ dependencies {
 
     //pusher
     implementation 'com.pusher:pusher-java-client:1.5.0'
-
+    //리사이클뷰 애니메이션
+    implementation "com.mlsdev.animatedrv:library:1.0.1"
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     // Skip this if you don't want to use integration libraries or configure Glide.

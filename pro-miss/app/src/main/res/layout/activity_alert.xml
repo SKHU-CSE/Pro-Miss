@@ -32,13 +32,16 @@
         android:textColor="#000000"
          />
 
-    <android.support.v7.widget.RecyclerView
+
+    <com.mlsdev.animatedrv.AnimatedRecyclerView
         android:id="@+id/alert_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
+        app:animationDuration="600"
         android:layout_below="@id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-    </android.support.v7.widget.RecyclerView>
+        app:layoutAnimation="@anim/layout_animation_from_bottom"
+        app:layoutManagerOrientation="vertical"
+        app:layoutManagerReverse="false"
+        app:layoutManagerType="linear" />
 </RelativeLayout>
