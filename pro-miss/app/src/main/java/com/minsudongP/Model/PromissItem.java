@@ -16,10 +16,9 @@ public class PromissItem {
     private String positionY;
 
 
-    public PromissItem(PromissType type,int notification_id)
-    {
-        this.Type=type;
-        this.Notification_id=notification_id;
+    public PromissItem(PromissType type, int notification_id) {
+        this.Type = type;
+        this.Notification_id = notification_id;
     }
 
     public int getAppointment_id() {
@@ -46,6 +45,38 @@ public class PromissItem {
         Notification_date = notification_date;
     }
 
+    public String getPtcmember() {
+        return ptcmember;
+    }
+
+    public void setPtcmember(String ptcmember) {
+        this.ptcmember = ptcmember;
+    }
+
+    public String getScsmember() {
+        return scsmember;
+    }
+
+    public void setScsmember(String scsmember) {
+        this.scsmember = scsmember;
+    }
+
+    public String getMymoney() {
+        return mymoney;
+    }
+
+    public void setMymoney(String mymoney) {
+        this.mymoney = mymoney;
+    }
+
+    public String getAllmoney() {
+        return allmoney;
+    }
+
+    public void setAllmoney(String allmoney) {
+        this.allmoney = allmoney;
+    }
+
     public int getNotification_id() {
         return Notification_id;
     }
@@ -56,10 +87,10 @@ public class PromissItem {
 
     public PromissItem(PromissType Type, int id, String Profileimage, String Name) //FrendList
     {
-        this.user_id=id;
-        this.Type=Type;
-        this.ProfileImageURl=Profileimage;
-        this.Name=Name;
+        this.user_id = id;
+        this.Type = Type;
+        this.ProfileImageURl = Profileimage;
+        this.Name = Name;
     }
 
     private String Date;
@@ -67,6 +98,10 @@ public class PromissItem {
     private String Money;
     private String Member; //지각한 멤버
     private String Place;
+    private String ptcmember; //참여한 인원
+    private String scsmember; //달성한 인원
+    private String mymoney; //내 기부금
+    private String allmoney; //총 기부금
 
 
     public PromissItem(PromissType type, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember) {
@@ -112,16 +147,15 @@ public class PromissItem {
         } else if (type == PromissType.Attend_Appoint) {
             this.Date = date;
             this.Time = time;
-            this.Name= place;
+            this.Name = place;
             this.Type = type;
-        }else{
+        } else {
             this.Date = date;
             this.Time = time;
             this.Place = place;
             this.Type = type;
         }
     }
-
 
 
     public String getDate() {
@@ -205,39 +239,32 @@ public class PromissItem {
     }
 
 
-    public PromissItem(PromissType type,int notification_id,int notification_send,String notification_date, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember)
-    {
+    public PromissItem(PromissType type, int notification_id, int notification_send, String notification_date, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember) {
 
-        this.Notification_id=notification_id;
-        this.Notification_send=notification_send;
-        this.Notification_date=notification_date;
-        if(type==PromissType.Time_Late)
-        {
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Type=type;
-            this.Money=positionYORmoneyORnameORMember;
-        }
-        else if(type==PromissType.Accept||type==PromissType.Cancel)
-        {
-            this.Name=positionYORmoneyORnameORMember;
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Type=type;
-        }else if(type==PromissType.Late_Member)
-        {
-            this.Type=type;
-            this.Date=addressORdate;
-            this.Time=jibunORtime;
-            this.Place=positionXORPlace;
-            this.Member=positionYORmoneyORnameORMember;
-        }
-        else if(type==PromissType.Follow)
-        {
-            this.Type=type;
-            this.Name=positionYORmoneyORnameORMember;
+        this.Notification_id = notification_id;
+        this.Notification_send = notification_send;
+        this.Notification_date = notification_date;
+        if (type == PromissType.Time_Late) {
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Type = type;
+            this.Money = positionYORmoneyORnameORMember;
+        } else if (type == PromissType.Accept || type == PromissType.Cancel) {
+            this.Name = positionYORmoneyORnameORMember;
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Type = type;
+        } else if (type == PromissType.Late_Member) {
+            this.Type = type;
+            this.Date = addressORdate;
+            this.Time = jibunORtime;
+            this.Place = positionXORPlace;
+            this.Member = positionYORmoneyORnameORMember;
+        } else if (type == PromissType.Follow) {
+            this.Type = type;
+            this.Name = positionYORmoneyORnameORMember;
         }
 
 
@@ -267,27 +294,37 @@ public class PromissItem {
         this.address = address;
     }
 
-    public PromissItem(PromissType type,int notification_id,int notification_send,int appointment_id, String notification_date,String date,String time,String place) //New Appoint, Appoint_Start
+    public PromissItem(PromissType type, int notification_id, int notification_send, int appointment_id, String notification_date, String date, String time, String place) //New Appoint, Appoint_Start
     {
-        this.Notification_date=notification_date;
-        this.Notification_send=notification_send;
-        this.Appointment_id=appointment_id;
-        if(type==PromissType.New_Appoint) {
-            this.Notification_id=notification_id;
+        this.Notification_date = notification_date;
+        this.Notification_send = notification_send;
+        this.Appointment_id = appointment_id;
+        if (type == PromissType.New_Appoint) {
+            this.Notification_id = notification_id;
+            this.Date = date;
+            this.Time = time;
+            this.Place = place;
+            this.Type = type;
+        } else {
+            this.Notification_id = notification_id;
             this.Date = date;
             this.Time = time;
             this.Place = place;
             this.Type = type;
         }
-        else {
-            this.Notification_id=notification_id;
-            this.Date = date;
-            this.Time = time;
-            this.Place = place;
-            this.Type = type;
-        }
+
     }
 
-
-
+    public PromissItem(PromissType type, String place, String date, String ptcmember, String scsmember, String mymoney, String allmoney)//Past_Appoint
+    {
+        if (type == PromissType.Past_Appoint) {
+            this.Type=type;
+            this.Name =place;
+            this.Date = date;
+            this.ptcmember = ptcmember;
+            this.scsmember = scsmember;
+            this.mymoney = mymoney;
+            this.allmoney = allmoney;
+        }
+    }
 }
