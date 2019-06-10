@@ -7,6 +7,7 @@ public class PromissItem {
     private int Notification_id;
     private int Appointment_id;
     private int Notification_send;
+    private int isFollowing;
     private String Notification_date;
     private String ProfileImageURl;
     private String Name;
@@ -54,6 +55,7 @@ public class PromissItem {
         Notification_id = notification_id;
     }
 
+    // type, int, string, string
     public PromissItem(PromissType Type, int id, String Profileimage, String Name) //FrendList
     {
         this.user_id=id;
@@ -69,6 +71,7 @@ public class PromissItem {
     private String Place;
 
 
+    // type, string, string, string, string, string
     public PromissItem(PromissType type, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember) {
 
 
@@ -102,6 +105,7 @@ public class PromissItem {
         }
     }
 
+    // type, string, string, string
     public PromissItem(PromissType type, String date, String time, String place) //New Appoint, Appoint_Start, Attend_Appoint
     {
         if (type == PromissType.New_Appoint) {
@@ -205,6 +209,7 @@ public class PromissItem {
     }
 
 
+    // type, int, int, string, string, string, string
     public PromissItem(PromissType type,int notification_id,int notification_send,String notification_date, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember)
     {
 
@@ -267,6 +272,7 @@ public class PromissItem {
         this.address = address;
     }
 
+    // type, int, int, int, string, string, string, string
     public PromissItem(PromissType type,int notification_id,int notification_send,int appointment_id, String notification_date,String date,String time,String place) //New Appoint, Appoint_Start
     {
         this.Notification_date=notification_date;
@@ -288,6 +294,14 @@ public class PromissItem {
         }
     }
 
+    public  PromissItem(PromissType type, int id, String image, String name, int isFollowing){ // All User
+        this.Type = type;
+        this.user_id = id;
+        this.ProfileImageURl = image;
+        this.Name = name;
+        this.isFollowing = isFollowing;
+    }
 
-
+    public int getIsFollowing() {return isFollowing;}
+    public void setIsFollowing(int i) {isFollowing = i;}
 }

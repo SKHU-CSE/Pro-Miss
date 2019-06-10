@@ -16,6 +16,7 @@ import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
 import com.minsudongP.ViewHolder.AttendViewHolder;
 import com.minsudongP.ViewHolder.CancelViewHolder;
+import com.minsudongP.ViewHolder.FollowUsersViewHolder;
 import com.minsudongP.ViewHolder.FollowViewHolder;
 import com.minsudongP.ViewHolder.FriendViewHolder;
 
@@ -63,16 +64,16 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (arrayList.get(viewposition).getType())
         {
-            case FriendLIst:
-                if (activity.getClass() == new FollowActivity().getClass()) {
-                    view=activity.getLayoutInflater().inflate(R.layout.follow_card,viewGroup,false);
-                    viewHolder=new FriendViewHolder(view);
-                    break;
-                } else {
+            case UserList:
+                view = activity.getLayoutInflater().inflate(R.layout.follow_card, viewGroup, false);
+                viewHolder = new FollowUsersViewHolder(view);
+                break;
+            case FriendList:
+
                     view = activity.getLayoutInflater().inflate(R.layout.friendlist_card, viewGroup, false);
                     viewHolder = new FriendViewHolder(view);
                     break;
-                }
+
             case GPS_ALERT:
                 view=activity.getLayoutInflater().inflate(R.layout.alert_gps,viewGroup,false);
                 viewHolder=new GPSViewHolder(view);
@@ -147,7 +148,10 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (arrayList.get(i).getType())
         {
-            case FriendLIst:
+            case UserList:
+                BindAllUserList(viewHolder,i);
+                break;
+            case FriendList:
                 BindFriendLIst(viewHolder,i);
                 break;
             case FriendList_Grid:
@@ -197,6 +201,23 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
+    void BindAllUserList(RecyclerView.ViewHolder viewHolder, final int position){
+        FollowUsersViewHolder holder=(FollowUsersViewHolder)viewHolder;
+
+        String url = arrayList.get(position).getProfileImageURl();
+        Glide.with(activity)
+                .load(url)
+                .error(R.drawable.face)
+                .into(holder.friendImage);
+
+        holder.friendName.setText(arrayList.get(position).getName());
+
+        if(arrayList.get(position).getIsFollowing() == 0) {
+            holder.followButton.setText("팔로우");
+        } else {
+            holder.followButton.setText("팔로잉");
+        }
+    }
 
     void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){
         SearchViewHolder holder=(SearchViewHolder)viewHolder;
@@ -311,7 +332,6 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getName());
     }
-
 
 
     void BindFriendLIst(RecyclerView.ViewHolder viewHolder,int position){

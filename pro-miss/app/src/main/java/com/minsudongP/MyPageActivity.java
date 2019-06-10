@@ -257,7 +257,7 @@ public class MyPageActivity extends AppCompatActivity {
                         String image = followerObj.getString("Image");
                         String name = followerObj.getString("name");
 
-                        PromissItem item = new PromissItem(PromissType.FriendLIst, id, image, name);
+                        PromissItem item = new PromissItem(PromissType.FriendList, id, image, name);
                         arrayList.add(item);
                     }
 
