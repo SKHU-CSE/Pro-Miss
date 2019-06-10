@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".AttendingActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="450dp">
+
 
         <Button
             android:id="@+id/attending_backButton"
@@ -34,18 +31,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/attend_recycle"
-            android:layout_width="395dp"
-            android:layout_height="630dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/attend_title" />
+
+    <com.mlsdev.animatedrv.AnimatedRecyclerView
+        android:id="@+id/attend_recycle"
+        android:layout_width="396dp"
+        android:layout_height="621dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        app:animationDuration="600"
+        app:layoutAnimation="@anim/layout_animation_from_bottom"
+        app:layoutManagerOrientation="vertical"
+        app:layoutManagerReverse="false"
+        app:layoutManagerType="linear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attend_title" />
 
 
-    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -156,9 +156,12 @@ public class PromissService extends Service implements LocationListener {
 
                         switch (jsonObject.getString("type"))
                         {
-                            case "약속초대":
+                            case "약속 초대":
                             case "gps 경고":
                                 manager.notify(20, New_Alert.setContentText(jsonObject.getString("message")).build());
+                                break;
+                            case "약속 종료":
+                                manager.notify(20, Appoitment_End.setContentText(jsonObject.getString("message")).build());
                                 break;
                                 default:
                                     break;

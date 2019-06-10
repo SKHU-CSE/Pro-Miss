@@ -129,9 +129,7 @@ public class AlertActivity extends AppCompatActivity {
 
                                                 HashMap<String, String> hashMap = new HashMap<>();
                                                 hashMap.put("user_id",UserInfor.shared.getId_num());
-                                                hashMap.put("appointment_id",""+arrayList.get(position).
-
-                                                        getAppointment_id());
+                                                hashMap.put("appointment_id",""+arrayList.get(position).getAppointment_id());
                                                 hashMap.put("latitude",""+location.getLatitude());
                                                 hashMap.put("longitude",""+location.getLongitude());
 
@@ -281,6 +279,7 @@ public class AlertActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 arrayList.add(new PromissItem(PromissType.GPS_ALERT,object.getInt("appointment_id")));
+                                break;
                             default:
                                 arrayList.add(new PromissItem(PromissType.New_Appoint,object.getInt("id"),object.getInt("send_id"),object.getInt("appointment_id"),object.getString("created_at").substring(5,10),object.getString("date").substring(5,10),
                                         GetTime(object.getString("date_time").substring(0,5)), object.getString("address")));

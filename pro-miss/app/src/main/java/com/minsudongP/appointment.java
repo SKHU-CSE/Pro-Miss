@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -162,9 +163,13 @@ public class appointment extends AppCompatActivity {
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-         viewpagerAdapter=new ViewpagerAdapter(getSupportFragmentManager());
+        viewpagerAdapter=new ViewpagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewpagerAdapter);
 
+        CircleIndicator indicator = (CircleIndicator)findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
+
+        viewpagerAdapter.registerDataSetObserver(indicator.getDataSetObserver());
         ap_fragment=new AppointmentFragemnt();
         sd_fragment=new SetMoneyFragemnt();
         mb_fragment=new MemberFragment();
