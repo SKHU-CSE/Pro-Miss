@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.minsudongP.App;
@@ -199,9 +200,6 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return arrayList.size();
     }
 
-
-
-
     void BindAllUserList(RecyclerView.ViewHolder viewHolder, final int position){
         FollowUsersViewHolder holder=(FollowUsersViewHolder)viewHolder;
 
@@ -211,8 +209,14 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 .error(R.drawable.face)
                 .into(holder.friendImage);
 
-        holder.friendName.setText(arrayList.get(position).getName());
+        final View.OnClickListener followListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        };
 
+        holder.friendName.setText(arrayList.get(position).getName());
         if(arrayList.get(position).getIsFollowing() == 0) {
             holder.followButton.setText("팔로우");
             holder.followButton.setBackgroundColor(Color.parseColor("#5FB404"));
@@ -222,6 +226,8 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.followButton.setBackgroundColor(Color.WHITE);
             holder.followButton.setTextColor(Color.parseColor("#298A08"));
         }
+
+        holder.followButton.setOnClickListener(followListener);
     }
 
     void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){

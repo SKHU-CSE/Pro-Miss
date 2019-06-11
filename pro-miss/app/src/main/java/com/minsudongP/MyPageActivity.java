@@ -42,6 +42,7 @@ public class MyPageActivity extends AppCompatActivity {
     // 금액 충전
     TextView money;
     final int MYPAGE_TO_CHARGE = 3000;
+    final int MYPAGE_TO_FOLLOW = 4000;
     final UserInfor infor = UserInfor.shared;
 
     @Override
@@ -127,7 +128,7 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyPageActivity.this, FollowActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, MYPAGE_TO_FOLLOW);
             }
         };
 
@@ -162,10 +163,10 @@ public class MyPageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
+
+            final UrlConnection urlConnection = UrlConnection.shardUrl;
             switch (requestCode) {
                 case MYPAGE_TO_CHARGE:
-
-                    final UrlConnection urlConnection = UrlConnection.shardUrl;
                     final HashMap<String, String> hash = new HashMap<>();
                     hash.put("id", infor.getId_num());
                     hash.put("money", data.getStringExtra("money"));
@@ -176,6 +177,17 @@ public class MyPageActivity extends AppCompatActivity {
                             urlConnection.PostRequest("api/money/add", moneyCallback, hash);
                         }
                     }.run();
+                    break;
+                case MYPAGE_TO_FOLLOW:
+                    arrayList.clear();
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+                        }
+                    }.run();
+                    break;
             }
         }
     }
