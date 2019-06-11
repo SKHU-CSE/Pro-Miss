@@ -215,7 +215,7 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 click.OnClick(v,position);
             }
         };
-
+        holder.friendID.setText(arrayList.get(position).getEmail());
         holder.friendName.setText(arrayList.get(position).getName());
         if(arrayList.get(position).getIsFollowing() == 0) {
             holder.followButton.setText("팔로우");

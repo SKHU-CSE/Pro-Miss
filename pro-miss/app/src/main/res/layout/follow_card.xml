@@ -3,6 +3,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
@@ -32,9 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
             android:text="이름"
             android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="@+id/friend_image"
             app:layout_constraintStart_toEndOf="@+id/friend_image"
             app:layout_constraintTop_toTopOf="@+id/friend_image" />
 
@@ -50,6 +51,26 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="ID:"
+            app:layout_constraintBottom_toBottomOf="@+id/friend_image"
+            app:layout_constraintStart_toStartOf="@+id/friend_name"
+            app:layout_constraintTop_toBottomOf="@+id/friend_name" />
+
+        <TextView
+            android:id="@+id/follow_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="1234"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

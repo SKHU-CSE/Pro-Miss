@@ -59,10 +59,8 @@ public class FollowActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // 팔로우 임시 목록
-
+        // 팔로우 목록 불러오기
         final UrlConnection urlConnection = UrlConnection.shardUrl;
-
         new Thread() {
             @Override
             public void run() {
@@ -150,11 +148,12 @@ public class FollowActivity extends AppCompatActivity {
                         Log.d("followerObj", followerObj.toString());
 
                         int id = followerObj.getInt("id");
+                        String email = followerObj.getString("email");
                         String image = followerObj.getString("Image");
                         String name = followerObj.getString("name");
                         int isFollowing = followerObj.getInt("isFollowing");
 
-                        PromissItem item = new PromissItem(PromissType.UserList, id, image, name, isFollowing);
+                        PromissItem item = new PromissItem(PromissType.UserList, id, email, image, name, isFollowing);
                         arrayList.add(item);
                     }
 

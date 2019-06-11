@@ -15,6 +15,7 @@ import com.minsudongP.R;
 public class FollowUsersViewHolder extends RecyclerView.ViewHolder {
     public ImageView friendImage;
     public TextView friendName;
+    public TextView friendID;
     public Button followButton;
 
     public FollowUsersViewHolder(@NonNull final View itemView) {
@@ -22,6 +23,7 @@ public class FollowUsersViewHolder extends RecyclerView.ViewHolder {
 
         friendImage = itemView.findViewById(R.id.friend_image);
         friendName = itemView.findViewById(R.id.friend_name);
+        friendID = itemView.findViewById(R.id.follow_id);
         followButton = itemView.findViewById(R.id.follow_button);
     }
 }

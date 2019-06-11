@@ -11,6 +11,7 @@ public class PromissItem {
     private String Notification_date;
     private String ProfileImageURl;
     private String Name;
+    private String Email;
     private String address;
     private String jibun;
     private String positionX;
@@ -294,9 +295,10 @@ public class PromissItem {
         }
     }
 
-    public  PromissItem(PromissType type, int id, String image, String name, int isFollowing){ // All User
+    public  PromissItem(PromissType type, int id, String email, String image, String name, int isFollowing){ // All User
         this.Type = type;
         this.user_id = id;
+        this.Email = email;
         this.ProfileImageURl = image;
         this.Name = name;
         this.isFollowing = isFollowing;
@@ -304,4 +306,6 @@ public class PromissItem {
 
     public int getIsFollowing() {return isFollowing;}
     public void setIsFollowing(int i) {isFollowing = i;}
+    public String getEmail() {return Email;}
+    public void setEmail(String s) {Email = s;}
 }

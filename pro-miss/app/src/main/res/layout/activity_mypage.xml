@@ -62,14 +62,14 @@
                 android:id="@+id/mypage_attendingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/btn_blue"
                 android:fontFamily="@font/bamin_font"
                 android:text="참여 중 약속"
                 android:textColor="#ffffff"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/mypage_name"
-                app:layout_constraintTop_toBottomOf="@+id/mypage_name" />
+                app:layout_constraintTop_toBottomOf="@+id/mypage_id_title" />
 
             <Button
                 android:id="@+id/mypage_pastButton"
@@ -287,6 +287,25 @@
                 app:layout_constraintBottom_toBottomOf="@+id/mypage_friendList_title"
                 app:layout_constraintStart_toEndOf="@+id/mypage_friendList_title"
                 app:layout_constraintTop_toTopOf="@+id/mypage_friendList_title" />
+
+            <TextView
+                android:id="@+id/mypage_id_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="ID:"
+                app:layout_constraintStart_toStartOf="@+id/mypage_name"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_name" />
+
+            <TextView
+                android:id="@+id/mypage_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="1234"
+                app:layout_constraintBottom_toBottomOf="@+id/mypage_id_title"
+                app:layout_constraintStart_toEndOf="@+id/mypage_id_title"
+                app:layout_constraintTop_toTopOf="@+id/mypage_id_title" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

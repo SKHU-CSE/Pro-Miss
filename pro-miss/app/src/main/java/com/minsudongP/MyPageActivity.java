@@ -53,15 +53,28 @@ public class MyPageActivity extends AppCompatActivity {
         imageView=findViewById(R.id.mypage_profile_image);
         // user info 불러오기
         ((TextView) findViewById(R.id.mypage_name)).setText(infor.getName());
-
-        // 팔로우 목록 불러오기
-
-        final UrlConnection urlConnection = UrlConnection.shardUrl;
-
+        ((TextView) findViewById(R.id.mypage_id)).setText(infor.getID());
         Glide.with(this)
                 .load(UserInfor.shared.getProfile_img())
                 .error(R.drawable.face)
                 .into(imageView);
+
+
+        // 팔로우 목록 어뎁터
+        adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // 팔로우 목록 불러오기
+        final UrlConnection urlConnection = UrlConnection.shardUrl;
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
+            }
+        }.run();
+
 
         // 약속 달성률 계산
         if (infor.getAppoint_num() != 0) {
@@ -146,18 +159,6 @@ public class MyPageActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.mypage_pastButton)).setOnClickListener(PastListener);
         ((Button) findViewById(R.id.mypage_addFollow)).setOnClickListener(FollowListener);
 
-        // 팔로우 목록 어뎁터
-        adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                urlConnection.GetRequest("api/followList/"+infor.getId_num(), followingCallback );
-            }
-        }.run();
     }
 
     @Override
