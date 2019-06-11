@@ -14,7 +14,7 @@ public class FollowUsersViewHolder extends RecyclerView.ViewHolder {
     public TextView friendName;
     public Button followButton;
 
-    public FollowUsersViewHolder(@NonNull View itemView) {
+    public FollowUsersViewHolder(@NonNull final View itemView) {
         super(itemView);
 
         friendImage = itemView.findViewById(R.id.friend_image);

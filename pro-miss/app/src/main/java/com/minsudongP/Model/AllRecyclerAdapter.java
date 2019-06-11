@@ -1,6 +1,7 @@
 package com.minsudongP.Model;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -214,8 +215,12 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         if(arrayList.get(position).getIsFollowing() == 0) {
             holder.followButton.setText("팔로우");
+            holder.followButton.setBackgroundColor(Color.parseColor("#5FB404"));
+            holder.followButton.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.followButton.setText("팔로잉");
+            holder.followButton.setBackgroundColor(Color.WHITE);
+            holder.followButton.setTextColor(Color.parseColor("#298A08"));
         }
     }
 
