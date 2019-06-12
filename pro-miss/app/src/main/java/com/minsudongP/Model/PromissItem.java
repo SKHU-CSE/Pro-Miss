@@ -7,9 +7,11 @@ public class PromissItem {
     private int Notification_id;
     private int Appointment_id;
     private int Notification_send;
+    private int isFollowing;
     private String Notification_date;
     private String ProfileImageURl;
     private String Name;
+    private String Email;
     private String address;
     private String jibun;
     private String positionX;
@@ -31,17 +33,29 @@ public class PromissItem {
         this.Notification_id=notification_id;
     }
 
-    public PromissItem(PromissType type,int appointment_id,String date,String time,String place,int status)
-    {
-
-        this.Appointment_status=status;
-        this.Appointment_id=appointment_id;
-        this.Date = date;
-        this.Time = time;
-        this.Name= place;
-        this.Type = type;
-
+    public PromissItem(PromissType type,int id,String date,String time,String place,int status) {
+        if(type == PromissType.Attend_Appoint) {
+            this.Appointment_status = status;
+            this.Appointment_id = id;
+            this.Date = date;
+            this.Time = time;
+            this.Name = place;
+            this.Type = type;
+        } else if (type == PromissType.UserList) {
+            this.Type = type;
+            this.user_id = id;
+            this.Email = date;
+            this.ProfileImageURl = time;
+            this.Name = place;
+            this.isFollowing = status;
+        }
     }
+
+    public int getIsFollowing() {return isFollowing;}
+    public void setIsFollowing(int i) {isFollowing = i;}
+    public String getEmail() {return Email;}
+    public void setEmail(String s) {Email = s;}
+
 
 
     public int getAppointment_id() {
@@ -76,6 +90,7 @@ public class PromissItem {
         Notification_id = notification_id;
     }
 
+    // type, int, string, string
     public PromissItem(PromissType Type, int id, String Profileimage, String Name) //FrendList
     {
         this.user_id=id;
@@ -91,6 +106,7 @@ public class PromissItem {
     private String Place;
 
 
+    // type, string, string, string, string, string
     public PromissItem(PromissType type, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember) {
 
 
@@ -124,6 +140,7 @@ public class PromissItem {
         }
     }
 
+    // type, string, string, string
     public PromissItem(PromissType type, String date, String time, String place) //New Appoint, Appoint_Start, Attend_Appoint
     {
         if (type == PromissType.New_Appoint) {
@@ -222,6 +239,7 @@ public class PromissItem {
     }
 
 
+    // type, int, int, string, string, string, string
     public PromissItem(PromissType type,int notification_id,int notification_send,String notification_date, String addressORdate, String jibunORtime, String positionXORPlace, String positionYORmoneyORnameORMember)
     {
 
@@ -284,6 +302,7 @@ public class PromissItem {
         this.address = address;
     }
 
+    // type, int, int, int, string, string, string, string
     public PromissItem(PromissType type,int notification_id,int notification_send,int appointment_id, String notification_date,String date,String time,String place) //New Appoint, Appoint_Start
     {
         this.Notification_date=notification_date;
@@ -304,7 +323,5 @@ public class PromissItem {
             this.Type = type;
         }
     }
-
-
 
 }
