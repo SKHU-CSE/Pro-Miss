@@ -24,6 +24,7 @@ import com.minsudongP.ViewHolder.FriendViewHolder;
 
 import com.minsudongP.ViewHolder.GPSViewHolder;
 import com.minsudongP.ViewHolder.LateMemberViewHolder;
+import com.minsudongP.ViewHolder.PastViewHolder;
 import com.minsudongP.ViewHolder.SearchViewHolder;
 
 import com.minsudongP.ViewHolder.NewAppointViewHolder;
@@ -131,6 +132,11 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder=new AttendViewHolder(view);
                 break;
 
+            case Past_Appoint:
+                view=activity.getLayoutInflater().inflate(R.layout.past_item,viewGroup,false);
+                viewHolder=new PastViewHolder(view);
+                break;
+
             default:
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
                 viewHolder=new FriendViewHolder(view);
@@ -185,6 +191,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             case Attend_Appoint:
                 BindAttend(viewHolder,i);
+                break;
+            case Past_Appoint:
+                BindPast(viewHolder,i);
                 break;
 
             case GPS_ALERT:
@@ -342,6 +351,18 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.date.setText(arrayList.get(position).getDate());
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getName());
+    }
+    void BindPast(RecyclerView.ViewHolder viewHolder, final int position)//Past_Appoint
+    {
+        PastViewHolder holder=(PastViewHolder)viewHolder;
+
+
+        holder.place.setText(arrayList.get(position).getName());
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.ptcmember.setText(arrayList.get(position).getPtcmember());
+        holder.scsmember.setText(arrayList.get(position).getScsmember());
+        holder.mymoney.setText(arrayList.get(position).getMymoney());
+        holder.allmoney.setText(arrayList.get(position).getAllmoney());
     }
 
 
