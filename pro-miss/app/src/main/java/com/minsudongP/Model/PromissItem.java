@@ -14,13 +14,35 @@ public class PromissItem {
     private String jibun;
     private String positionX;
     private String positionY;
+    private int Appointment_status;
 
+    public int getAppointment_status() {
+        return Appointment_status;
+    }
 
-    public PromissItem(PromissType type,int notification_id)
+    public void setAppointment_status(int appointment_status) {
+        Appointment_status = appointment_status;
+    }
+
+    public PromissItem(PromissType type, int appointment_id, int notification_id)
     {
         this.Type=type;
+        this.Appointment_id=appointment_id;
         this.Notification_id=notification_id;
     }
+
+    public PromissItem(PromissType type,int appointment_id,String date,String time,String place,int status)
+    {
+
+        this.Appointment_status=status;
+        this.Appointment_id=appointment_id;
+        this.Date = date;
+        this.Time = time;
+        this.Name= place;
+        this.Type = type;
+
+    }
+
 
     public int getAppointment_id() {
         return Appointment_id;
@@ -108,11 +130,6 @@ public class PromissItem {
             this.Date = date;
             this.Time = time;
             this.Place = place;
-            this.Type = type;
-        } else if (type == PromissType.Attend_Appoint) {
-            this.Date = date;
-            this.Time = time;
-            this.Name= place;
             this.Type = type;
         }else{
             this.Date = date;

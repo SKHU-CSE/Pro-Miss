@@ -27,6 +27,8 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
 
     NaverMap naverMap;
 
+    int Appointment_id;
+    int status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,13 +36,14 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
         View.OnClickListener AttendingListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(AttendingDetailActivity.this,AttendingActivity.class);
-                startActivity(intent);
                 finish();
             }
         };
         ((Button) findViewById(R.id.atd_detail_backBtn)).setOnClickListener(AttendingListener);
 
+
+        Appointment_id= getIntent().getIntExtra("id",0);
+        status=getIntent().getIntExtra("status",0);
 
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -83,8 +86,15 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
                         .checkPermissions();
 
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(AttendingDetailActivity.this, Appointment_Game_Activity.class);
-                    startActivity(intent);
+
+                    if(status==1) {
+                        Intent intent = new Intent(AttendingDetailActivity.this, Appointment_Game_Activity.class);
+                        intent.putExtra("id",Appointment_id);
+                        startActivity(intent);
+                    }else
+                    {
+                        Toast.makeText(AttendingDetailActivity.this,"약속이 시작하지 않았습니다.",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

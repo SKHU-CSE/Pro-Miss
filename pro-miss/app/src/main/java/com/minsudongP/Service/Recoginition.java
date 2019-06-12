@@ -266,7 +266,7 @@ public class Recoginition extends RecognitionService {
                     public void run() {
                         UserInfor userInfor=UserInfor.shared;
                         UrlConnection connection = UrlConnection.shardUrl;
-                        connection.PostSpeekRequest(rs[0],userInfor.getID(), new
+                        connection.PostSpeekRequest(rs[0],userInfor.getId_num(), new
 
                                 okhttp3.Callback() {
                                     @Override

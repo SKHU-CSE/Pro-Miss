@@ -115,7 +115,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                         int currentHour=cal.get(Calendar.HOUR_OF_DAY);
 
                         int currentMin=cal.get(Calendar.MINUTE);
-                        if(currentHour<hour) {
+                        if(currentHour<hour||currentHour==hour&&currentMin<min) {
 
                             date_time = hour + ":" + min;
                             String ampm = "AM";

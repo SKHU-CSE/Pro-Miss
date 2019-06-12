@@ -162,7 +162,28 @@ public class PromissService extends Service implements LocationListener {
                                 break;
                             case "약속 종료":
                                 manager.notify(20, Appoitment_End.setContentText(jsonObject.getString("message")).build());
+                                locationManager.removeUpdates(PromissService.this);//더 이상 필요하지 않을 때, 자원 누락을 방지하기 위해
                                 break;
+                            case "약속 시작":
+                                if ( Build.VERSION.SDK_INT >= 23 &&
+                                        ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+                                }else {
+                                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                                            60000,
+                                            1,
+                                            PromissService.this);
+                                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                                            60000,
+                                            1,
+                                            PromissService.this);
+                                }
+                                manager.notify(20, Appoitment_End.setContentText(jsonObject.getString("message")).build());
+                                break;
+                            case "벌금 부과":
+                                manager.notify(20, Fine.setContentText(jsonObject.getString("message")).build());
+                                break;
+
                                 default:
                                     break;
                         }
@@ -203,23 +224,23 @@ public class PromissService extends Service implements LocationListener {
     }
 
 
-    private void sendGPSMessage(double latitude,double longitude){
-        Log.d("GPSService", "Broadcasting message");
-        Intent intent = new Intent("GPS-event-name");
-        intent.putExtra("send","gps");
-        intent.putExtra("latitude",latitude);
-        intent.putExtra("longitude", longitude);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
-    private void sendErrorMessage(String message){
-        Log.d("GPSService", "Broadcasting message");
-        Intent intent = new Intent("GPS-event-name");
-        intent.putExtra("send","error");
-        intent.putExtra("message",message);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
+//    private void sendGPSMessage(double latitude,double longitude){
+//        Log.d("GPSService", "Broadcasting message");
+//        Intent intent = new Intent("GPS-event-name");
+//        intent.putExtra("send","gps");
+//        intent.putExtra("latitude",latitude);
+//        intent.putExtra("longitude", longitude);
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//    }
+//
+//    private void sendErrorMessage(String message){
+//        Log.d("GPSService", "Broadcasting message");
+//        Intent intent = new Intent("GPS-event-name");
+//        intent.putExtra("send","error");
+//        intent.putExtra("message",message);
+//
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//    }
 
 
     //사용자의 gps가 변할 때, 서버와 통신하는 Callback 함수
@@ -227,7 +248,7 @@ public class PromissService extends Service implements LocationListener {
     public void onLocationChanged(final Location location) {
         Log.d("gps","LocationChanged");
         this.location=location;
-        sendGPSMessage(location.getLatitude(),location.getLongitude());
+//        sendGPSMessage(location.getLatitude(),location.getLongitude());
 
         new Thread()
         {
@@ -264,7 +285,7 @@ public class PromissService extends Service implements LocationListener {
                 {
 
                 }else{
-                    sendErrorMessage(object.getString("message"));
+//                    sendErrorMessage(object.getString("message"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

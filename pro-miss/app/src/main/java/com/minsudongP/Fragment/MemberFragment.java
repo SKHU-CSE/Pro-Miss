@@ -37,6 +37,7 @@ public class MemberFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         adapter=new AllRecyclerAdapter(arrayList,getActivity());
 
         RecyclerView recyclerView= view.findViewById(R.id.frg_appoint3_recycle);
@@ -48,8 +49,10 @@ public class MemberFragment extends Fragment {
                 ((appointment)getActivity()).setAppointment_role_3(arrayList);
             }
         };
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,1435,"추가하기","양민욱"));
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid,0,"추가하기","추가하기"));
+        if(savedInstanceState==null) {
+            arrayList.add(new PromissItem(PromissType.FriendList_Grid, 1435, "추가하기", "양민욱"));
+            arrayList.add(new PromissItem(PromissType.FriendList_Grid, 0, "추가하기", "추가하기"));
+        }
         adapter.notifyDataSetChanged();
 
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {

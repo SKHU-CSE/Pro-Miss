@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     Pusher pusher;
     HashMap<String,Marker> memberMarker=new HashMap<>();
     Intent intent;
-    String appointment_id;
+    int appointment_id;
     UrlConnection connection;
 //    LocationOverlay locationOverlay;//줄어들 원
 
@@ -61,8 +62,8 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
-
-        appointment_id=getIntent().getStringExtra("id");
+        circle = new CircleOverlay();
+        appointment_id=getIntent().getIntExtra("id",0);
 
 
         //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,15 +134,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
 
 
-        connection=UrlConnection.shardUrl;
-
-        new Thread()
-        {
-            @Override
-            public void run() {
-                connection.GetRequest("api/appointment/getSetting/"+appointment_id,callback);
-            }
-        }.run();
 
 
     }
@@ -219,16 +211,24 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         marker.setPosition(new LatLng(37.5670135, 126.9783740));
         marker.setMap(naverMap);
 
-        circle = new CircleOverlay();
+
         circle.setCenter(new LatLng(37.5670135, 126.9783740)); // 약속 장소 위치
         circle.setRadius(radius); // 타이머에 따른 크기
         circle.setColor(Color.alpha(0)); //투명
         circle.setOutlineWidth(5);
         circle.setOutlineColor(Color.GREEN);
-        circle.setMap(mMap);
 
        // MapReSetting();
 
+        connection=UrlConnection.shardUrl;
+
+        new Thread()
+        {
+            @Override
+            public void run() {
+                connection.GetRequest("api/appointment/getSetting/"+appointment_id,callback);
+            }
+        }.run();
         mMap.setCameraPosition(new CameraPosition(coord, 17.0)); // 카메라 위치 셋팅
     }
 
@@ -272,6 +272,8 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
     public void MapReSetting(int radius, String member) { //member는 jsonArray로온다.
 
+        Log.d("결과",member);
+
         circle.setMap(null);
         circle.setRadius(radius);
         circle.setMap(mMap); //원 초기화
@@ -281,8 +283,8 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
             memberMarker.get(key).setMap(null);
         }
 
-
         try{
+
             JSONArray jsonArray=new JSONArray(member);
             for(int i=0;i<jsonArray.length();i++)
             {

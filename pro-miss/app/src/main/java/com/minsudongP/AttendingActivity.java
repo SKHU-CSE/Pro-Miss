@@ -75,8 +75,12 @@ public class AttendingActivity extends AppCompatActivity {
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
             @Override
             public void OnClick(View view, int position) {
-                Intent intent=new Intent(AttendingActivity.this,AttendingDetailActivity.class);
-                startActivity(intent);
+
+                    Intent intent = new Intent(AttendingActivity.this, AttendingDetailActivity.class);
+                    intent.putExtra("status",arrayList.get(position).getAppointment_status());
+                    intent.putExtra("id",arrayList.get(position).getAppointment_id());
+                    startActivity(intent);
+
             }
         });
 
@@ -125,7 +129,7 @@ public class AttendingActivity extends AppCompatActivity {
 
 
 //                    arrayList.add(new PromissItem(PromissType.Attend_Appoint,"6/28","오후 03:00","롯데월드 소풍"));
-                    arrayList.add(new PromissItem(PromissType.Attend_Appoint,object.getString("date"),GetTime(object.getString("date_time").substring(0,5)),object.getString("address")));
+                    arrayList.add(new PromissItem(PromissType.Attend_Appoint,object.getInt("id"),object.getString("date"),GetTime(object.getString("date_time").substring(0,5)),object.getString("address"),object.getInt("status")));
 
                 }
                 AttendingActivity.this.runOnUiThread(new Runnable() {

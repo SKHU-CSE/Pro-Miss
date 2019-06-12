@@ -106,7 +106,7 @@ public class SiriActivity extends Activity {
             public void run() {
                finish();
             }
-        }, 10000);// 5초 정도 딜레이를 준 후 시작
+        }, 5000);// 5초 정도 딜레이를 준 후 시작
     }
 
     public void start(View v) {

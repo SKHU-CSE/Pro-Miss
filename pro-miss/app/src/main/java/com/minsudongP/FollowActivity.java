@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
+import com.minsudongP.Singletone.UrlConnection;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,8 @@ public class FollowActivity extends AppCompatActivity {
 
         // 팔로우 목록 어뎁터
         adapter = new AllRecyclerAdapter(arrayList, FollowActivity.this);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
