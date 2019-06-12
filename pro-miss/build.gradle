@@ -27,6 +27,9 @@ allprojects {
             url 'https://navercorp.bintray.com/maps'
         }
 
+        // search bar
+        maven { url "https://jitpack.io" }
+
     }
 }
 
