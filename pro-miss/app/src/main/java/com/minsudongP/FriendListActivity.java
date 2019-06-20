@@ -87,6 +87,7 @@ public class FriendListActivity extends AppCompatActivity {
                     result.add(item);
                     arrayList.get(position).setIsFollowing(1);
                 }
+                adapter.notifyDataSetChanged();
             }
         });
         new Thread(){

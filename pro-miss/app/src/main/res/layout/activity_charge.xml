@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
                     android:text="원"
-                    android:textColor="#70ad47"
+                    android:textColor="#D76C52"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -76,7 +76,7 @@
                 android:layout_alignLeft="@id/charge_money"
                 android:layout_alignRight="@id/charge_money"
                 android:layout_marginTop="10dp"
-                android:background="#70ad47"></View>
+                android:background="#D76C52"></View>
 
             <LinearLayout
                 android:id="@+id/Linear_btn"
@@ -262,9 +262,9 @@
                 android:layout_alignRight="@id/Linear_btn"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:background="@color/colorGreen"
+                android:background="@drawable/btn_color_pink"
                 android:text="충전하기"
-                android:textColor="#ffffff"
+                android:textColor="#D76C52"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

@@ -87,15 +87,21 @@ public class MemberFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==Request_code)
+        if(requestCode==Request_code&&resultCode==1)
         {
-            ArrayList<String> name=data.getStringArrayListExtra("name");
-            ArrayList<String> Image=data.getStringArrayListExtra("Image");
-            ArrayList<Integer> id=data.getIntegerArrayListExtra("id");
+            try {
+                ArrayList<String> name = data.getStringArrayListExtra("name");
+                ArrayList<String> Image = data.getStringArrayListExtra("Image");
+                ArrayList<Integer> id = data.getIntegerArrayListExtra("id");
 
-            for(int i=0;i<name.size();i++)
+                for (int i = 0; i < name.size(); i++) {
+                    arrayList.add(1, new PromissItem(PromissType.FriendList_Grid, id.get(i), Image.get(i), name.get(i)));
+                }
+
+                adapter.notifyDataSetChanged();
+            }catch (NullPointerException e)
             {
-                arrayList.add(1,new PromissItem(PromissType.FriendList_Grid, id.get(i), Image.get(i), name.get(i)));
+                e.printStackTrace();
             }
         }
     }

@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,6 +75,9 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     ArrayList<PromissItem> arrayList=new ArrayList<>();
     UrlConnection connection;
 
+    TextView Fine;
+    TextView total_game;
+    TextView timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +85,12 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         setContentView(R.layout.activity_appointment__game_);
 
         appointment_id=getIntent().getIntExtra("id",0);
-
         adapter=new AllRecyclerAdapter(arrayList,this);
         recyclerView=findViewById(R.id.game_member_recycle);
 
+        Fine=findViewById(R.id.game_Fine_tv);
+        total_game=findViewById(R.id.game_Time_tv);
+        timer=findViewById(R.id.game_Time_Subtv);
 
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
             @Override
@@ -131,6 +137,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                         final JSONObject data=object.getJSONObject("data");
                         final JSONObject data2=data.getJSONObject("data");
 
+                        total_game.setText(data.getString("time"));
                         if(circle!=null)
                             MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
                     }else{
@@ -226,7 +233,9 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                             new Thread(){
                                 @Override
                                 public void run() {
+
                                     try {
+                                        timer.setText(appoint.getString("Timer")+"분");
                                         MapReSetting(real_member.getInt("radius"), real_member.getString("Member"));
                                     }catch (JSONException e)
                                     {
@@ -357,7 +366,10 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                                 marker.setMap(mMap);
                             }
                         });
-
+                        if(UserInfor.shared.getId_num().equals(""+user.getInt("user_id")))
+                        {
+                            Fine.setText(user.getString("Fine_current"));
+                        }
                         arrayList.add(new PromissItem(PromissType.MEMBER_LIST, user.getString("Image"), user.getString("latitude"), user.getString("longitude"), user.getString("name")));
 
                         memberMarker.put(user.getString("id"), marker);

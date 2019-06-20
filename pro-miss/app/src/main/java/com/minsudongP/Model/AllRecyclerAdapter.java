@@ -285,7 +285,12 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //        }
 
         holder.followButton.setText("추가하기");
-        holder.followButton.setBackgroundResource(R.drawable.btn_blue);
+        if(arrayList.get(position).getIsFollowing()==0)
+        holder.followButton.setBackgroundResource(R.drawable.btn_color_pink);
+        else {
+            holder.followButton.setTextColor(Color.rgb(255,255,255));
+            holder.followButton.setBackgroundResource(R.drawable.click_btn_color_pink);
+        }
         holder.followButton.setOnClickListener(followListener);
     }
 

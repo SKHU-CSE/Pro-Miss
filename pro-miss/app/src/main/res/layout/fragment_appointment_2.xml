@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="원"
-            android:textColor="#70ad47"
+            android:textColor="#D76C52"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
         android:layout_alignLeft="@id/frg_appoint2_money"
         android:layout_alignRight="@id/frg_appoint2_money"
         android:layout_marginTop="10dp"
-        android:background="#70ad47"></View>
+        android:background="#D76C52"></View>
 
     <LinearLayout
         android:layout_width="match_parent"

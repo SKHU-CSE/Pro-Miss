@@ -281,6 +281,10 @@ public class AlertActivity extends AppCompatActivity {
                             case 1:
                                 arrayList.add(new PromissItem(PromissType.GPS_ALERT,object.getInt("appointment_id"),object.getInt("id")));
                                 break;
+                            case 4://벌금 부과
+                                arrayList.add(new PromissItem(PromissType.Time_Late,object.getString("date").substring(5,10),
+                                        GetTime(object.getString("date_time").substring(0,5)),object.getString("address"),object.getString("Fine_money")));
+                                break;
                             default:
                                 arrayList.add(new PromissItem(PromissType.New_Appoint,object.getInt("id"),object.getInt("send_id"),object.getInt("appointment_id"),object.getString("created_at").substring(5,10),object.getString("date").substring(5,10),
                                         GetTime(object.getString("date_time").substring(0,5)), object.getString("address")));
