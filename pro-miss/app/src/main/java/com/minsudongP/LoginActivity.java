@@ -390,6 +390,7 @@ public class LoginActivity extends AppCompatActivity {
         public void onSessionOpenFailed(KakaoException e) {
             clearUserInfo(getApplicationContext());
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.d("로그인 에러",e.toString());
         }
     }
 

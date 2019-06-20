@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -201,7 +202,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        ((ConstraintLayout) findViewById(R.id.setting_logoutLayout)).setOnClickListener(new View.OnClickListener() {
+        ((LinearLayout) findViewById(R.id.logout_layout)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(SettingsActivity.this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
@@ -210,14 +211,21 @@ public class SettingsActivity extends AppCompatActivity {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
-                        Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        finish();
                         startActivity(intent);
+                        return;
                     }
                 });
 
                 // 자동 로그인 값 제거
                 clearUserInfo(getApplicationContext());
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                startActivity(intent);
             }
         });
     }
