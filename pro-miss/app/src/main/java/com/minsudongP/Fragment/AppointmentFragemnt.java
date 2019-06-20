@@ -76,7 +76,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
 
 
-        text = view.findViewById(R.id.atd_detail_title);
+        text = view.findViewById(R.id.appointment_name);
 
         tvDate = view.findViewById(R.id.appointment_date);
         tvDate.setOnClickListener(new View.OnClickListener() {

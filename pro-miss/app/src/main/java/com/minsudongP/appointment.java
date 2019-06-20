@@ -72,6 +72,7 @@ public class appointment extends AppCompatActivity {
         this.member=items;
 //        viewpagerAdapter.clear();
         Log.d("memberSize",""+member.size());
+        member.remove(0);
         member.remove(member.size()-1);
         final UrlConnection connection=UrlConnection.shardUrl;
         final HashMap<String,String> hash=new HashMap<>();
