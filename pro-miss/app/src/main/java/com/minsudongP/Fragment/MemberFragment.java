@@ -27,12 +27,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MemberFragment extends Fragment {
     private LinearLayout layout;
+    final static int Request_code=1;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrayList.add(new PromissItem(PromissType.FriendList_Grid, Integer.parseInt(UserInfor.shared.getId_num()), "테스트", "프로미스"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid, Integer.parseInt(UserInfor.shared.getId_num()), UserInfor.shared.getProfile_img(), UserInfor.shared.getName()));
         arrayList.add(new PromissItem(PromissType.FriendList_Grid, 0, "추가하기", "추가하기"));
-        arrayList.add(1,new PromissItem(PromissType.FriendList_Grid, 1436, "테스트", "양민욱"));
+
     }
     @Nullable
     @Override
@@ -76,13 +77,26 @@ public class MemberFragment extends Fragment {
                     }catch (ClassCastException e)
                     {
                         Intent intent = new Intent(getActivity(), FriendListActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent,Request_code);
                     }
                     }
         });
         ((Button) getActivity().findViewById(R.id.frg_appoint3_confirmBtn)).setOnClickListener(MainListener);
 
-
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==Request_code)
+        {
+            ArrayList<String> name=data.getStringArrayListExtra("name");
+            ArrayList<String> Image=data.getStringArrayListExtra("Image");
+            ArrayList<Integer> id=data.getIntegerArrayListExtra("id");
+
+            for(int i=0;i<name.size();i++)
+            {
+                arrayList.add(1,new PromissItem(PromissType.FriendList_Grid, id.get(i), Image.get(i), name.get(i)));
+            }
+        }
+    }
 }

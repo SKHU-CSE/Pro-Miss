@@ -74,6 +74,7 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (arrayList.get(viewposition).getType())
         {
             case UserList:
+            case MEMBER_ADD:
                 view = activity.getLayoutInflater().inflate(R.layout.follow_card, viewGroup, false);
                 viewHolder = new FollowUsersViewHolder(view);
                 break;
@@ -170,6 +171,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case UserList:
                 BindAllUserList(viewHolder,i);
                 break;
+            case MEMBER_ADD:
+                BindADD_MEMBER_List(viewHolder,i);
+                break;
             case FriendList:
                 BindFriendLIst(viewHolder,i);
                 break;
@@ -250,6 +254,38 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.followButton.setTextColor(Color.parseColor("#298A08"));
         }
 
+        holder.followButton.setOnClickListener(followListener);
+    }
+
+    void BindADD_MEMBER_List(RecyclerView.ViewHolder viewHolder, final int position){
+        FollowUsersViewHolder holder=(FollowUsersViewHolder)viewHolder;
+
+        String url = arrayList.get(position).getProfileImageURl();
+        Glide.with(activity)
+                .load(url)
+                .error(R.drawable.face)
+                .into(holder.friendImage);
+
+        final View.OnClickListener followListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        };
+        holder.friendID.setText(arrayList.get(position).getEmail());
+        holder.friendName.setText(arrayList.get(position).getName());
+//        if(arrayList.get(position).getIsFollowing() == 0) {
+//            holder.followButton.setText("팔로우");
+//            holder.followButton.setBackgroundColor(Color.parseColor("#5FB404"));
+//            holder.followButton.setTextColor(Color.parseColor("#FFFFFF"));
+//        } else {
+//            holder.followButton.setText("팔로잉");
+//            holder.followButton.setBackgroundColor(Color.WHITE);
+//            holder.followButton.setTextColor(Color.parseColor("#298A08"));
+//        }
+
+        holder.followButton.setText("추가하기");
+        holder.followButton.setBackgroundResource(R.drawable.btn_blue);
         holder.followButton.setOnClickListener(followListener);
     }
 

@@ -198,7 +198,7 @@ public class FollowActivity extends AppCompatActivity {
 
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject followerObj = data.getJSONObject(i);
-                        Log.d("followerObj", followerObj.toString());
+
 
                         int id = followerObj.getInt("id");
                         String email = followerObj.getString("email");

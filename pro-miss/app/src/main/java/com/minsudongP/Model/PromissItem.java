@@ -45,7 +45,7 @@ public class PromissItem {
             this.Time = time;
             this.Name = place;
             this.Type = type;
-        } else if (type == PromissType.UserList) {
+        } else if (type == PromissType.UserList||type==PromissType.MEMBER_ADD) {
             this.Type = type;
             this.user_id = id;
             this.Email = date;

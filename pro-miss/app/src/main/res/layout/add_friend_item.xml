@@ -47,7 +47,6 @@
         android:id="@+id/add_friend_king"
         android:layout_gravity="center_horizontal"
         android:layout_height="50dp"
-
         android:src="@drawable/king"/>
 
     <de.hdodenhof.circleimageview.CircleImageView

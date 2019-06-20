@@ -10,7 +10,7 @@
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorGreen"
+        android:background="#FFD966"
         android:layout_height="48dp"/>
 
     <android.support.v4.view.ViewPager
