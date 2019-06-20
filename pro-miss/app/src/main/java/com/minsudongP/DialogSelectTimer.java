@@ -2,6 +2,7 @@ package com.minsudongP;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -61,6 +62,7 @@ public class DialogSelectTimer {
                     time=strhour+" 시간 "+strmin+" 분";
 
                 timer_label.setText(time);
+                timer_label.setTextColor(Color.BLACK);
 
 
                 // 커스텀 다이얼로그를 종료한다.

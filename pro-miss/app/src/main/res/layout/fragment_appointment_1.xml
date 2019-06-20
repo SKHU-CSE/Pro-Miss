@@ -1,190 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fbfbfb">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <fragment
-            android:id="@+id/map"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/frag1_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:name="com.naver.maps.map.MapFragment" />
-
-        <Button
-            android:id="@+id/appointment_backButton"
-            android:layout_width="60dp"
-            android:layout_height="55dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginEnd="86dp"
-            android:layout_marginRight="86dp"
-            android:layout_toStartOf="@+id/atd_detail_title"
-            android:layout_toLeftOf="@+id/atd_detail_title"
-            android:background="@drawable/backspace"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            android:layout_height="50dp"
+            android:background="@drawable/toolbar_gradation"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:layout_below="@id/map"
-            android:id="@+id/atd_detail_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@null"
-            android:drawableRight="@drawable/ic_brush_black_24dp"
-            android:hint="약속명"
-            android:textSize="21sp" />
+            <TextView
+                android:id="@+id/frag1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bamin_font"
+                android:text="약속 만들기"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/atd_detail_card_date"
+            <Button
+                android:id="@+id/frag1_backButton"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/backspace"
+                app:layout_constraintBottom_toBottomOf="@+id/frag1_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/frag1_title" />
+        </android.support.constraint.ConstraintLayout>
+
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/atd_detail_title"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginBottom="20dp"
-            android:background="#ffffff"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp">
+            android:layout_height="match_parent"
+            android:layout_below="@id/frag1_toolbar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textinput_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="@color/colorAccent">
+
+                    <EditText
+                        android:id="@+id/appointment_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:hint="약속 이름"
+                        android:paddingTop="10dp"
+                        android:textColorHint="@color/colorAccent"
+                        android:textSize="13dp" />
+                </android.support.design.widget.TextInputLayout>
 
                 <View
-                    android:id="@+id/atd_detail_card_view"
-                    android:layout_width="1.5dp"
-                    android:layout_height="50dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginVertical="15dp"
-                    android:background="#7e7e7e"></View>
-
-
-                <TextView
-                    android:id="@+id/atd_detail_card1_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="27dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toLeftOf="@id/atd_detail_card_view"
-                    android:text="Date"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/textinput_name"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/atd_detail_card1_time"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/appointment_date"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="27dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/atd_detail_card_view"
-                    android:text="Time"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/frg_appoint1_card1_DateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/atd_detail_card1_date"
-                    android:layout_alignRight="@id/atd_detail_card1_date"
-                    android:layout_toLeftOf="@id/atd_detail_card_view"
-                    android:text="2019-03-15"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/frg_appoint1_card1_TimeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/atd_detail_card1_date"
-                    android:layout_alignLeft="@id/atd_detail_card1_time"
-                    android:layout_toRightOf="@id/atd_detail_card_view"
-                    android:text="AM 00 : 00"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/atd_detail_card_date"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginBottom="20dp"
-            android:background="#ffffff"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/atd_detail_timer_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="타이머"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/atd_detail_timer_t1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/atd_detail_timer_title"
-                    android:layout_alignLeft="@id/atd_detail_timer_title"
-                    android:layout_marginTop="10dp"
-                    android:text="약속"
-                    android:textColor="#000000"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/atd_detail_timer_t2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/atd_detail_timer_t1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toRightOf="@id/atd_detail_timer_t1"
-                    android:text="2시간"
+                    android:layout_below="@id/textinput_name"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="30dp"
+                    android:background="#00000000"
+                    android:text="날짜"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="13dp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/appointment_date"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/frg_appoint1_timer_t3"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/appointment_time"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/atd_detail_timer_t1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_toRightOf="@id/atd_detail_timer_t2"
-                    android:text="전부터 타이머 작동"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:layout_below="@id/appointment_date"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="30dp"
+                    android:background="#00000000"
+                    android:text="시간"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="13dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/appointment_time"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/appointment_timer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_time"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="30dp"
+                    android:background="#00000000"
+                    android:text="약속장소로 언제 출발하시나요?"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="13dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/appointment_timer"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/appointment_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_timer"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="30dp"
+                    android:background="#00000000"
+                    android:text="장소"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="13dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/appointment_address"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textinput_memo"
+                    android:layout_below="@id/appointment_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="15dp"
+                    android:textColorHint="@color/colorAccent">
+
+                    <EditText
+                        android:paddingTop="5dp"
+                        android:id="@+id/appointment_memo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/appointment_address"
+                        android:background="#00000000"
+                        android:hint="메모(공지)"
+                        android:textColorHint="@color/colorAccent"
+                        android:textSize="13dp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/textinput_memo"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/colorAccent" />
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.naver.maps.map.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/textinput_memo"
+                    android:layout_marginTop="30dp" />
+
             </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
+        </ScrollView>
     </RelativeLayout>
+
 </FrameLayout>

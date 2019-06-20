@@ -52,6 +52,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
     InputMethodManager imm;
     LinearLayout linearLayout;
     static public int result_code=2;
+    String address = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +82,12 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
                 Intent intent= new Intent(SetDestinyActivity.this, appointment.class);
                 intent.putExtra("latitude",mMap.getCameraPosition().target.latitude);
                 intent.putExtra("longitude",mMap.getCameraPosition().target.longitude);
+                intent.putExtra("address", address);
                 setResult(result_code,intent);
                 finish();
             }
         });
+
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
             @Override
             public void OnClick(View view, int position) {
@@ -92,6 +95,7 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
                 imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
                 Double longitude=Double.parseDouble(arrayList.get(position).getPositionX());
                 Double latitude=Double.parseDouble(arrayList.get(position).getPositionY());
+                address = arrayList.get(position).getJibun();
 
                 arrayList.clear();
                 editText.setText("");
@@ -101,7 +105,6 @@ public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyC
                 CameraUpdate cameraUpdate = CameraUpdate.scrollTo(latLng)
                         .animate(CameraAnimation.Easing);
                 mMap.moveCamera(cameraUpdate);
-
             }
         });
 
