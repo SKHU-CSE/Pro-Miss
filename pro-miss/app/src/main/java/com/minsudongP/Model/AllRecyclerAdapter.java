@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.minsudongP.App;
@@ -18,12 +19,17 @@ import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
 import com.minsudongP.ViewHolder.AttendViewHolder;
 import com.minsudongP.ViewHolder.CancelViewHolder;
+import com.minsudongP.ViewHolder.FollowUsersViewHolder;
 import com.minsudongP.ViewHolder.FollowViewHolder;
 import com.minsudongP.ViewHolder.FriendViewHolder;
 
 import com.minsudongP.ViewHolder.GPSViewHolder;
 import com.minsudongP.ViewHolder.LateMemberViewHolder;
+
 import com.minsudongP.ViewHolder.Member_ListViewHolder;
+
+import com.minsudongP.ViewHolder.PastViewHolder;
+
 import com.minsudongP.ViewHolder.SearchViewHolder;
 
 import com.minsudongP.ViewHolder.NewAppointViewHolder;
@@ -67,20 +73,21 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (arrayList.get(viewposition).getType())
         {
-            case FriendLIst:
-                if (activity.getClass() == new FollowActivity().getClass()) {
-                    view=activity.getLayoutInflater().inflate(R.layout.follow_card,viewGroup,false);
-                    viewHolder=new FriendViewHolder(view);
-                    break;
-                } else {
+            case UserList:
+                view = activity.getLayoutInflater().inflate(R.layout.follow_card, viewGroup, false);
+                viewHolder = new FollowUsersViewHolder(view);
+                break;
+            case FriendList:
+
                     view = activity.getLayoutInflater().inflate(R.layout.friendlist_card, viewGroup, false);
                     viewHolder = new FriendViewHolder(view);
                     break;
-                }
+
             case MEMBER_LIST:
                 view=activity.getLayoutInflater().inflate(R.layout.member_list,viewGroup,false);
                 viewHolder=new Member_ListViewHolder(view);
                 break;
+
             case GPS_ALERT:
                 view=activity.getLayoutInflater().inflate(R.layout.alert_gps,viewGroup,false);
                 viewHolder=new GPSViewHolder(view);
@@ -136,6 +143,11 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder=new AttendViewHolder(view);
                 break;
 
+            case Past_Appoint:
+                view=activity.getLayoutInflater().inflate(R.layout.past_item,viewGroup,false);
+                viewHolder=new PastViewHolder(view);
+                break;
+
             default:
                 view=activity.getLayoutInflater().inflate(R.layout.friendlist_card,viewGroup,false);
                 viewHolder=new FriendViewHolder(view);
@@ -155,7 +167,10 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (arrayList.get(i).getType())
         {
-            case FriendLIst:
+            case UserList:
+                BindAllUserList(viewHolder,i);
+                break;
+            case FriendList:
                 BindFriendLIst(viewHolder,i);
                 break;
             case FriendList_Grid:
@@ -191,6 +206,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case Attend_Appoint:
                 BindAttend(viewHolder,i);
                 break;
+            case Past_Appoint:
+                BindPast(viewHolder,i);
+                break;
 
             case GPS_ALERT:
                 BindGps(viewHolder,i);
@@ -205,9 +223,35 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return arrayList.size();
     }
 
+    void BindAllUserList(RecyclerView.ViewHolder viewHolder, final int position){
+        FollowUsersViewHolder holder=(FollowUsersViewHolder)viewHolder;
 
+        String url = arrayList.get(position).getProfileImageURl();
+        Glide.with(activity)
+                .load(url)
+                .error(R.drawable.face)
+                .into(holder.friendImage);
 
+        final View.OnClickListener followListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        };
+        holder.friendID.setText(arrayList.get(position).getEmail());
+        holder.friendName.setText(arrayList.get(position).getName());
+        if(arrayList.get(position).getIsFollowing() == 0) {
+            holder.followButton.setText("팔로우");
+            holder.followButton.setBackgroundColor(Color.parseColor("#5FB404"));
+            holder.followButton.setTextColor(Color.parseColor("#FFFFFF"));
+        } else {
+            holder.followButton.setText("팔로잉");
+            holder.followButton.setBackgroundColor(Color.WHITE);
+            holder.followButton.setTextColor(Color.parseColor("#298A08"));
+        }
 
+        holder.followButton.setOnClickListener(followListener);
+    }
 
     void BindSearchList(RecyclerView.ViewHolder viewHolder, final int position){
         SearchViewHolder holder=(SearchViewHolder)viewHolder;
@@ -351,7 +395,18 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getName());
     }
+    void BindPast(RecyclerView.ViewHolder viewHolder, final int position)//Past_Appoint
+    {
+        PastViewHolder holder=(PastViewHolder)viewHolder;
 
+
+        holder.place.setText(arrayList.get(position).getName());
+        holder.date.setText(arrayList.get(position).getDate());
+        holder.ptcmember.setText(arrayList.get(position).getPtcmember());
+        holder.scsmember.setText(arrayList.get(position).getScsmember());
+        holder.mymoney.setText(arrayList.get(position).getMymoney());
+        holder.allmoney.setText(arrayList.get(position).getAllmoney());
+    }
 
 
     void BindFriendLIst(RecyclerView.ViewHolder viewHolder,int position){
