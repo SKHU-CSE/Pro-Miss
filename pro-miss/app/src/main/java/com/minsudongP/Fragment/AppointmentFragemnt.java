@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import com.minsudongP.DialogSelectTimer;
@@ -29,10 +30,12 @@ import com.minsudongP.R;
 import com.minsudongP.SetDestinyActivity;
 import com.minsudongP.appointment;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
+import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 
@@ -66,6 +69,15 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_appointment_1, null);
 
+        // 지도 터치 방지를 위해 생성됨
+        (view.findViewById(R.id.upperMapView)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SetDestinyActivity.class);
+                startActivityForResult(intent,request_code);
+            }
+        });
+
         // 지도 객체 받아오기
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -74,10 +86,13 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         }
 
         mapFragment.getMapAsync(this);
-
+        (view.findViewById(R.id.map)).setClickable(false);
+        (view.findViewById(R.id.map)).setFocusable(false);
+        (view.findViewById(R.id.map)).setEnabled(false);
 
         text = view.findViewById(R.id.appointment_name);
 
+        final TextView upperDate = view.findViewById(R.id.upper_date);
         tvDate = view.findViewById(R.id.appointment_date);
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +104,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                         tvDate.setText(String.format("%02d-%02d-%02d", year, month + 1, date));
                         tvDate.setTextColor(Color.BLACK);
+                        upperDate.setVisibility(View.VISIBLE);
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 
@@ -100,6 +116,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
 
         // 시간 설정
+        final TextView upperTime = view.findViewById(R.id.upper_time);
         tvTime = view.findViewById(R.id.appointment_time);
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +140,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
                             tvTime.setText(String.format("%s %02d : %02d", ampm, hour, min));
                             tvTime.setTextColor(Color.BLACK);
+                            upperTime.setVisibility(View.VISIBLE);
                         } else {
                             AlertDialog.Builder alert_time = new AlertDialog.Builder(getContext());
 
@@ -158,13 +176,18 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
         // 타이머 설정
         tvTimer = view.findViewById(R.id.appointment_timer);
-        tvTimer.setOnClickListener(new View.OnClickListener() {
+        final TextView upperTimer = view.findViewById(R.id.upper_timer);
+        final TextView plusTime = view.findViewById(R.id.appointment_plustime);
+        View.OnClickListener timerListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogSelectTimer dialogSelectTimer = new DialogSelectTimer(getActivity());
-                dialogSelectTimer.callFunction(tvTimer);
+                dialogSelectTimer.callFunction(tvTimer,upperTimer,plusTime);
             }
-        });
+        };
+
+        tvTimer.setOnClickListener(timerListener);
+        plusTime.setOnClickListener(timerListener);
 
         return view;
     }
@@ -172,33 +195,6 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        View.OnClickListener AppointmentListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
-                alert_ex.setMessage("취소하고 메인페이지로 돌아갑니다.");
-
-                alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getActivity().finish();
-                    }
-                });
-                alert_ex.setTitle("작성을 취소하시겠습니까?");
-                AlertDialog alert = alert_ex.create();
-                alert.show();
-
-            }
-        };
-        ((Button) getActivity().findViewById(R.id.frag1_backButton)).setOnClickListener(AppointmentListener);
 
     }
 
@@ -214,6 +210,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
 
+        naverMap.setMaxZoom(14.0);
+        naverMap.setMinZoom(14.0);
 //        this.naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
 //            @Override
 //            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
@@ -238,6 +236,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                 if (!address.equals("")) {
                     tvAddress.setText(address);
                     tvAddress.setTextColor(Color.BLACK);
+                    ((TextView)getView().findViewById(R.id.upper_address)).setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -252,21 +251,25 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     public int getTimer() {
         String s = tvTimer.getText().toString();
 
-        s = s.replaceAll(" ", "");
-        s = s.replaceAll("분", "");
-        s = s.trim();
-        if (s.contains("시간")) {
-            String str[] = s.split("시간");
+        if (tvTimer.getText().equals("약속장소로 언제 출발하시나요?")){
+            return -1;
+        } else {
+            s = s.replaceAll(" ", "");
+            s = s.replaceAll("분", "");
+            s = s.trim();
+            if (s.contains("시간")) {
+                String str[] = s.split("시간");
 
 
-            int time = 0;
-            time += Integer.parseInt(str[0]) * 60;
-            if (str.length > 1)
-                time += Integer.parseInt(str[1]);
+                int time = 0;
+                time += Integer.parseInt(str[0]) * 60;
+                if (str.length > 1)
+                    time += Integer.parseInt(str[1]);
 
-            return time;
-        } else
-            return Integer.parseInt(s.trim());
+                return time;
+            } else
+                return Integer.parseInt(s.trim());
+        }
     }
 
 

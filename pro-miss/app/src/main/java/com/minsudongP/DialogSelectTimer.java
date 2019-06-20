@@ -3,6 +3,7 @@ package com.minsudongP;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -20,7 +21,7 @@ public class DialogSelectTimer {
     }
 
     // 호출할 다이얼로그 함수를 정의한다.
-    public void callFunction(final TextView timer_label) {
+    public void callFunction(final TextView timer_label, final TextView upper_label, final TextView plus_label) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog dlg = new Dialog(context);
@@ -63,6 +64,17 @@ public class DialogSelectTimer {
 
                 timer_label.setText(time);
                 timer_label.setTextColor(Color.BLACK);
+                upper_label.setVisibility(View.VISIBLE);
+
+                int totalTime = (Integer.parseInt(spHour.getSelectedItem().toString()) * 60 +Integer.parseInt(spMin.getSelectedItem().toString()));
+                if (totalTime % 30 == 0){
+                    plus_label.setText("+ "+(totalTime/30 - 1)*10 +"분");
+                } else {
+                    plus_label.setText("+ "+(totalTime/30)*10+"분");
+                }
+                plus_label.setVisibility(View.VISIBLE);
+
+                Log.d("timer", spHour.getSelectedItem().toString());
 
 
                 // 커스텀 다이얼로그를 종료한다.
