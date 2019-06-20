@@ -14,6 +14,35 @@
         android:name="com.naver.maps.map.MapFragment" />
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:background="@drawable/whilte_corner"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        android:id="@+id/game_page_alertview"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:layout_marginRight="20dp"
+            android:text="원 휴식시간" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/game_page_time"
+            android:text="5분"
+            android:textColor="#404040"
+            android:layout_gravity="center"
+            android:textSize="21sp"/>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

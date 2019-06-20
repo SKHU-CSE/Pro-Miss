@@ -134,10 +134,20 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
                     if(object.getInt("result")==2000)
                     {
+                        final String time_r=object.getString("time");
+                        final String total=object.getString("totalTime");
+                        Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                               total_game.setText(time_r);
+                               timer.setText("/"+total+"분");
+                            }
+                        });
+
                         final JSONObject data=object.getJSONObject("data");
                         final JSONObject data2=data.getJSONObject("data");
 
-                        total_game.setText(data.getString("time"));
+
                         if(circle!=null)
                             MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
                     }else{
@@ -153,6 +163,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
 
                 }catch (JSONException e)
                 {
+                    e.printStackTrace();
                     Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -227,6 +238,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                                 @Override
                                 public void run() {
                                     marker.setMap(mMap);
+
                                 }
                             });
 
@@ -235,7 +247,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                                 public void run() {
 
                                     try {
-                                        timer.setText(appoint.getString("Timer")+"분");
+
                                         MapReSetting(real_member.getInt("radius"), real_member.getString("Member"));
                                     }catch (JSONException e)
                                     {
@@ -292,11 +304,11 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         //약속 목적지가 중앙
         mMap = naverMap;
 
-
-        mMap.setMapType(NaverMap.MapType.Navi);
-
-        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)>18)
-        mMap.setNightModeEnabled(true);
+        mMap.setLiteModeEnabled(true);
+//        mMap.setMapType(NaverMap.MapType.Navi);
+//
+//        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)>18)
+//        mMap.setNightModeEnabled(true);
        // MapReSetting();
 
         connection=UrlConnection.shardUrl;
@@ -331,18 +343,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                 });
 
 
-                for (String key : memberMarker.keySet()) // 마커 초기화
-                {
-                    final String keyFinal=key;
-                    Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            memberMarker.get(keyFinal).setMap(null);
 
-                        }
-                    });
-
-                }
 
 
                 try {
@@ -350,29 +351,30 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                     JSONArray jsonArray = new JSONArray(member);
                     for (int i = 0; i < jsonArray.length(); i++) {
 
-                        JSONObject user = jsonArray.getJSONObject(i);
+                        final JSONObject user = jsonArray.getJSONObject(i);
 
 
-                        final Marker marker = new Marker();
 
                         //marker.setIcon(OverlayImage.fromBitmap(Glide.with(getApplicationContext()).asBitmap().load(user.getString("Image")).error(R.drawable.face).submit().get()));
-                        marker.setCaptionText(user.getString("name"));
-                        marker.setPosition(new LatLng(user.getDouble("latitude"), user.getDouble("longitude")));
+                       final LatLng location=new LatLng(user.getDouble("latitude"), user.getDouble("longitude"));
 
+                        final int user_id=user.getInt("user_id");
+                        final String FineText=user.getString("Fine_current");
 
                         Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                marker.setMap(mMap);
+                                memberMarker.get(user_id+"").setPosition(location);
+                                if(UserInfor.shared.getId_num().equals(""+user_id))
+                                {
+                                    Fine.setText(FineText);
+                                }
                             }
                         });
-                        if(UserInfor.shared.getId_num().equals(""+user.getInt("user_id")))
-                        {
-                            Fine.setText(user.getString("Fine_current"));
-                        }
+
                         arrayList.add(new PromissItem(PromissType.MEMBER_LIST, user.getString("Image"), user.getString("latitude"), user.getString("longitude"), user.getString("name")));
 
-                        memberMarker.put(user.getString("id"), marker);
+
 
                         if(first) {
                             first=false;

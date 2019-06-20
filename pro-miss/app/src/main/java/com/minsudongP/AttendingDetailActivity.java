@@ -9,11 +9,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.minsudongP.Model.AllRecyclerAdapter;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
 import com.minsudongP.Singletone.UrlConnection;
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
@@ -23,10 +27,12 @@ import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -46,6 +52,10 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
     TextView appointment_Fine_value;
     TextView appointment_address;
     TextView appointment_timer;
+
+    RecyclerView recyclerView;
+    AllRecyclerAdapter adapter;
+    ArrayList<PromissItem> items=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +69,17 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
         ((Button) findViewById(R.id.atd_detail_backBtn)).setOnClickListener(AttendingListener);
 
 
+        recyclerView=findViewById(R.id.attending_detail_recycle);
+        adapter=new AllRecyclerAdapter(items,this);
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
+            @Override
+            public void OnClick(View view, int position) {
+
+            }
+        });
         appointment_address=findViewById(R.id.atd_detail_title);
         appointment_date=findViewById(R.id.atd_detail_card1_DateText);
         appointment_time=findViewById(R.id.atd_detail_card1_TimeText);
@@ -153,7 +174,8 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
 
                 if(data.getInt("result")==2000)
                 {
-                    final JSONObject object=data.getJSONObject("data");
+                    final JSONObject result=data.getJSONObject("data");
+                    final JSONObject object=result.getJSONObject("appoint");
                     AttendingDetailActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -174,6 +196,18 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
                             }
                         }
                     });
+
+                    JSONObject memberO=result.getJSONObject("member");
+
+                    memberO =memberO.getJSONObject("data");
+                    final JSONArray member=memberO.getJSONArray("Member");
+                    for(int i=0;i<member.length();i++)
+                    {
+                        JSONObject user=member.getJSONObject(i);
+                        items.add(new PromissItem(PromissType.MEMBER_LIST, user.getString("Image"), user.getString("latitude"), user.getString("longitude"), user.getString("name")));
+
+                    }
+
                 }
             }catch (JSONException e)
             {
