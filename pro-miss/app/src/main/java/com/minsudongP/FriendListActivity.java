@@ -35,10 +35,6 @@ public class FriendListActivity extends AppCompatActivity {
         adapter=new AllRecyclerAdapter(arrayList,FriendListActivity.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-//
-//        arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","양민욱"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","구동섭"));
-//        arrayList.add(new PromissItem(PromissType.FriendLIst,"urltest","김종인"));
 
 
         adapter.notifyDataSetChanged();

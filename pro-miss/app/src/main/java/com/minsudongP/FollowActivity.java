@@ -8,7 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import br.com.mauker.materialsearchview.MaterialSearchView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -35,14 +39,20 @@ public class FollowActivity extends AppCompatActivity {
     final UserInfor infor = UserInfor.shared;
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();
+    MaterialSearchView searchView;
+    Button searchButton;
+    Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
 
-        RecyclerView recyclerView = findViewById(R.id.follow_recycler);
+        searchView = findViewById(R.id.search_view);
+        searchButton = findViewById(R.id.follow_searchButton);
+        backButton = findViewById(R.id.follow_backButton);
 
+        RecyclerView recyclerView = findViewById(R.id.follow_recycler);
         ((Button) findViewById(R.id.follow_backButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,9 +61,43 @@ public class FollowActivity extends AppCompatActivity {
             }
         });
 
+        // 검색 버튼 클릭 시
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.openSearch();
+
+            }
+        });
+
+        // 글자 입력 시
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+
+        // 검색 바 아이템 클릭 시
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Do something when the suggestion list is clicked.
+                String suggestion = searchView.getSuggestionAtPosition(position);
+
+                searchView.setQuery(suggestion, true);
+            }
+        });
+
+
         // 팔로우 목록 어뎁터
         adapter = new AllRecyclerAdapter(arrayList, FollowActivity.this);
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -119,6 +163,16 @@ public class FollowActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        // 서치 뷰가 열려있을 경우에 닫기
+        if (searchView.isOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     private final Callback userListCallback = new Callback() {
         @Override
