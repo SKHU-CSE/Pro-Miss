@@ -18,17 +18,29 @@ import com.minsudongP.FriendListActivity;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
 import com.minsudongP.R;
+import com.minsudongP.Singletone.UserInfor;
 import com.minsudongP.appointment;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MemberFragment extends Fragment {
     private LinearLayout layout;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid, Integer.parseInt(UserInfor.shared.getId_num()), "테스트", "프로미스"));
+        arrayList.add(new PromissItem(PromissType.FriendList_Grid, 0, "추가하기", "추가하기"));
+        arrayList.add(1,new PromissItem(PromissType.FriendList_Grid, 1436, "테스트", "양민욱"));
+    }
     @Nullable
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_appointment_3,null);
     }
+
 
 
     ArrayList<PromissItem> arrayList=new ArrayList<>();
@@ -38,31 +50,38 @@ public class MemberFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        adapter=new AllRecyclerAdapter(arrayList,getActivity());
+        adapter = new AllRecyclerAdapter(arrayList, getActivity());
 
-        RecyclerView recyclerView= view.findViewById(R.id.frg_appoint3_recycle);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        RecyclerView recyclerView = view.findViewById(R.id.frg_appoint3_recycle);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(adapter);
-        View.OnClickListener MainListener=new View.OnClickListener() {
+        View.OnClickListener MainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((appointment)getActivity()).setAppointment_role_3(arrayList);
+                ((appointment) getActivity()).setAppointment_role_3(arrayList);
             }
         };
-        if(savedInstanceState==null) {
-            arrayList.add(new PromissItem(PromissType.FriendList_Grid, 1435, "추가하기", "양민욱"));
-            arrayList.add(new PromissItem(PromissType.FriendList_Grid, 0, "추가하기", "추가하기"));
-        }
+
+
         adapter.notifyDataSetChanged();
 
         adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
-            @Override
-            public void OnClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), FriendListActivity.class);
-                startActivity(intent);
-            }
+                @Override
+                public void OnClick(View view, int position) {
+
+                    try{
+                        CircleImageView circleImageView=(CircleImageView)view; //remove 버튼을 눌렀을 때
+                        arrayList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                    }catch (ClassCastException e)
+                    {
+                        Intent intent = new Intent(getActivity(), FriendListActivity.class);
+                        startActivity(intent);
+                    }
+                    }
         });
-        ((Button)getActivity().findViewById(R.id.frg_appoint3_confirmBtn)).setOnClickListener(MainListener);
+        ((Button) getActivity().findViewById(R.id.frg_appoint3_confirmBtn)).setOnClickListener(MainListener);
+
 
     }
 

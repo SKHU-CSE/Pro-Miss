@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.minsudongP.Singletone.UrlConnection;
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
 import com.mommoo.permission.repository.DenyInfo;
@@ -21,7 +23,15 @@ import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class AttendingDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -29,6 +39,13 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
 
     int Appointment_id;
     int status;
+
+    TextView appointment_date;
+    TextView appointment_time;
+    TextView appointment_Fine_time;
+    TextView appointment_Fine_value;
+    TextView appointment_address;
+    TextView appointment_timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +59,13 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
         ((Button) findViewById(R.id.atd_detail_backBtn)).setOnClickListener(AttendingListener);
 
 
+        appointment_address=findViewById(R.id.atd_detail_title);
+        appointment_date=findViewById(R.id.atd_detail_card1_DateText);
+        appointment_time=findViewById(R.id.atd_detail_card1_TimeText);
+        appointment_Fine_time=findViewById(R.id.atd_detail_min);
+        appointment_Fine_value=findViewById(R.id.atd_detail_money);
+        appointment_timer=findViewById(R.id.atd_detail_timer_t2);
+
         Appointment_id= getIntent().getIntExtra("id",0);
         status=getIntent().getIntExtra("status",0);
 
@@ -50,9 +74,16 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
             mapFragment = MapFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
         }
-
         mapFragment.getMapAsync(this);
 
+
+        new Thread()
+        {
+            @Override
+            public void run() {
+                UrlConnection.shardUrl.GetRequest("api/appointment/appointment/"+Appointment_id,callback);
+            }
+        }.run();
     }
 
 
@@ -99,4 +130,60 @@ public class AttendingDetailActivity extends AppCompatActivity implements OnMapR
             }
         });
     }
+
+    private Callback callback=new Callback(){
+
+        @Override
+        public void onFailure(Call call, IOException e) {
+            AttendingDetailActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AttendingDetailActivity.this,"네트워크 문제로 약속을 불러오지 못했습니다.",Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            String s=response.body().string();
+
+            try{
+                final JSONObject data=new JSONObject(s);
+
+                if(data.getInt("result")==2000)
+                {
+                    final JSONObject object=data.getJSONObject("data");
+                    AttendingDetailActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                appointment_address.setText(object.getString("address"));
+                                appointment_date.setText(object.getString("date"));
+                                appointment_time.setText(object.getString("date_time").substring(0,5));
+                                appointment_Fine_time.setText(object.getString("Fine_time"));
+                                appointment_Fine_value.setText(object.getString("Fine_money"));
+                                int timer=object.getInt("Timer");
+                                String time=timer/60+"시간 ";
+                                if(timer%60!=0)
+                                    time= time+timer%60+"분";
+                                appointment_timer.setText(time);
+                            }catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }catch (JSONException e)
+            {
+                AttendingDetailActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AttendingDetailActivity.this,"서버 문제로 약속을 불러오지 못했습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }
+    };
 }

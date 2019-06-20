@@ -1,9 +1,12 @@
 package com.minsudongP;
 
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,20 +14,30 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.minsudongP.Model.AllRecyclerAdapter;
+import com.minsudongP.Model.PromissItem;
+import com.minsudongP.Model.PromissType;
 import com.minsudongP.Service.PromissService;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
@@ -36,36 +49,68 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
-    public static final int PROMISS_GAME_READY = 0;
-    public static final int PROMISS_GAME_DC_CIRCLE = 1;//점점 줄어드는 원
-    public static final int PROMISS_GAME_STOP_CIRCLE = 2;//페이지 시 멈출 때
+
 
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원
-    int radius = 500;
     Pusher pusher;
+    boolean first=true;
     HashMap<String,Marker> memberMarker=new HashMap<>();
     Intent intent;
     int appointment_id;
+    RecyclerView recyclerView;
+    AllRecyclerAdapter adapter;
+    ArrayList<PromissItem> arrayList=new ArrayList<>();
     UrlConnection connection;
-//    LocationOverlay locationOverlay;//줄어들 원
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment__game_);
-        circle = new CircleOverlay();
+
         appointment_id=getIntent().getIntExtra("id",0);
 
+        adapter=new AllRecyclerAdapter(arrayList,this);
+        recyclerView=findViewById(R.id.game_member_recycle);
 
+
+        adapter.SetClickListner(new AllRecyclerAdapter.PromissClick() {
+            @Override
+            public void OnClick(View view, int position) {
+                CircleImageView circleImageView;
+//                if(select_position!=-1)
+//                {
+//                    circleImageView=arrayList.get(select_position).get
+//                }
+
+              //  @SuppressLint("ObjectAnimatorBinding") ObjectAnimator animation = ObjectAnimator.ofFloat(view.getParent(), "translationY", +100f);
+              //  animation.setDuration(2000);
+              //  animation.start();
+                adapter.notifyDataSetChanged();
+                circleImageView=(CircleImageView)view;
+               circleImageView.setBorderColor(getResources().getColor(R.color.colorGreen));
+               circleImageView.setBorderWidth(6);
+
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(Double.parseDouble(arrayList.get(position).getPositionX()), Double.parseDouble(arrayList.get(position).getPositionY())))
+                        .animate(CameraAnimation.Easing,1000);
+                mMap.moveCamera(cameraUpdate);
+
+
+            }
+        });
+        recyclerView.setAdapter(adapter);
         //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
         PusherOptions options = new PusherOptions();
         options.setCluster("ap3");
@@ -84,17 +129,10 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                     if(object.getInt("result")==2000)
                     {
                         final JSONObject data=object.getJSONObject("data");
+                        final JSONObject data2=data.getJSONObject("data");
 
-                        Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    MapReSetting(data.getInt("radius"),data.getString("Member"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                        if(circle!=null)
+                            MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
                     }else{
                         Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                             @Override
@@ -161,17 +199,57 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                 if(jsonObject.getInt("result")==2000)
                 {
                     final JSONObject data=jsonObject.getJSONObject("data");
+                    final JSONObject appoint=data.getJSONObject("appointment");
+                    JSONObject member=data.getJSONObject("member");
+                    final JSONObject real_member=member.getJSONObject("data");
 
-                    Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+
+
                             try {
-                                MapReSetting(data.getInt("radius"),data.getString("Member"));
+                                circle = new CircleOverlay();
+                                circle.setColor(Color.alpha(0)); //투명
+                                circle.setOutlineWidth(5);
+                                circle.setOutlineColor(Color.GREEN);
+                            final LatLng coord = new LatLng(appoint.getDouble("latitude"),appoint.getDouble("longitude"));
+
+                            circle.setCenter(coord); // 약속 장소 위치
+                            final Marker marker = new Marker();
+                            marker.setCaptionText("목적지");
+                            marker.setPosition(coord);
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    marker.setMap(mMap);
+                                }
+                            });
+
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    try {
+                                        MapReSetting(real_member.getInt("radius"), real_member.getString("Member"));
+                                    }catch (JSONException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }.run();
+
+
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mMap.setCameraPosition(new CameraPosition(coord, 11.0)); // 카메라 위치 셋팅
+                                }
+                            });
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        }
-                    });
+
+
+
                 }else{
                     Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -204,20 +282,12 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     public void onMapReady(@NonNull NaverMap naverMap) {
         //약속 목적지가 중앙
         mMap = naverMap;
-        LatLng coord = new LatLng(37.5662952, 126.97794509999994);
-
-        Marker marker = new Marker();
-        marker.setCaptionText("목적지");
-        marker.setPosition(new LatLng(37.5670135, 126.9783740));
-        marker.setMap(naverMap);
 
 
-        circle.setCenter(new LatLng(37.5670135, 126.9783740)); // 약속 장소 위치
-        circle.setRadius(radius); // 타이머에 따른 크기
-        circle.setColor(Color.alpha(0)); //투명
-        circle.setOutlineWidth(5);
-        circle.setOutlineColor(Color.GREEN);
+        mMap.setMapType(NaverMap.MapType.Navi);
 
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)>18)
+        mMap.setNightModeEnabled(true);
        // MapReSetting();
 
         connection=UrlConnection.shardUrl;
@@ -229,83 +299,83 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                 connection.GetRequest("api/appointment/getSetting/"+appointment_id,callback);
             }
         }.run();
-        mMap.setCameraPosition(new CameraPosition(coord, 17.0)); // 카메라 위치 셋팅
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("GPS-event-name")
-        );
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-    }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {    //Service에서 받아온 사용자의 위치에 마커를 표시
-            // TODO Auto-generated method stub // Get extra data included in the
-
-            if (intent.getStringExtra("send").equals("error")) {
-                Toast.makeText(Appointment_Game_Activity.this, intent.getStringExtra("message"), Toast.LENGTH_LONG).show();
-            } else {
-                Marker marker=memberMarker.get(UserInfor.shared.getId_num());
-                if (marker != null) {
-                    marker.setMap(null);
-                }
-                Marker Mymarker=new Marker();
-                Mymarker.setCaptionText("나의 위치");
-
-                Mymarker.setPosition(new LatLng(intent.getDoubleExtra("latitude", 36), intent.getDoubleExtra("longitude", 126)));
-                Mymarker.setMap(mMap);
-                memberMarker.put(UserInfor.shared.getId_num(),Mymarker);
-            }
-        }
-
-    };
-
-    public void MapReSetting(int radius, String member) { //member는 jsonArray로온다.
+    public void MapReSetting(final double radius, final String member) { //member는 jsonArray로온다.
 
         Log.d("결과",member);
 
-        circle.setMap(null);
-        circle.setRadius(radius);
-        circle.setMap(mMap); //원 초기화
 
-        for(String key:memberMarker.keySet()) // 마커 초기화
-        {
-            memberMarker.get(key).setMap(null);
-        }
+                 arrayList.clear();
+                Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        circle.setMap(null);
+                        circle.setRadius(radius);
 
-        try{
-
-            JSONArray jsonArray=new JSONArray(member);
-            for(int i=0;i<jsonArray.length();i++)
-            {
-
-                JSONObject user=jsonArray.getJSONObject(i);
+                        circle.setMap(mMap); //원 초기화
+                    }
+                });
 
 
-                Marker marker=new Marker();
-                marker.setCaptionText(user.getString("name"));
-                marker.setPosition(new LatLng(user.getDouble("latitude"),user.getDouble("longitude")));
-                marker.setMap(mMap);
+                for (String key : memberMarker.keySet()) // 마커 초기화
+                {
+                    final String keyFinal=key;
+                    Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            memberMarker.get(keyFinal).setMap(null);
+
+                        }
+                    });
+
+                }
 
 
-                memberMarker.put(user.getString("id"),marker);
+                try {
 
-            }
-        }catch (JSONException e)
-        {
-            Toast.makeText(Appointment_Game_Activity.this,"서버가 문제가 있습니다. 서버관리자에게 문의를 주세요.",Toast.LENGTH_LONG).show();
-            finish(); // 네트워크가 안되면 종료
-        }
+                    JSONArray jsonArray = new JSONArray(member);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject user = jsonArray.getJSONObject(i);
+
+
+                        final Marker marker = new Marker();
+
+                        //marker.setIcon(OverlayImage.fromBitmap(Glide.with(getApplicationContext()).asBitmap().load(user.getString("Image")).error(R.drawable.face).submit().get()));
+                        marker.setCaptionText(user.getString("name"));
+                        marker.setPosition(new LatLng(user.getDouble("latitude"), user.getDouble("longitude")));
+
+
+                        Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                marker.setMap(mMap);
+                            }
+                        });
+
+                        arrayList.add(new PromissItem(PromissType.MEMBER_LIST, user.getString("Image"), user.getString("latitude"), user.getString("longitude"), user.getString("name")));
+
+                        memberMarker.put(user.getString("id"), marker);
+
+                        if(first) {
+                            first=false;
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(Appointment_Game_Activity.this, "서버가 문제가 있습니다. 서버관리자에게 문의를 주세요.", Toast.LENGTH_LONG).show();
+                    finish(); // 네트워크가 안되면 종료
+                }
 
     }
 }

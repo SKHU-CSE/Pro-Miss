@@ -1,6 +1,7 @@
 package com.minsudongP.Model;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.minsudongP.App;
 import com.minsudongP.FollowActivity;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.R;
+import com.minsudongP.Singletone.UserInfor;
 import com.minsudongP.ViewHolder.AcceptViewHolder;
 import com.minsudongP.ViewHolder.Add_FriendVIewHolder;
 import com.minsudongP.ViewHolder.AppointStartViewHolder;
@@ -21,6 +23,7 @@ import com.minsudongP.ViewHolder.FriendViewHolder;
 
 import com.minsudongP.ViewHolder.GPSViewHolder;
 import com.minsudongP.ViewHolder.LateMemberViewHolder;
+import com.minsudongP.ViewHolder.Member_ListViewHolder;
 import com.minsudongP.ViewHolder.SearchViewHolder;
 
 import com.minsudongP.ViewHolder.NewAppointViewHolder;
@@ -29,6 +32,7 @@ import com.minsudongP.ViewHolder.TimeLateViewHolder;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -73,6 +77,10 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     viewHolder = new FriendViewHolder(view);
                     break;
                 }
+            case MEMBER_LIST:
+                view=activity.getLayoutInflater().inflate(R.layout.member_list,viewGroup,false);
+                viewHolder=new Member_ListViewHolder(view);
+                break;
             case GPS_ALERT:
                 view=activity.getLayoutInflater().inflate(R.layout.alert_gps,viewGroup,false);
                 viewHolder=new GPSViewHolder(view);
@@ -152,6 +160,9 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             case FriendList_Grid:
                 BindFriendList_Grid(viewHolder,i);
+                break;
+            case MEMBER_LIST:
+                BindMember_LIst(viewHolder,i);
                 break;
             case SearchList:
                 BindSearchList(viewHolder,i);
@@ -242,6 +253,22 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.place.setText(arrayList.get(position).getPlace());
     }
 
+    void BindMember_LIst(RecyclerView.ViewHolder viewHolder,final int position)
+    {
+        Member_ListViewHolder holder=(Member_ListViewHolder)viewHolder;
+
+        Glide.with(activity)
+                .load(arrayList.get(position).getProfileImageURl())
+                .error(R.drawable.face)
+                .into(holder.proflie);
+        holder.proflie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.OnClick(v,position);
+            }
+        });
+    }
+
     void BindTime_Late(RecyclerView.ViewHolder viewHolder,int position)
     {
         TimeLateViewHolder holder=(TimeLateViewHolder)viewHolder;
@@ -300,6 +327,18 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     {
         AttendViewHolder holder=(AttendViewHolder)viewHolder;
 
+        int date=Integer.parseInt(arrayList.get(position).getDate().substring(8));
+        int date_diff=date-Calendar.getInstance().get(Calendar.DATE);
+
+        if(date_diff<0)
+            date_diff=0;
+
+        String temp;
+        if(date_diff==0)
+            temp="day";
+        else
+            temp=""+date_diff;
+
         holder.place.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,6 +346,7 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         });
 
+        holder.date_diff.setText("D-"+temp);
         holder.date.setText(arrayList.get(position).getDate());
         holder.time.setText(arrayList.get(position).getTime());
         holder.place.setText(arrayList.get(position).getName());
@@ -327,17 +367,34 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.friendName.setText(arrayList.get(position).getName());
     }
 
-    void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder,  int position)
+    void BindFriendList_Grid(RecyclerView.ViewHolder viewHolder, final int position)
     {
         Add_FriendVIewHolder holder=(Add_FriendVIewHolder)viewHolder;
 
-        final int p=position;
+        UserInfor userInfor=UserInfor.shared;
+        if(userInfor.getId_num().equals(""+arrayList.get(position).getUser_id()))
+        {
+            holder.remove.setVisibility(View.INVISIBLE);
+        }else
+        {
+            holder.king.setVisibility(View.INVISIBLE);
+            holder.remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    click.OnClick(v,position);
+                }
+            });
+        }
+
         if(arrayList.get(position).getProfileImageURl().equals("추가하기")) {
-            holder.imageView.setImageResource(R.drawable.bt_add);
+            holder.imageView.setImageResource(R.drawable.ic_add_black_24dp);
+            holder.remove.setVisibility(View.INVISIBLE);
+            holder.king.setVisibility(View.INVISIBLE);
+            holder.imageView.setCircleBackgroundColor(Color.rgb(240,240,224));
             holder.imageView.getRootView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    click.OnClick(v,p);
+                    click.OnClick(v,position);
                 }
             });
         }

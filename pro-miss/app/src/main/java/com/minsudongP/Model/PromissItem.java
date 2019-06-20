@@ -100,7 +100,14 @@ public class PromissItem {
             this.address = addressORdate;
             this.positionX = positionXORPlace;
             this.positionY = positionYORmoneyORnameORMember;
-        } else if (type == PromissType.Time_Late) {
+
+        } else if(type==PromissType.MEMBER_LIST) {
+            this.Type=type;
+            this.ProfileImageURl=addressORdate;
+            this.positionX=jibunORtime;
+            this.positionY=positionXORPlace;
+            this.Name=positionYORmoneyORnameORMember;
+        }else if (type == PromissType.Time_Late) {
             this.Date = addressORdate;
             this.Time = jibunORtime;
             this.Place = positionXORPlace;

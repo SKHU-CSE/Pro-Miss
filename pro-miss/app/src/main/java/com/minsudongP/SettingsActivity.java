@@ -30,6 +30,10 @@ import com.mommoo.permission.repository.DenyInfo;
 import java.util.List;
 
 import static com.minsudongP.SaveSharedPreference.clearUserInfo;
+import static com.minsudongP.SaveSharedPreference.getSetting_Alert;
+import static com.minsudongP.SaveSharedPreference.getSetting_Voice;
+import static com.minsudongP.SaveSharedPreference.setSetting_Alert;
+import static com.minsudongP.SaveSharedPreference.setSetting_Voice;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -58,6 +62,14 @@ public class SettingsActivity extends AppCompatActivity {
         swvive.setClickable(false);
         swbackground.setClickable(false);
 
+        if(getSetting_Alert(getApplicationContext())==1)
+        {
+            swnotice.setChecked(true);
+        }
+        if(getSetting_Voice(getApplicationContext())==1)
+        {
+            swvoice.setChecked(true);
+        }
         swnotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -70,6 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
                     swvive.setClickable(true);
                     swsound.setChecked(true);
                     swvive.setChecked(true);
+                    setSetting_Alert(getApplicationContext(),1);
                     ContextCompat.startForegroundService(SettingsActivity.this,Service);
 
                 } else {
@@ -79,6 +92,7 @@ public class SettingsActivity extends AppCompatActivity {
                     stopService(Service);
                     swsound.setChecked(false);
                     swvive.setChecked(false);
+                    setSetting_Alert(getApplicationContext(),0);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 
@@ -174,10 +188,12 @@ public class SettingsActivity extends AppCompatActivity {
                     message = "백그라운드 음성인식이 켜졌습니다";
                     Intent service = new Intent(SettingsActivity.this, Recoginition.class);
                     ContextCompat.startForegroundService(SettingsActivity.this, service);
+                    setSetting_Voice(getApplicationContext(),1);
                 } else {
                     Intent service = new Intent(SettingsActivity.this, Recoginition.class);
                     stopService(service);
                     message = "백그라운드 음성인식이 꺼졌습니다";
+                    setSetting_Voice(getApplicationContext(),0);
 
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();

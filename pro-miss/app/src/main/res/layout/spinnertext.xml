@@ -5,6 +5,8 @@
     android:textSize="21sp"
     android:textColor="@color/colorGreen"
     android:gravity="center"
+    android:text="9"
+    android:layout_margin="10dp"
     android:padding="5dp">
 
 
