@@ -10,45 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/frag1_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/toolbar_gradation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/frag1_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bamin_font"
-                android:text="약속 만들기"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/frag1_backButton"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/backspace"
-                app:layout_constraintBottom_toBottomOf="@+id/frag1_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frag1_title" />
-        </android.support.constraint.ConstraintLayout>
-
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/frag1_toolbar">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -84,6 +48,18 @@
                     android:background="@color/colorAccent" />
 
                 <TextView
+                    android:id="@+id/upper_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textinput_name"
+                    android:text="날짜"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
+
+                <TextView
                     android:id="@+id/appointment_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,6 +79,17 @@
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
 
+                <TextView
+                    android:id="@+id/upper_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_date"
+                    android:text="시간"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
                 <TextView
                     android:id="@+id/appointment_time"
                     android:layout_width="match_parent"
@@ -124,16 +111,40 @@
                     android:background="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/appointment_timer"
+                    android:id="@+id/upper_timer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/appointment_time"
+                    android:text="실제 약속에서는 추가시간이 주어집니다."
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
                     android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/appointment_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_time"
+                    android:layout_marginLeft="50dp"
                     android:layout_marginTop="30dp"
                     android:background="#00000000"
                     android:text="약속장소로 언제 출발하시나요?"
                     android:textColor="@color/colorAccent"
                     android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/appointment_plustime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/colorAccent"
+                    android:layout_below="@id/appointment_time"
+                    android:layout_toRightOf="@id/appointment_timer"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="30dp"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -142,6 +153,18 @@
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/upper_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_timer"
+                    android:text="장소"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
 
                 <TextView
                     android:id="@+id/appointment_address"
@@ -199,6 +222,15 @@
                     android:layout_height="200dp"
                     android:layout_below="@id/textinput_memo"
                     android:layout_marginTop="30dp" />
+
+                <View
+                    android:id="@+id/upperMapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="#00000000"
+                    android:layout_below="@id/textinput_memo"
+                    android:layout_marginTop="30dp"
+                    android:foregroundGravity="center"/>
 
             </RelativeLayout>
         </ScrollView>

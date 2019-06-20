@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.minsudongP.Fragment.AppointmentFragemnt;
@@ -31,7 +33,7 @@ import okhttp3.Response;
 public class appointment extends AppCompatActivity {
 
     AppointmentFragemnt ap_fragment;
-    SetMoneyFragemnt  sd_fragment;
+    SetMoneyFragemnt sd_fragment;
     MemberFragment mb_fragment;
     ViewpagerAdapter viewpagerAdapter;
 
@@ -47,65 +49,58 @@ public class appointment extends AppCompatActivity {
     ArrayList<PromissItem> member;
 
 
-
-
     /*첫번째 페이지에서 설정*/
-    public void setAppointment_role_1(String address,String latitude,String longitude,String Timer,String date,String date_time)
-    {
-        this.address=address;
-        this.latitude=latitude;
-        this.longitude=longitude;
-        this.Timer=Timer;
-        this.date=date;
-        this.notice="";
-        this.date_time=date_time;
+    public void setAppointment_role_1(String address, String latitude, String longitude, String Timer, String date, String date_time) {
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.Timer = Timer;
+        this.date = date;
+        this.notice = "";
+        this.date_time = date_time;
     }
 
-    public void setAppointment_role_2(String Fine_time,String Fine_money)
-    {
-        this.Fine_money=Fine_money;
-        this.Fine_time=Fine_time;
+    public void setAppointment_role_2(String Fine_time, String Fine_money) {
+        this.Fine_money = Fine_money;
+        this.Fine_time = Fine_time;
     }
 
-    public void setAppointment_role_3(ArrayList<PromissItem> items)
-    {
-        this.member=items;
+    public void setAppointment_role_3(ArrayList<PromissItem> items) {
+        this.member = items;
 //        viewpagerAdapter.clear();
-        Log.d("memberSize",""+member.size());
+        Log.d("memberSize", "" + member.size());
         member.remove(0);
-        member.remove(member.size()-1);
-        final UrlConnection connection=UrlConnection.shardUrl;
-        final HashMap<String,String> hash=new HashMap<>();
+        member.remove(member.size() - 1);
+        final UrlConnection connection = UrlConnection.shardUrl;
+        final HashMap<String, String> hash = new HashMap<>();
 
         hash.put("id", UserInfor.shared.getId_num());
-        hash.put("latitude",latitude);
-        hash.put("longitude",longitude);
-        hash.put("address",address);
-        hash.put("date",date);
-        hash.put("date_time",date_time);
-        hash.put("Timer",Timer);
-        hash.put("num",""+member.size());
-        hash.put("Fine_time",Fine_time);
-        hash.put("Fine_money",Fine_money);
-        hash.put("notice",notice);
+        hash.put("latitude", latitude);
+        hash.put("longitude", longitude);
+        hash.put("address", address);
+        hash.put("date", date);
+        hash.put("date_time", date_time);
+        hash.put("Timer", Timer);
+        hash.put("num", "" + member.size());
+        hash.put("Fine_time", Fine_time);
+        hash.put("Fine_money", Fine_money);
+        hash.put("notice", notice);
 
-        for(int i=0;i<member.size();i++)
-        {
-            Log.d("waitting","ok");
-            hash.put("member_id"+i,""+member.get(i).getUser_id());
+        for (int i = 0; i < member.size(); i++) {
+            Log.d("waitting", "ok");
+            hash.put("member_id" + i, "" + member.get(i).getUser_id());
         }
 
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
-                connection.PostRequest("api/appointment/up",callback,hash);
+                connection.PostRequest("api/appointment/up", callback, hash);
             }
         }.run();
     }
 
 
-
-    private Callback callback=new Callback() {
+    private Callback callback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
             appointment.this.runOnUiThread(new Runnable() {
@@ -118,45 +113,43 @@ public class appointment extends AppCompatActivity {
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-            String s=response.body().string();
+            String s = response.body().string();
 
-            Log.d("url",s);
-            try{
-                final JSONObject object=new JSONObject(s);
+            Log.d("url", s);
+            try {
+                final JSONObject object = new JSONObject(s);
 
-                if(object.getInt("result")==2000)
-                {
+                if (object.getInt("result") == 2000) {
                     appointment.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                Toast.makeText(appointment.this,object.getString("data"),Toast.LENGTH_LONG).show();
+                                Toast.makeText(appointment.this, object.getString("data"), Toast.LENGTH_LONG).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
                     finish();
-                }else
-                {
+                } else {
                     appointment.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                Toast.makeText(appointment.this,object.getString("message"),Toast.LENGTH_LONG).show();
+                                Toast.makeText(appointment.this, object.getString("message"), Toast.LENGTH_LONG).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
                 }
-            }catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,16 +157,16 @@ public class appointment extends AppCompatActivity {
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-        viewpagerAdapter=new ViewpagerAdapter(getSupportFragmentManager());
+        viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewpagerAdapter);
 
-        CircleIndicator indicator = (CircleIndicator)findViewById(R.id.indicator);
+        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);
 
         viewpagerAdapter.registerDataSetObserver(indicator.getDataSetObserver());
-        ap_fragment=new AppointmentFragemnt();
-        sd_fragment=new SetMoneyFragemnt();
-        mb_fragment=new MemberFragment();
+        ap_fragment = new AppointmentFragemnt();
+        sd_fragment = new SetMoneyFragemnt();
+        mb_fragment = new MemberFragment();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -197,8 +190,7 @@ public class appointment extends AppCompatActivity {
                             ((SetMoneyFragemnt) viewpagerAdapter.getItem(1)).SendDatatoActivity();
                             break;
                     }
-                }catch (IndexOutOfBoundsException e)
-                {
+                } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
@@ -209,6 +201,31 @@ public class appointment extends AppCompatActivity {
         viewpagerAdapter.addItem(mb_fragment);
 
         viewpagerAdapter.notifyDataSetChanged();
+
+
+        View.OnClickListener BackListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert_ex = new AlertDialog.Builder(appointment.this);
+                alert_ex.setMessage("취소하고 메인페이지로 돌아갑니다.");
+
+                alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                alert_ex.setTitle("작성을 취소하시겠습니까?");
+                AlertDialog alert = alert_ex.create();
+                alert.show();
+            }
+        };
+        ((Button) findViewById(R.id.appoint_backButton)).setOnClickListener(BackListener);
     }
 
     @Override
@@ -219,7 +236,6 @@ public class appointment extends AppCompatActivity {
         alert_ex.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
         alert_ex.setNegativeButton("예", new DialogInterface.OnClickListener() {
@@ -238,7 +254,7 @@ public class appointment extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d("appoint","actResume");
+        Log.d("appoint", "actResume");
     }
 
 
