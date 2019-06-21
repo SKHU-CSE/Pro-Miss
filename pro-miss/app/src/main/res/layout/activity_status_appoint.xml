@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_final_appoint_layout"
+        android:background="@drawable/toolbar_gradation_vertical">
+
+
+        <Button
+            android:id="@+id/main_MyPage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/profile" />
+
+        <Button
+            android:id="@+id/main_notify"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/main_MyPage"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/main_MyPage"
+            android:background="@drawable/ic_notifications_white_24dp" />
+
+
+        <FrameLayout
+            android:id="@+id/main_progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_MyPage"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp">
+
+            <ProgressBar
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="13dp"
+                android:layout_gravity="bottom"
+                android:max="100"
+                android:progress="20"
+                android:progressBackgroundTint="@color/colorAccent"
+                android:progressTint="#ffffff" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:max="100"
+                android:id="@+id/main_Seekbar"
+                android:progress="20"
+                android:progressBackgroundTint="#00000000"
+                android:progressTint="#00000000"
+                android:thumb="@drawable/marker_me" />
+
+        </FrameLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_progressbar_layout"
+            android:layout_alignLeft="@id/main_progressbar_layout"
+            android:text="circle"
+            android:id="@+id/main_circle_tv"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/main_appointment_layout"
+            android:layout_below="@id/main_circle_tv"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:id="@+id/main_appoint_date"
+                android:layout_marginLeft="35dp"
+                android:textColor="#ffffff"
+                android:text="2019.07.21"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홍대 맛집 탐방"
+                android:id="@+id/main_appoint_name"
+                android:textSize="30sp"
+                android:layout_marginTop="11dp"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/bamin_font"
+                android:layout_marginLeft="40dp"
+                android:layout_below="@id/main_appoint_date"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whilte_corner_small"
+                android:text="상세보기 >"
+                android:id="@+id/main_more_btn"
+                android:padding="5dp"
+                android:layout_alignTop="@id/main_appoint_name"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorAccent"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/whilte_corner_bottom"
+        android:padding="5dp"
+        android:layout_below="@id/main_final_appoint_layout"
+        android:elevation="8dp"
+        android:layout_marginBottom="15dp"
+        android:layout_height="70dp"
+        android:id="@+id/main_game_bar"
+        android:orientation="horizontal"
+        >
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="7dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="#c0c0c0"
+            android:id="@+id/main_center_view"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@id/main_center_view"
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="누적 벌금"
+                android:id="@+id/main_game_bar_Fine_title"
+                android:textSize="16sp"
+                android:textColor="#404040"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_below="@id/main_game_bar_Fine_title"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/main_game_Fine_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bamin_font"
+                    android:text="0"
+                    android:textColor="#404040"
+                    android:textSize="21sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="원"
+                    android:textSize="17sp"
+                    android:textColor="#404040"
+                    android:id="@+id/main_game_Fine_Subtv"
+                    android:fontFamily="@font/bamin_font" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/main_center_view"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="남은 시간"
+                android:id="@+id/main_game_bar_Time_title"
+                android:textSize="16sp"
+                android:textColor="#404040"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/main_game_bar_time_layout"
+                android:layout_below="@id/main_game_bar_Time_title"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/main_game_Time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bamin_font"
+                    android:text="0"
+                    android:textColor="#404040"
+                    android:textSize="21sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분"
+                    android:textColor="#404040"
+                    android:textSize="17sp"
+                    android:fontFamily="@font/bamin_font" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/120분"
+                android:textColor="#404040"
+                android:textSize="13sp"
+                android:id="@+id/main_game_Time_Subtv"
+                android:layout_alignBottom="@id/main_game_bar_time_layout"
+                android:layout_toRightOf="@id/main_game_bar_time_layout"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

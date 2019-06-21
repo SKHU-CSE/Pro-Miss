@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import com.mlsdev.animatedrv.AnimatedRecyclerView;
 
 import java.util.ArrayList;
 
-public class PastActivity extends AppCompatActivity {
+public class PastActivity extends BaseActivity {
     RecyclerView recyclerView;
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList=new ArrayList<>();

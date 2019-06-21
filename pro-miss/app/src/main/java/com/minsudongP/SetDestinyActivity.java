@@ -41,7 +41,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class SetDestinyActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SetDestinyActivity extends BaseActivity implements OnMapReadyCallback {
 
 
     ArrayList<PromissItem> arrayList=new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.minsudongP;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class ChargeActivity extends AppCompatActivity {
+public class ChargeActivity extends BaseActivity {
     ArrayList<String> moneytext = new ArrayList<>();
 
     @Override

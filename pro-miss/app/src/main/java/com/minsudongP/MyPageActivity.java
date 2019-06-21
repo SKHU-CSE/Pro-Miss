@@ -33,7 +33,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MyPageActivity extends AppCompatActivity {
+public class MyPageActivity extends BaseActivity {
 
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();

@@ -36,7 +36,7 @@ import static com.minsudongP.SaveSharedPreference.getSetting_Voice;
 import static com.minsudongP.SaveSharedPreference.setSetting_Alert;
 import static com.minsudongP.SaveSharedPreference.setSetting_Voice;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     PromissService mservice;
 

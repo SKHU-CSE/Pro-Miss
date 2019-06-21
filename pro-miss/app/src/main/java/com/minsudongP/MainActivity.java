@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,7 +20,7 @@ import com.mommoo.permission.repository.DenyInfo;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     Button testButton;
     TextView testText;
@@ -30,12 +32,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        View view=getLayoutInflater().inflate(R.layout.activity_main,null);
+
+        View subView=getLayoutInflater().inflate(R.layout.activity_status_appoint, (ViewGroup) view,false);
+
+        ((ViewGroup) view).addView(subView);
+
+        setContentView(view);
+        subView.findViewById(R.id.main_Seekbar).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
 
-
-
-        TextView number=findViewById(R.id.main_alert_number);
         // 권한 허용 (위치, 녹음)
         new MommooPermission.Builder(this)
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,
@@ -102,12 +114,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.main_MakeProtocal)).setOnClickListener(MakeProtocalListenr);
-        ((TextView) findViewById(R.id.main_MakeProtocal_text)).setOnClickListener(MakeProtocalListenr);
-        ((LinearLayout) findViewById(R.id.main_MyPage)).setOnClickListener(MyPageListener);
-        ((TextView) findViewById(R.id.main_MyPage_text)).setOnClickListener(MyPageListener);
-        ((ImageButton) findViewById(R.id.main_ShowProtocal)).setOnClickListener(AttendingListener);
-        ((ImageView) findViewById(R.id.main_alertbtn)).setOnClickListener(AlertListener);
+ //       ((ImageButton) findViewById(R.id.main_MakeProtocal)).setOnClickListener(MakeProtocalListenr);
+        ((TextView) subView.findViewById(R.id.main_notify)).setOnClickListener(MakeProtocalListenr);
+        ((Button) subView.findViewById(R.id.main_MyPage)).setOnClickListener(MyPageListener);
+        //((TextView) findViewById(R.id.main_MyPage_text)).setOnClickListener(MyPageListener);
+        ((Button) findViewById(R.id.main_more_btn)).setOnClickListener(AttendingListener);
+        //((ImageView) findViewById(R.id.main_alertbtn)).setOnClickListener(AlertListener);
 //        ((Button)findViewById(R.id.testButton)).setOnClickListener(locationUpdateTest);
 
     }

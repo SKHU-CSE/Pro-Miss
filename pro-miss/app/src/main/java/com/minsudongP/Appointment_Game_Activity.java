@@ -2,6 +2,7 @@ package com.minsudongP;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -59,9 +60,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
-
-
+public class Appointment_Game_Activity extends BaseActivity implements OnMapReadyCallback {
 
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원
@@ -106,7 +105,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
               //  animation.start();
                 adapter.notifyDataSetChanged();
                 circleImageView=(CircleImageView)view;
-               circleImageView.setBorderColor(getResources().getColor(R.color.colorGreen));
+               circleImageView.setBorderColor(getResources().getColor(R.color.colorAccent));
                circleImageView.setBorderWidth(6);
 
                 CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(Double.parseDouble(arrayList.get(position).getPositionX()), Double.parseDouble(arrayList.get(position).getPositionY())))
@@ -364,7 +363,13 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                         Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                memberMarker.get(user_id+"").setPosition(location);
+
+                                try {
+                                    memberMarker.get(user_id + "").setPosition(location);
+                                }catch (NullPointerException e)
+                                {
+                                    e.printStackTrace();
+                                }
                                 if(UserInfor.shared.getId_num().equals(""+user_id))
                                 {
                                     Fine.setText(FineText);

@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class FriendListActivity extends AppCompatActivity {
+public class FriendListActivity extends BaseActivity {
 
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList=new ArrayList<>();

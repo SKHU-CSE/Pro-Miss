@@ -199,7 +199,7 @@ public class SiriActivity extends Activity {
 
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {  // 백버튼 막기위해
 
     }
 }

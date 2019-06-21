@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class AttendingActivity extends AppCompatActivity {
+public class AttendingActivity extends BaseActivity {
     AnimatedRecyclerView recyclerView;
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList = new ArrayList<>();

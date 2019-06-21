@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.view.ViewPager;
@@ -30,7 +31,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class appointment extends AppCompatActivity {
+public class appointment extends BaseActivity {
 
     AppointmentFragemnt ap_fragment;
     SetMoneyFragemnt sd_fragment;

@@ -1,5 +1,6 @@
 package com.minsudongP;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +35,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class FollowActivity extends AppCompatActivity {
+public class FollowActivity extends BaseActivity {
 
     final UserInfor infor = UserInfor.shared;
     AllRecyclerAdapter adapter;
