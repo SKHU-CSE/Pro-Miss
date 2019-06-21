@@ -41,11 +41,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/login_stroke"
-        android:fontFamily="@font/bamin_font"
         android:hint="아이디"
+        android:imeOptions="actionNext"
         android:inputType="text"
         android:lines="1"
         android:padding="13dp"
+        android:privateImeOptions="defaultInputmode=english"
         android:textSize="18sp" />
 
     <EditText
@@ -57,11 +58,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/login_stroke"
-        android:fontFamily="@font/bamin_font"
         android:hint="비밀번호"
+        android:imeOptions="actionSend"
         android:inputType="textPassword"
         android:lines="1"
         android:padding="13dp"
+        android:privateImeOptions="defaultInputmode=english"
         android:textSize="18sp" />
 
     <Button
