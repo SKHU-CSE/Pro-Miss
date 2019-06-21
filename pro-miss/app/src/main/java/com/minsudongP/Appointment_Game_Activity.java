@@ -359,7 +359,7 @@ public class Appointment_Game_Activity extends BaseActivity implements OnMapRead
 
                         final int user_id=user.getInt("user_id");
                         final String FineText=user.getString("Fine_current");
-
+                        final String name=user.getString("name");
                         Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -368,7 +368,11 @@ public class Appointment_Game_Activity extends BaseActivity implements OnMapRead
                                     memberMarker.get(user_id + "").setPosition(location);
                                 }catch (NullPointerException e)
                                 {
-                                    e.printStackTrace();
+                                    Marker marker=new Marker();
+                                    marker.setCaptionText(name);
+                                    marker.setPosition(location);
+                                    marker.setMap(mMap);
+                                    memberMarker.put(user_id+"",marker);
                                 }
                                 if(UserInfor.shared.getId_num().equals(""+user_id))
                                 {
