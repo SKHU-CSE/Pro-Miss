@@ -34,7 +34,10 @@
                         android:layout_height="wrap_content"
                         android:background="#00000000"
                         android:hint="약속 이름"
+                        android:inputType="text"
                         android:paddingTop="10dp"
+                        android:privateImeOptions="defaultInputmode=korean"
+                        android:singleLine="true"
                         android:textColorHint="@color/colorAccent"
                         android:textSize="13dp" />
                 </android.support.design.widget.TextInputLayout>
@@ -52,12 +55,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textinput_name"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
                     android:text="날짜"
                     android:textColor="@color/colorAccent"
                     android:textSize="10dp"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/appointment_date"
@@ -84,12 +87,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/appointment_date"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
                     android:text="시간"
                     android:textColor="@color/colorAccent"
                     android:textSize="10dp"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
+
                 <TextView
                     android:id="@+id/appointment_time"
                     android:layout_width="match_parent"
@@ -115,12 +119,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/appointment_time"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
                     android:text="실제 약속에서는 추가시간이 주어집니다."
                     android:textColor="@color/colorAccent"
                     android:textSize="10dp"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/appointment_timer"
@@ -138,13 +142,13 @@
                     android:id="@+id/appointment_plustime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/colorAccent"
                     android:layout_below="@id/appointment_time"
-                    android:layout_toRightOf="@id/appointment_timer"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginRight="50dp"
-                    android:layout_marginTop="30dp"/>
+                    android:layout_toRightOf="@id/appointment_timer"
+                    android:text=""
+                    android:textColor="@color/colorAccent" />
 
                 <View
                     android:layout_width="match_parent"
@@ -159,12 +163,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/appointment_timer"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="10dp"
                     android:text="장소"
                     android:textColor="@color/colorAccent"
                     android:textSize="10dp"
-                    android:layout_marginHorizontal="50dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/appointment_address"
@@ -188,21 +192,23 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textinput_memo"
-                    android:layout_below="@id/appointment_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/appointment_address"
                     android:layout_marginHorizontal="50dp"
                     android:layout_marginTop="15dp"
                     android:textColorHint="@color/colorAccent">
 
                     <EditText
-                        android:paddingTop="5dp"
                         android:id="@+id/appointment_memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/appointment_address"
                         android:background="#00000000"
                         android:hint="메모(공지)"
+                        android:inputType="text"
+                        android:paddingTop="5dp"
+                        android:privateImeOptions="defaultInputmode=korean"
                         android:textColorHint="@color/colorAccent"
                         android:textSize="13dp" />
                 </android.support.design.widget.TextInputLayout>
@@ -221,16 +227,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_below="@id/textinput_memo"
+                    android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="30dp" />
 
                 <View
                     android:id="@+id/upperMapView"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="#00000000"
                     android:layout_below="@id/textinput_memo"
+                    android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="30dp"
-                    android:foregroundGravity="center"/>
+                    android:background="#00000000"
+                    android:foregroundGravity="center" />
 
             </RelativeLayout>
         </ScrollView>

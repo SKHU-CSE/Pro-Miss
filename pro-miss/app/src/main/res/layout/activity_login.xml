@@ -59,7 +59,7 @@
         android:background="@drawable/login_stroke"
         android:fontFamily="@font/bamin_font"
         android:hint="비밀번호"
-        android:inputType="textVisiblePassword"
+        android:inputType="textPassword"
         android:lines="1"
         android:padding="13dp"
         android:textSize="18sp" />
