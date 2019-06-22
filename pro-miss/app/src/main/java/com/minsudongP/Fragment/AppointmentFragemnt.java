@@ -145,9 +145,11 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                             m_timer = -1;
                             Toast.makeText(getContext(),m_year+"년 "+(m_month+1)+"월 "+m_date+"일\n"+m_hour+"시 "+m_date+"",Toast.LENGTH_LONG).show();
                         }
+
+                        Log.d("현재날짜", cal.get(Calendar.YEAR) + "-" +(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DATE));
+                        Log.d("약속날짜", m_year + "-" +(m_month+1)+"-"+m_date);
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
-
 
                 dialog.getDatePicker().setMinDate(cal.getTime().getTime());    //현재 날짜 이전으로 클릭 안되게 옵션 설정
                 dialog.show();
@@ -178,9 +180,11 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                         int currentHour = cal.get(Calendar.HOUR_OF_DAY);
                         int currentMin = cal.get(Calendar.MINUTE);
 
+                        Log.d("현재시간", currentHour + ":" +currentMin);
+                        Log.d("약속시간", hour + ":" +min);
+
                         // 현재시간으로부터 1시간 이후에만 약속 생성
-                        if (m_year == cal.get(Calendar.YEAR) && m_month==cal.get(Calendar.MONTH) && m_date==cal.get(Calendar.DATE)
-                                && (currentHour + 1 > hour || currentHour + 1 == hour && currentMin > min)) {
+                        if(getGapwithNow(m_year,m_month,m_date,hour,min)<1){
                             AlertDialog.Builder alert_time = new AlertDialog.Builder(getContext());
                             alert_time.setTitle("시간설정 오류");
                             alert_time.setMessage("현재 시간으로부터 1시간 이후의 약속만 생성 가능합니다.");
@@ -190,7 +194,6 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                         }
 
                         // 제약사항에 걸리지 않으면 바로 생성
-
                         date_time = hour + ":" + min;
                         String ampm = "AM";
                         if (hour >= 12) {
@@ -241,9 +244,9 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                     alert.setPositiveButton("확인", null);
                     alert.create().show();
                 } else {
-                    Log.d("gap",String.valueOf(getGap()));
+                    Log.d("gap",String.valueOf(getGapwithNow(m_year,m_month,m_date,m_hour,m_min)));
                     DialogSelectTimer dialogSelectTimer = new DialogSelectTimer(getActivity());
-                    dialogSelectTimer.callFunction(tvTimer, upperTimer, plusTime,getGap());
+                    dialogSelectTimer.callFunction(tvTimer, upperTimer, plusTime,getGapwithNow(m_year,m_month,m_date,m_hour,m_min));
                 }
             }
         };
@@ -345,22 +348,23 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
     }
 
-    public int getGap(){
+    public long getGapwithNow(int year, int month, int date, int hour, int min ){
         Calendar currentTime = Calendar.getInstance();
 
         try {
             SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy.MM.dd kk:mm");
 
-            String current = String.format("%04d.%02d.%02d %02d:%02d", currentTime.get(Calendar.YEAR), currentTime.get(Calendar.MONTH), currentTime.get(Calendar.DATE),currentTime.get(Calendar.HOUR_OF_DAY),currentTime.get(Calendar.MINUTE));
-            String appoint = String.format("%04d.%02d.%02d %02d:%02d", m_year, m_month, m_date, m_hour, m_min);
+            String curStr = String.format("%04d.%02d.%02d %02d:%02d", currentTime.get(Calendar.YEAR), currentTime.get(Calendar.MONTH), currentTime.get(Calendar.DATE),currentTime.get(Calendar.HOUR_OF_DAY),currentTime.get(Calendar.MINUTE));
+            String objStr = String.format("%04d.%02d.%02d %02d:%02d", year,month,date,hour,min);
 
-            Date startDate = dataFormat.parse(current);
-            Date endDate = dataFormat.parse(appoint);
+            Date curDate = dataFormat.parse(curStr);
+            Date objDate = dataFormat.parse(objStr);
 
-            long duration = endDate.getTime() - startDate.getTime();
-            String tag = current+"와 "+appoint+"의 차이";
-            Log.d(tag, String.valueOf((int)duration/60000));
-            return (int)duration/60000;
+
+            long duration = objDate.getTime() - curDate.getTime();
+            String tag = objDate.getTime()+"와 "+curDate.getTime()+"의 차이";
+            Log.d(tag, String.valueOf(duration/60000));
+            return duration/60000;
         }catch (ParseException e){
 
         }
