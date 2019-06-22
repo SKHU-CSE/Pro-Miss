@@ -34,7 +34,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/whilte_corner_small"
+                android:background="@drawable/white_corner_small"
                 android:text="상세보기 >"
                 android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
@@ -48,7 +48,7 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@drawable/whilte_corner_bottom"
+        android:background="@drawable/white_corner_bottom"
         android:padding="5dp"
         android:layout_below="@id/main_final_appoint_layout"
         android:elevation="8dp"
