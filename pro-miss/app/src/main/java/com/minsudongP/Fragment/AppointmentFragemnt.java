@@ -39,6 +39,7 @@ import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.Marker;
 
 
 import java.text.ParseException;
@@ -61,6 +62,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     TextView tvTime;
     TextView tvTimer;
     TextView tvAddress;
+    Marker marker;
 
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
     String date_time = "00:00";
@@ -89,7 +91,6 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                 startActivityForResult(intent, request_code);
             }
         });
-
         // 지도 객체 받아오기
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -272,6 +273,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         this.naverMap = naverMap;
         naverMap.setMaxZoom(14.0);
         naverMap.setMinZoom(14.0);
+
+        marker = new Marker();
 //        this.naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
 //            @Override
 //            public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
@@ -292,6 +295,9 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                         .animate(CameraAnimation.Easing);
                 naverMap.moveCamera(cameraUpdate);
                 naverMap.setCameraPosition(new CameraPosition(latLng, 17));
+                marker.setPosition(latLng);
+                marker.setMap(naverMap);
+
                 String address = data.getStringExtra("address");
                 if (!address.equals("")) {
                     tvAddress.setText(address);
@@ -334,8 +340,6 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
 
     public void SendDatatoActivity() {
-
-
         ((appointment) getActivity()).setAppointment_role_1(tvName.getText().toString(), "" + naverMap.getCameraPosition().target.latitude, "" + naverMap.getCameraPosition().target.longitude
                 , "" + getTimer(), tvDate.getText().toString(), date_time,notice.getText().toString());
 

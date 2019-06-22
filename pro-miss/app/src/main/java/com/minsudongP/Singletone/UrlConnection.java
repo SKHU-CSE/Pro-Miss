@@ -1,5 +1,7 @@
 package com.minsudongP.Singletone;
 
+import com.naver.maps.geometry.LatLng;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -84,7 +86,6 @@ public class UrlConnection {
         client.newCall(request).enqueue(callback);
     }
 
-
     public void PostSpeekRequest(String Text, String Id, Callback callback) {
 
         FormBody body = new FormBody.Builder()
@@ -96,6 +97,19 @@ public class UrlConnection {
                 .url(Mainurl + "api/promiss/ai")
                 .post(body)
                 .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void GetAddress(LatLng position, Callback callback) {
+        String coordinate = position.longitude+","+position.latitude;
+
+        String url = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords="+coordinate+"&orders=roadaddr,addr&output=json";
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("X-NCP-APIGW-API-KEY-ID", "v8pi3ri8py")
+                .addHeader("X-NCP-APIGW-API-KEY", "dbddNRMIFlG5fzD0KJDNOCewQluZKjEOOFyCyX5X")
+                .build();
+
         client.newCall(request).enqueue(callback);
     }
 }
