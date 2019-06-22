@@ -31,8 +31,8 @@ public class PastActivity extends BaseActivity {
         adapter=new AllRecyclerAdapter(arrayList,PastActivity.this);
 
         arrayList.add(new PromissItem(PromissType.Past_Appoint,"성공회대","19.05.21","5","3","1000원","3000원"));
-
-
+        arrayList.add(new PromissItem(PromissType.Past_Appoint,"홍대 마라샹궈","19.05.29","3","3","0원","0원"));
+        arrayList.add(new PromissItem(PromissType.Past_Appoint,"볼링장","19.06.22","5","4","0원","3421원"));
 
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(PastActivity.this));

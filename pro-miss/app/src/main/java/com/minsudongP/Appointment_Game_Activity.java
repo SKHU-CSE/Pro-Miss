@@ -60,7 +60,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Appointment_Game_Activity extends BaseActivity implements OnMapReadyCallback {
+public class Appointment_Game_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
     NaverMap mMap;
     CircleOverlay circle; //줄어들 원

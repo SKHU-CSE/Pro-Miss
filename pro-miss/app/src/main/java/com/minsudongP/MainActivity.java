@@ -12,11 +12,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.mommoo.permission.MommooPermission;
 import com.mommoo.permission.listener.OnPermissionDenied;
 import com.mommoo.permission.repository.DenyInfo;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -27,6 +35,7 @@ public class MainActivity extends BaseActivity {
     boolean isUpdating = false;
 
 
+    Pusher pusher;
     final int REQUEST_CODE_PERMISSION = 1000;
 
     @Override
@@ -38,6 +47,72 @@ public class MainActivity extends BaseActivity {
         View subView=getLayoutInflater().inflate(R.layout.activity_status_appoint, (ViewGroup) view,false);
 
         ((ViewGroup) view).addView(subView);
+
+
+        //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
+        PusherOptions options = new PusherOptions();
+        options.setCluster("ap3");
+        pusher = new Pusher("60518d2597abbeaa238c", options);
+
+        Channel channel = pusher.subscribe("ProMiss");
+
+        channel.bind("event_game"+appointment_id, new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String Receivedata) {
+                System.out.println(Receivedata);
+
+                try{
+                    JSONObject object=new JSONObject(Receivedata);
+
+                    if(object.getInt("result")==2000)
+                    {
+                        final String time_r=object.getString("time");
+                        final String total=object.getString("totalTime");
+                        Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                total_game.setText(time_r);
+                                timer.setText("/"+total+"분");
+                            }
+                        });
+
+                        final JSONObject data=object.getJSONObject("data");
+                        final JSONObject data2=data.getJSONObject("data");
+
+
+                        if(circle!=null)
+                            MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
+                    }else{
+                        Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Appointment_Game_Activity.this,"서버가 문제가 있습니다. 서버관리자에게 문의를 주세요.",Toast.LENGTH_LONG).show();
+                                finish(); // 네트워크가 안되면 종료
+                            }
+                        });
+                    }
+
+
+                }catch (JSONException e)
+                {
+                    e.printStackTrace();
+                    Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Appointment_Game_Activity.this,"네트워크를 확인해주세요",Toast.LENGTH_LONG).show();
+                            finish(); // 네트워크가 안되면 종료
+                        }
+                    });
+                }
+            }
+        });
+
+        pusher.connect();
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
         setContentView(view);
         subView.findViewById(R.id.main_Seekbar).setOnTouchListener(new View.OnTouchListener() {

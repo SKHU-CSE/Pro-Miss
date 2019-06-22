@@ -127,6 +127,13 @@ public class FriendListActivity extends BaseActivity {
                             jsonObject.getString("Image"), jsonObject.getString("name"), 0);
                     arrayList.add(item);
                 }
+
+                FriendListActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }catch (JSONException e)
             {
                 FriendListActivity.this.runOnUiThread(new Runnable() {

@@ -62,6 +62,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
     TextView tvAddress;
     String date_time = "00:00";
     EditText text;
+    EditText notice;
 
 
     @Nullable
@@ -91,7 +92,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         (view.findViewById(R.id.map)).setEnabled(false);
 
         text = view.findViewById(R.id.appointment_name);
-
+        notice=view.findViewById(R.id.appointment_memo);
         final TextView upperDate = view.findViewById(R.id.upper_date);
         tvDate = view.findViewById(R.id.appointment_date);
         tvDate.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +276,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
     public void SendDatatoActivity() {
         ((appointment) getActivity()).setAppointment_role_1(text.getText().toString(), "" + naverMap.getCameraPosition().target.latitude, "" + naverMap.getCameraPosition().target.longitude
-                , "" + getTimer(), tvDate.getText().toString(), date_time);
+                , "" + getTimer(), tvDate.getText().toString(), date_time,notice.getText().toString());
     }
 
 }

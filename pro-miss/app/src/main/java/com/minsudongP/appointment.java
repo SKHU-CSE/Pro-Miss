@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.minsudongP.Fragment.AppointmentFragemnt;
@@ -45,19 +46,20 @@ public class appointment extends BaseActivity {
     String date_time;
     String Timer;
     String Fine_time;
+    TextView title;
     String Fine_money;
     String notice;
     ArrayList<PromissItem> member;
 
 
     /*첫번째 페이지에서 설정*/
-    public void setAppointment_role_1(String address, String latitude, String longitude, String Timer, String date, String date_time) {
+    public void setAppointment_role_1(String address, String latitude, String longitude, String Timer, String date, String date_time,String notice) {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.Timer = Timer;
         this.date = date;
-        this.notice = "";
+        this.notice = notice;
         this.date_time = date_time;
     }
 
@@ -158,6 +160,7 @@ public class appointment extends BaseActivity {
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
+        title=findViewById(R.id.appoint_title);
         viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewpagerAdapter);
 
@@ -173,6 +176,18 @@ public class appointment extends BaseActivity {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
 
+                switch (i)
+                {
+                    case 0:
+                        title.setText("약속 만들기");
+                        break;
+                    case 1:
+                        title.setText("벌금 금액");
+                        break;
+                    case 2:
+                        title.setText("멤버 추가");
+                        break;
+                }
             }
 
             @Override
@@ -182,6 +197,7 @@ public class appointment extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int i) {
+
                 try {
                     switch (i - 1) {
                         case 0:
