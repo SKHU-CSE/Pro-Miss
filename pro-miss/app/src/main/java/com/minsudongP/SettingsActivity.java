@@ -54,23 +54,16 @@ public class SettingsActivity extends BaseActivity {
         ((Button) findViewById(R.id.setting_backButton)).setOnClickListener(MYPageListener);
 
         final Switch swnotice = (Switch) findViewById(R.id.setting_noticeSwitch);
-        final Switch swsound = (Switch) findViewById(R.id.setting_soundSwitch);
-        final Switch swvive = (Switch) findViewById(R.id.setting_viveSwitch);
         final Switch swvoice = (Switch) findViewById(R.id.setting_voiceSwitch);
-        final Switch swbackground = (Switch) findViewById(R.id.setting_backvoiceSwitch);
 
-        swsound.setClickable(false);
-        swvive.setClickable(false);
-        swbackground.setClickable(false);
-
-        if(getSetting_Alert(getApplicationContext())==1)
-        {
+        if (getSetting_Alert(getApplicationContext()) == 1) {
             swnotice.setChecked(true);
         }
-        if(getSetting_Voice(getApplicationContext())==1)
-        {
+
+        if (getSetting_Voice(getApplicationContext()) == 1) {
             swvoice.setChecked(true);
         }
+
         swnotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,56 +72,19 @@ public class SettingsActivity extends BaseActivity {
                 Intent Service = new Intent(SettingsActivity.this, PromissService.class);
                 if (isChecked) {
                     message = "알림이 켜졌습니다";
-                    swsound.setClickable(true);
-                    swvive.setClickable(true);
-                    swsound.setChecked(true);
-                    swvive.setChecked(true);
-                    setSetting_Alert(getApplicationContext(),1);
-                    ContextCompat.startForegroundService(SettingsActivity.this,Service);
+                    setSetting_Alert(getApplicationContext(), 1);
+                    ContextCompat.startForegroundService(SettingsActivity.this, Service);
 
                 } else {
                     message = "알림이 꺼졌습니다";
-                    swsound.setClickable(false);
-                    swvive.setClickable(false);
                     stopService(Service);
-                    swsound.setChecked(false);
-                    swvive.setChecked(false);
-                    setSetting_Alert(getApplicationContext(),0);
+                    setSetting_Alert(getApplicationContext(), 0);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 
             }
         });
 
-
-        swsound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                String message;
-
-                if (isChecked)
-                    message = "소리가 켜졌습니다";
-                else
-                    message = "소리가 꺼졌습니다";
-                Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        swvive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                String message;
-
-                if (isChecked)
-                    message = "진동이 켜졌습니다";
-                else
-                    message = "진동이 꺼졌습니다";
-                Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
-
-            }
-        });
         swvoice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -161,8 +117,6 @@ public class SettingsActivity extends BaseActivity {
 
                     if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                         message = "음성인식이 켜졌습니다";
-                        swbackground.setClickable(true);
-                        swbackground.setChecked(true);
                         Intent service = new Intent(SettingsActivity.this, Recoginition.class);
                         ContextCompat.startForegroundService(SettingsActivity.this, service);//음성인식 서비스 실행
                     } else {
@@ -171,31 +125,7 @@ public class SettingsActivity extends BaseActivity {
                     }
                 } else {
                     message = "음성인식이 꺼졌습니다";
-                    swbackground.setClickable(false);
-                    swbackground.setChecked(false);
                     stopService(intent);
-                }
-                Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        swbackground.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                String message;
-
-                if (isChecked) {
-                    message = "백그라운드 음성인식이 켜졌습니다";
-                    Intent service = new Intent(SettingsActivity.this, Recoginition.class);
-                    ContextCompat.startForegroundService(SettingsActivity.this, service);
-                    setSetting_Voice(getApplicationContext(),1);
-                } else {
-                    Intent service = new Intent(SettingsActivity.this, Recoginition.class);
-                    stopService(service);
-                    message = "백그라운드 음성인식이 꺼졌습니다";
-                    setSetting_Voice(getApplicationContext(),0);
-
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 
@@ -229,8 +159,6 @@ public class SettingsActivity extends BaseActivity {
             }
         });
     }
-
-
 
 
 }
