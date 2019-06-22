@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="13dp"
                 android:layout_gravity="bottom"
+                android:id="@+id/main_progressbar"
                 android:max="100"
                 android:progress="20"
                 android:progressBackgroundTint="@color/colorAccent"

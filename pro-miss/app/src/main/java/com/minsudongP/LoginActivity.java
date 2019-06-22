@@ -208,6 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String s = response.body().string();
+
                         try {
                             JSONObject result = new JSONObject(s);
 
@@ -233,6 +234,16 @@ public class LoginActivity extends AppCompatActivity {
                                     infor.setSuccess_appoint_num(jsonObject.getInt("success_appoint_num"));
                                     infor.setName(jsonObject.getString("name"));
                                     infor.setProfile_img(jsonObject.getString("Image"));
+
+                                    jsonObject=jsonObject.getJSONObject("appointment");
+                                    if(jsonObject !=null)
+                                    {
+                                        infor.setAppointment_id(jsonObject.getInt("appointment_id"));
+                                        infor.setAppointment_address(jsonObject.getString("address"));
+                                        infor.setAppintment_date(jsonObject.getString("date"));
+                                        infor.setAppintment_time(jsonObject.getString("date_time"));
+                                        infor.setAppointment_status(jsonObject.getInt("status"));
+                                    }
 
                                     // 정보 다 받아오면 UI 스레드에서 화면 갱신
                                     LoginActivity.this.runOnUiThread(new Runnable() {
@@ -376,9 +387,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(MeV2Response result) {
                     Toast.makeText(LoginActivity.this,"카카오 계정으로 로그인 되었습니다.",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+
 
                     // 회원 정보가 있는지 없는지 확인
                     checkID(result);
