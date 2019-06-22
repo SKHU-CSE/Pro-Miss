@@ -73,7 +73,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
         android:id="@+id/set_destiny_btn"
-        android:background="@drawable/btn_blue"
+        android:background="@drawable/btn_pink"
         android:text="이 위치를 목적지로 설정"
         android:textColor="#ffffff" />
 </FrameLayout>

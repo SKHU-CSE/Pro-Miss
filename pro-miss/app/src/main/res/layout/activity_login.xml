@@ -5,20 +5,23 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#FFFFFF"
     tools:context=".LoginActivity">
+
 
     <TextView
         android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/bamin_font"
         android:text="PRO-MISS"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:shadowColor="@color/colorPrimary"
+        android:shadowRadius="1"/>
 
     <TextView
         android:id="@+id/login_logintText"
@@ -26,10 +29,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/bamin_font"
         android:text="로그인"
-        android:textColor="#000000"
+        android:textColor="#000"
         android:textSize="20sp" />
 
     <EditText
@@ -42,12 +45,13 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/login_stroke"
         android:hint="아이디"
+        android:textColorHint="#D55"
         android:imeOptions="actionNext"
         android:inputType="text"
         android:lines="1"
         android:padding="13dp"
         android:privateImeOptions="defaultInputmode=english"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <EditText
         android:id="@+id/login_pwd"
@@ -59,12 +63,13 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/login_stroke"
         android:hint="비밀번호"
+        android:textColorHint="#D55"
         android:imeOptions="actionSend"
         android:inputType="textPassword"
         android:lines="1"
         android:padding="13dp"
         android:privateImeOptions="defaultInputmode=english"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <Button
         android:id="@+id/login_login"
@@ -73,13 +78,12 @@
         android:layout_below="@id/login_pwd"
         android:layout_alignRight="@id/login_pwd"
         android:layout_marginTop="10dp"
-        android:background="@null"
+        android:background="@drawable/click_btn_color_pink"
         android:fontFamily="@font/bamin_font"
-        android:gravity="right|center_vertical"
-        android:paddingRight="5dp"
+        android:gravity="center"
         android:text="로그인"
-        android:textColor="@color/colorGreen"
-        android:textSize="17dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="17sp" />
 
     <CheckBox
         android:id="@+id/login_autoLogin"
@@ -89,6 +93,7 @@
         android:layout_alignRight="@id/login_login"
         android:layout_marginTop="5dp"
         android:text="자동로그인"
+        android:textColor="#000000"
         android:textSize="17dp" />
 
     <com.victor.loading.rotate.RotateLoading
@@ -105,15 +110,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_pwd"
         android:layout_alignLeft="@id/login_pwd"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@null"
+        android:background="@drawable/click_btn_color_pink"
         android:fontFamily="@font/bamin_font"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="5dp"
+        android:gravity="center"
         android:text="회원가입"
-        android:textColor="@color/colorGreen"
+        android:textColor="#FFFFFF"
         android:textSize="17sp" />
 
     <com.kakao.usermgmt.LoginButton

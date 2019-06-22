@@ -18,7 +18,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/btn_blue"
+            android:background="@drawable/btn_pink"
             android:text="-"
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
@@ -50,7 +50,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/textView"
-            android:background="@drawable/btn_blue"
+            android:background="@drawable/btn_pink"
             android:text="+"
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
