@@ -34,19 +34,30 @@ public class SetMoneyFragemnt extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spMin = (Spinner) view.findViewById(R.id.fragment_spMin);
-        Minadapter=new ArrayAdapter<String>(getContext(),R.layout.spinnertext, getResources().getStringArray(R.array.moneymin));
-        spMin.setAdapter(Minadapter);
-
+        final TextView tvMin = view.findViewById(R.id.fragment_textMin);
+        view.findViewById(R.id.frg_appoint2_btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int value = Integer.parseInt(tvMin.getText().toString());
+                if (value>5) {
+                    tvMin.setText(String.valueOf(value-5));
+                }
+            }
+        });
+        view.findViewById(R.id.frg_appoint2_btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int value = Integer.parseInt(tvMin.getText().toString());
+                if (value<30) {
+                    tvMin.setText(String.valueOf(value+5));
+                }
+            }
+        });
         layout=view.findViewById(R.id.frg_appoint2_addmoney);
-
-
 
         View.OnClickListener listener=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 switch (view.getId()){
                     case R.id.frg_appoint2_cancelbtn:
                         layout.removeAllViews();
@@ -123,7 +134,7 @@ public class SetMoneyFragemnt extends Fragment {
     public void SendDatatoActivity(){
         if(builder.toString().equals(""))
             builder.append(0);
-        ((appointment)getActivity()).setAppointment_role_2(spMin.getSelectedItem().toString(),builder.toString());
+        ((appointment)getActivity()).setAppointment_role_2(((TextView)getView().findViewById(R.id.fragment_textMin)).getText().toString(),builder.toString());
     }
 
 }
