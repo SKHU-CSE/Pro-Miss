@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -217,6 +218,7 @@ public class MainActivity extends BaseActivity {
         }.run();
 
 
+
         ((ViewGroup) view).addView(subView);
         setContentView(view);
 
@@ -261,7 +263,16 @@ public class MainActivity extends BaseActivity {
         ((Button) subView.findViewById(R.id.main_addFollow)).setOnClickListener(FollowListener);
 
         ((TextView)subView.findViewById(R.id.main_user_name)).setText(UserInfor.shared.getName());
+        ((TextView)subView.findViewById(R.id.main_user_id)).setText("ID : "+UserInfor.shared.getID());
 
+
+        ((Button)findViewById(R.id.main_range_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PastActivity.class);
+                startActivity(intent);
+            }
+        });
 
         if(UserInfor.shared.getAppointment_address()!=null) {
             //약속이 있을때
@@ -274,7 +285,13 @@ public class MainActivity extends BaseActivity {
             ((TextView)subView.findViewById(R.id.main_appoint_notice)).setText("약속이 없습니다. 약속을 만들어주세요.");
         }
 
-
+        ((Button)findViewById(R.id.main_appointmentList)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AttendingActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

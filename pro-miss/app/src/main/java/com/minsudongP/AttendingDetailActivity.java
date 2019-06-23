@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -170,6 +171,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
         public void onResponse(Call call, Response response) throws IOException {
 
             String s=response.body().string();
+            Log.d("s!",s);
             System.out.println(s);
 
             try{

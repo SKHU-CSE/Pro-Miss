@@ -45,29 +45,55 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="양민욱"
+            android:text="이름"
             android:id="@+id/main_user_name"
             android:textSize="30sp"
             android:layout_marginTop="11dp"
             android:textColor="#ffffff"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="5dp"
             android:fontFamily="@font/bamin_font"
             android:layout_marginLeft="40dp"
             android:layout_below="@id/main_current_date"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID : "
+            android:textSize="17sp"
+            android:id="@+id/main_user_id"
+            android:textColor="#FFF"
+            android:layout_marginLeft="40dp"
+            android:layout_below="@id/main_user_name"
+            android:layout_marginBottom="30dp"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/white_corner_small"
+            android:text="약속 목록"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:id="@+id/main_appointmentList"
+            android:padding="10dp"
+            android:layout_alignTop="@id/main_current_date"
+            android:layout_marginBottom="50dp"
+            android:textSize="16sp"
+            android:textColor="#ffffff"/>
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/white_corner_small"
+            android:text="약속 하러가기"
 
-                android:background="@drawable/white_corner_small"
-                android:text="약속 하러가기"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:id="@+id/main_makeAppointment"
-                android:padding="10dp"
-                android:layout_alignBottom="@id/main_user_name"
-                android:textSize="16sp"
-                android:textColor="#ffffff"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:id="@+id/main_makeAppointment"
+            android:padding="10dp"
+            android:layout_alignTop="@id/main_appointmentList"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="16sp"
+            android:textColor="#ffffff"/>
+
 
 
 
@@ -106,7 +132,7 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/btn_pink"
             android:text="상세보기 >"
             android:id="@+id/main_more_btn"
@@ -197,6 +223,7 @@
         app:cardElevation="5dp">
 
         <RelativeLayout
+            android:id="@+id/main_range_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -212,7 +239,6 @@
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/main_rangeNum_text"
             android:layout_width="wrap_content"
@@ -228,11 +254,24 @@
             android:id="@+id/main_rangePercent_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
             android:textSize="16sp"
+            android:layout_toRightOf="@id/main_range_title"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
             android:text="6/13" />
+
+
+            <Button
+                android:id="@+id/main_range_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="지난 약속"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/btn_pink"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"/>
 
         <ProgressBar
             android:id="@+id/main_range_progress"
