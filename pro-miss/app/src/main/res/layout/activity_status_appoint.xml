@@ -29,6 +29,26 @@
             android:background="@drawable/ic_notifications_white_24dp" />
 
 
+        <ImageView
+            android:id="@+id/main_appointment_image"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignBottom="@id/main_notify"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/btn_color_white" />
+
+        <TextView
+            android:id="@+id/main_appointment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/main_notify"
+            android:layout_toRightOf="@id/main_appointment_image"
+            android:layout_marginLeft="10dp"
+            android:text="진행 중 약속"
+            android:textColor="#FFF"
+            android:textStyle="bold" />
+
+
         <FrameLayout
             android:id="@+id/main_progressbar_layout"
             android:layout_width="match_parent"
