@@ -13,6 +13,54 @@ public class UserInfor {
     int appoint_num;
     int success_appoint_num;
 
+    String appintment_date;
+    int appointment_status;
+    String appointment_address;
+    int appointment_id;
+    String appintment_time;
+
+    public String getAppintment_time() {
+        return appintment_time;
+    }
+
+    public void setAppintment_time(String appintment_time) {
+        this.appintment_time = appintment_time;
+    }
+
+    public int getAppointment_status() {
+        return appointment_status;
+    }
+
+    public void setAppointment_status(int appointment_status) {
+        this.appointment_status = appointment_status;
+    }
+
+    public int getAppointment_id() {
+        return appointment_id;
+    }
+
+    public void setAppointment_id(int appointment_id) {
+        this.appointment_id = appointment_id;
+    }
+
+    public String getAppintment_date() {
+        return appintment_date;
+    }
+
+    public void setAppintment_date(String appintment_date) {
+        this.appintment_date = appintment_date;
+    }
+
+
+
+    public String getAppointment_address() {
+        return appointment_address;
+    }
+
+    public void setAppointment_address(String appointment_address) {
+        this.appointment_address = appointment_address;
+    }
+
     public String getId_num() {
         return id_num;
     }
