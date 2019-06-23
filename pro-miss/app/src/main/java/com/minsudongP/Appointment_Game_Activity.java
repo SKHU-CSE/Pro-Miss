@@ -68,6 +68,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
     boolean first=true;
     HashMap<String,Marker> memberMarker=new HashMap<>();
     Intent intent;
+    TextView notice;
     int appointment_id;
     RecyclerView recyclerView;
     AllRecyclerAdapter adapter;
@@ -86,7 +87,7 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
         appointment_id=getIntent().getIntExtra("id",0);
         adapter=new AllRecyclerAdapter(arrayList,this);
         recyclerView=findViewById(R.id.game_member_recycle);
-
+        notice=findViewById(R.id.game_notice);
         Fine=findViewById(R.id.game_Fine_tv);
         total_game=findViewById(R.id.game_Time_tv);
         timer=findViewById(R.id.game_Time_Subtv);
@@ -127,7 +128,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
             @Override
             public void onEvent(String channelName, String eventName, final String Receivedata) {
                 System.out.println(Receivedata);
-
                 try{
                     JSONObject object=new JSONObject(Receivedata);
 
@@ -142,11 +142,17 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                                timer.setText("/"+total+"분");
                             }
                         });
-
                         final JSONObject data=object.getJSONObject("data");
                         final JSONObject data2=data.getJSONObject("data");
-
-
+                        if(object.getInt("IsPage")==1)
+                        {
+                            notice.setVisibility(View.VISIBLE);
+                        }else if(object.getInt("IsPage")==0)
+                            notice.setVisibility(View.GONE);
+                        else{
+                            notice.setVisibility(View.VISIBLE);
+                            notice.setText("약속이 종료되었습니다.\n ");
+                        }
                         if(circle!=null)
                             MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
                     }else{
@@ -158,8 +164,6 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                             }
                         });
                     }
-
-
                 }catch (JSONException e)
                 {
                     e.printStackTrace();
@@ -173,24 +177,14 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                 }
             }
         });
-
         pusher.connect();
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
-
-
-
-
-
     }
 
 

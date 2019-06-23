@@ -26,6 +26,7 @@ import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -171,6 +172,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
 
             String s=response.body().string();
 
+            System.out.println(s);
             try{
                 final JSONObject data=new JSONObject(s);
 
@@ -184,6 +186,18 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
                             try {
                                 appointment_address.setText(object.getString("address"));
                                 appointment_date.setText(object.getString("date"));
+
+                                final LatLng location=new LatLng(object.getDouble("latitude"),object.getDouble("longitude"));
+
+                                AttendingDetailActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Marker marker=new Marker();
+                                        marker.setPosition(location);
+                                        marker.setCaptionText("목적지");
+                                        marker.setMap(naverMap);
+                                    }
+                                });
                                 appointment_time.setText(object.getString("date_time").substring(0,5));
                                 appointment_Fine_time.setText(object.getString("Fine_time"));
                                 appointment_Fine_value.setText(object.getString("Fine_money"));
@@ -210,6 +224,13 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
                         items.add(new PromissItem(PromissType.MEMBER_LIST, user.getString("Image"), user.getString("latitude"), user.getString("longitude"), user.getString("name")));
 
                     }
+
+                    AttendingDetailActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
 
                 }
             }catch (JSONException e)

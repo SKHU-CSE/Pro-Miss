@@ -209,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         String s = response.body().string();
 
+                        System.out.println(s);
                         try {
                             JSONObject result = new JSONObject(s);
 
@@ -236,15 +237,7 @@ public class LoginActivity extends AppCompatActivity {
                                     infor.setProfile_img(jsonObject.getString("Image"));
 
 
-                                    if(!jsonObject.isNull("appointment"))
-                                    {
-                                        jsonObject=jsonObject.getJSONObject("appointment");
-                                        infor.setAppointment_id(jsonObject.getInt("appointment_id"));
-                                        infor.setAppointment_address(jsonObject.getString("address"));
-                                        infor.setAppintment_date(jsonObject.getString("date"));
-                                        infor.setAppintment_time(jsonObject.getString("date_time"));
-                                        infor.setAppointment_status(jsonObject.getInt("status"));
-                                    }
+
 
                                     // 정보 다 받아오면 UI 스레드에서 화면 갱신
                                     LoginActivity.this.runOnUiThread(new Runnable() {

@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity {
     final int MAIN_TO_CHARGE = 3000;
     final int MAIN_TO_FOLLOW = 4000;
     View view;  // main xml 이곳에 레이아웃을 추가한다.
+    View subView;
     Pusher pusher;
 
     AllRecyclerAdapter adapter;
@@ -122,6 +123,75 @@ public class MainActivity extends BaseActivity {
     };
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(subView!=null)
+        {
+            ((ViewGroup)view).removeView(subView);
+        }
+
+        new Thread(){
+            @Override
+            public void run() {
+                UrlConnection.shardUrl.GetRequest("api/reload/"+UserInfor.shared.getId_num(),callback);
+            }
+        }.run();
+    }
+
+    Callback callback=new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this,"네트워크 문제로 불러올 수 없습니다.",Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            String s=response.body().string();
+            System.out.println(s);
+            try {
+                JSONObject jsonObject=new JSONObject(s);
+                if(!jsonObject.isNull("data")) {
+                    jsonObject = jsonObject.getJSONObject("data");
+                    UserInfor infor = UserInfor.shared;
+                    infor.setAppointment_id(jsonObject.getInt("appointment_id"));
+                    infor.setAppointment_address(jsonObject.getString("address"));
+                    infor.setAppintment_date(jsonObject.getString("date"));
+                    infor.setAppintment_time(jsonObject.getString("date_time"));
+                    infor.setAppointment_status(jsonObject.getInt("status"));
+                }
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(UserInfor.shared.getAppointment_status()==1)
+                            {
+
+                                Status_Appointment();
+                            }else
+                            {
+                                Status_Idle();
+                            }
+                        }
+                    });
+
+
+            } catch (JSONException e) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,"서버 문제로 불러올 수 없습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+        }
+    };
 
     View.OnClickListener AttendingDetailListener = new View.OnClickListener() {
         @Override
@@ -146,21 +216,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         view=getLayoutInflater().inflate(R.layout.activity_main,null);
-
-
-
-        if(UserInfor.shared.getAppointment_status()==1)
-        {
-
-                Status_Appointment();
-        }else
-        {
-            Status_Idle();
-        }
-
-
-
-
 
         // 권한 허용 (위치, 녹음)
         new MommooPermission.Builder(this)
@@ -197,7 +252,7 @@ public class MainActivity extends BaseActivity {
     }
 
     void Status_Idle(){
-        View subView=getLayoutInflater().inflate(R.layout.activity_status_idle, (ViewGroup) view,false);
+        subView=getLayoutInflater().inflate(R.layout.activity_status_idle, (ViewGroup) view,false);
 
         RecyclerView recyclerView = subView.findViewById(R.id.main_recycleview);
         arrayList=new ArrayList<PromissItem>();
@@ -236,14 +291,14 @@ public class MainActivity extends BaseActivity {
         successPercent_text.setText(success+"/"+total);
         int percent=0;
         if(total!=0)
-        percent=success/total *100;
+        percent=(int)(success/(double)total *100);
 
         successPercent.setText(percent+"%");
         progressbar.setProgress(percent);
         progressbar.setMax(100);
 
         // 금액 충전 액티비티로 이동
-        findViewById(R.id.main_money_addbtn).setOnClickListener(new View.OnClickListener() {
+        subView.findViewById(R.id.main_money_addbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ChargeActivity.class);
@@ -281,7 +336,7 @@ public class MainActivity extends BaseActivity {
 
     void Status_Appointment()
     {
-        View subView=getLayoutInflater().inflate(R.layout.activity_status_appoint, (ViewGroup) view,false);
+        subView=getLayoutInflater().inflate(R.layout.activity_status_appoint, (ViewGroup) view,false);
         ((ViewGroup) view).addView(subView);
         setContentView(view);
 
@@ -417,6 +472,14 @@ public class MainActivity extends BaseActivity {
         if(pusher!=null)
         pusher.disconnect();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(pusher!=null)
+            pusher.disconnect();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
