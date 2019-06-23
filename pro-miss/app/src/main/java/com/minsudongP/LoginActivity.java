@@ -235,9 +235,10 @@ public class LoginActivity extends AppCompatActivity {
                                     infor.setName(jsonObject.getString("name"));
                                     infor.setProfile_img(jsonObject.getString("Image"));
 
-                                    jsonObject=jsonObject.getJSONObject("appointment");
-                                    if(jsonObject !=null)
+
+                                    if(!jsonObject.isNull("appointment"))
                                     {
+                                        jsonObject=jsonObject.getJSONObject("appointment");
                                         infor.setAppointment_id(jsonObject.getInt("appointment_id"));
                                         infor.setAppointment_address(jsonObject.getString("address"));
                                         infor.setAppintment_date(jsonObject.getString("date"));
@@ -268,6 +269,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
+                            e.printStackTrace();
                             LoginActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

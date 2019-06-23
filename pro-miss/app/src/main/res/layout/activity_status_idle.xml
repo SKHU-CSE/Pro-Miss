@@ -58,14 +58,16 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/whilte_corner_small"
+
+                android:background="@drawable/white_corner_small"
                 android:text="약속 하러가기"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:padding="5dp"
+                android:id="@+id/main_makeAppointment"
+                android:padding="10dp"
                 android:layout_alignBottom="@id/main_user_name"
                 android:textSize="16sp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="#ffffff"/>
 
 
 
@@ -75,8 +77,9 @@
         android:id="@+id/main_game_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_below="@id/main_final_appoint_layout"
-        android:background="@drawable/whilte_corner_bottom"
+        android:background="@drawable/white_corner_bottom"
         android:elevation="8dp"
         android:padding="10dp">
 
@@ -104,7 +107,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_blue"
+            android:background="@drawable/btn_pink"
             android:text="상세보기 >"
             android:id="@+id/main_more_btn"
             android:padding="5dp"
@@ -171,7 +174,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/btn_blue"
+                android:background="@drawable/btn_pink"
                 android:text="충전 하기"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold" />

@@ -3,6 +3,10 @@ package com.minsudongP;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.FileObserver;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +31,8 @@ import android.widget.Toast;
 import com.minsudongP.Model.AllRecyclerAdapter;
 import com.minsudongP.Model.PromissItem;
 import com.minsudongP.Model.PromissType;
+import com.minsudongP.Model.RangkingAdapter;
+import com.minsudongP.Model.RangkingItem;
 import com.minsudongP.Singletone.UrlConnection;
 import com.minsudongP.Singletone.UserInfor;
 import com.mommoo.permission.MommooPermission;
@@ -44,6 +51,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +70,9 @@ public class MainActivity extends BaseActivity {
     Pusher pusher;
 
     AllRecyclerAdapter adapter;
-    ArrayList<PromissItem> arrayList ;
+    ArrayList<PromissItem> arrayList;
+    ArrayList<RangkingItem> rangkingItems;
+    RangkingAdapter adapter_rangking;
     TextView FIne;
     TextView totalTime;
     TextView money;
@@ -136,7 +147,8 @@ public class MainActivity extends BaseActivity {
 
         view=getLayoutInflater().inflate(R.layout.activity_main,null);
 
-        Log.d("main",UserInfor.shared.getAppointment_address());
+
+
         if(UserInfor.shared.getAppointment_status()==1)
         {
 
@@ -175,13 +187,6 @@ public class MainActivity extends BaseActivity {
                 .checkPermissions();
 
 
-        View.OnClickListener AlertListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AlertActivity.class);
-                startActivity(intent);
-            }
-        };
 
  //       ((ImageButton) findViewById(R.id.main_MakeProtocal)).setOnClickListener(MakeProtocalListenr);
 
@@ -249,11 +254,14 @@ public class MainActivity extends BaseActivity {
 
         money=subView.findViewById(R.id.main_money_value);
         money.setText(UserInfor.shared.getMoney()+"");
-        ((Button) subView.findViewById(R.id.main_more_btn)).setOnClickListener(MakeProtocalListenr);
+        ((Button) subView.findViewById(R.id.main_makeAppointment)).setOnClickListener(MakeProtocalListenr);
         ((TextView)subView.findViewById(R.id.main_current_date)).setText(getTime);
         ((TextView) subView.findViewById(R.id.main_notify)).setOnClickListener(AlertListener);
         ((Button) subView.findViewById(R.id.main_setting)).setOnClickListener(SettingListener);
         ((Button) subView.findViewById(R.id.main_addFollow)).setOnClickListener(FollowListener);
+
+        ((TextView)subView.findViewById(R.id.main_user_name)).setText(UserInfor.shared.getName());
+
 
         if(UserInfor.shared.getAppointment_address()!=null) {
             //약속이 있을때
@@ -265,6 +273,9 @@ public class MainActivity extends BaseActivity {
             ((TextView) subView.findViewById(R.id.main_appoint_name)).setVisibility(View.GONE);
             ((TextView)subView.findViewById(R.id.main_appoint_notice)).setText("약속이 없습니다. 약속을 만들어주세요.");
         }
+
+
+
     }
 
 
@@ -275,6 +286,13 @@ public class MainActivity extends BaseActivity {
         setContentView(view);
 
 
+        RecyclerView recyclerView = subView.findViewById(R.id.main_recycleview);
+        rangkingItems=new ArrayList<RangkingItem>();
+
+        adapter_rangking = new RangkingAdapter(rangkingItems, MainActivity.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter_rangking);
+
         FIne =findViewById(R.id.main_game_Fine_tv);
         lastTime=findViewById(R.id.main_game_Time_tv);
         totalTime=findViewById(R.id.main_game_Time_Subtv);
@@ -282,8 +300,9 @@ public class MainActivity extends BaseActivity {
         appoint_progress=findViewById(R.id.main_progressbar);
         ((Button) subView.findViewById(R.id.main_more_btn)).setOnClickListener(AttendingDetailListener);
         ((TextView)subView.findViewById(R.id.main_appoint_date)).setText(UserInfor.shared.getAppintment_date());
-        ((TextView)subView.findViewById(R.id.main_appoint_name)).setText(UserInfor.shared.getAppintment_date());
+        ((TextView)subView.findViewById(R.id.main_appoint_name)).setText(UserInfor.shared.getAppointment_address());
 
+        setSeekberThumb(appoint_marker,getResources());
         //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
         PusherOptions options = new PusherOptions();
         options.setCluster("ap3");
@@ -291,11 +310,12 @@ public class MainActivity extends BaseActivity {
 
         Channel channel = pusher.subscribe("ProMiss");
 
-        channel.bind("event_main"+ UserInfor.shared.getAppointment_id(), new SubscriptionEventListener() {
+        channel.bind("event_game"+ UserInfor.shared.getAppointment_id(), new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String Receivedata) {
                 System.out.println(Receivedata);
 
+                rangkingItems.clear();
                 try{
                     JSONObject object=new JSONObject(Receivedata);
 
@@ -303,18 +323,51 @@ public class MainActivity extends BaseActivity {
                     {
                         final String time_r=object.getString("time");
                         final String total=object.getString("totalTime");
-                        final int user_radius=object.getInt("user_radius");
                         final int appoint_radius=object.getInt("appoint_radius");
                         JSONObject user=object.getJSONObject("data");
-                        final String fine_num=user.getString("Fine_current");
+//                        final String fine_num=user.getString("Fine_current");
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 lastTime.setText(time_r);
-                                FIne.setText(fine_num);
-                                appoint_marker.setProgress(user_radius);
+                                //                              FIne.setText(fine_num);
+                                // appoint_marker.setProgress(user_radius);
                                 appoint_progress.setProgress(appoint_radius);
                                 totalTime.setText("/"+total+"분");
+                            }
+                        });
+
+                        object=object.getJSONObject("data");
+                        object=object.getJSONObject("data");
+                        JSONArray member=object.getJSONArray("Member");
+
+                        for(int i=0;i<member.length();i++)
+                        {
+                            JSONObject user_o=member.getJSONObject(i);
+                            final String Fine= user_o.getString("Fine_current");
+                            final int radius=user_o.getInt("user_radius");
+                            if((""+user_o.getInt("user_id")).equals(UserInfor.shared.getId_num()))
+                            {
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        lastTime.setText(time_r);
+                                        FIne.setText(Fine);
+                                        appoint_marker.setProgress(radius);
+//                                        appoint_progress.setProgress(appoint_radius);
+//                                        totalTime.setText("/"+total+"분");
+                                    }
+                                });
+                            }
+
+                                rangkingItems.add(new RangkingItem(user_o.getInt("user_radius"), user_o.getString("name")));
+
+                        }
+                        Collections.sort(rangkingItems);
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter_rangking.notifyDataSetChanged();
                             }
                         });
 
@@ -345,6 +398,7 @@ public class MainActivity extends BaseActivity {
 
         pusher.connect();
 
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         subView.findViewById(R.id.main_Seekbar).setOnTouchListener(new View.OnTouchListener() { //사용자 터치 막기
@@ -355,6 +409,13 @@ public class MainActivity extends BaseActivity {
         });
         ((TextView) subView.findViewById(R.id.main_notify)).setOnClickListener(AlertListener);
         ((Button) subView.findViewById(R.id.main_MyPage)).setOnClickListener(MyPageListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(pusher!=null)
+        pusher.disconnect();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -482,5 +543,26 @@ public class MainActivity extends BaseActivity {
 
         }
     };
+
+    public static void setSeekberThumb(final SeekBar seekBar, final Resources res) {
+        seekBar.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                Drawable thumb = res.getDrawable(R.drawable.marker_me);
+                int h = seekBar.getMeasuredHeight() * 1; // 8 * 1.5 = 12
+                int w = h;
+                Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
+                Bitmap bmpScaled = Bitmap.createScaledBitmap(bmpOrg, w, h, true);
+                Drawable newThumb = new BitmapDrawable(res, bmpScaled);
+                newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
+                seekBar.setThumb(newThumb);
+
+                seekBar.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                return true;
+            }
+        });
+    }
 
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/rangking_num"
+        android:textSize="18sp"
+        android:fontFamily="@font/bamin_font"
+        android:textColor="#000000"
+        android:text="1순위"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="양민욱"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/rangking_name"
+        android:textColor="#000000"
+        android:layout_toRightOf="@id/rangking_num"
+        android:textSize="20sp"
+        android:fontFamily="@font/bamin_font"/>
+
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/rangking_seekbar"
+        android:max="100"
+        android:layout_marginHorizontal="20dp"
+        android:progress="20"
+        android:thumb="@drawable/ic_place_black_24dp"
+        android:progressBackgroundTint="#00000000"
+        android:progressTint="#00000000"
+        android:layout_below="@id/rangking_name"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginHorizontal="20dp"
+        android:layout_below="@id/rangking_seekbar"
+        android:progress="20"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/rangking_progressbar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressBackgroundTint="@color/colorAccent"
+        android:progressTint="#ffffff"/>
+
+</RelativeLayout>

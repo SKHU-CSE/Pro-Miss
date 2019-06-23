@@ -22,7 +22,7 @@ public class DialogSelectTimer {
     }
 
     // 호출할 다이얼로그 함수를 정의한다.
-    public void callFunction(final TextView timer_label, final TextView upper_label, final TextView plus_label, final int least) {
+    public void callFunction(final TextView timer_label, final TextView upper_label, final TextView plus_label, final long least) {
 
         // 커스텀 다이얼로그를 정의하기위해 Dialog클래스를 생성한다.
         final Dialog dlg = new Dialog(context);

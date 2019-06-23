@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@drawable/whilte_corner"
+        android:background="@drawable/white_corner"
         android:orientation="vertical">
 
         <LinearLayout
@@ -65,7 +65,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:src="@drawable/map_position" />
+        android:src="@drawable/destination"
+        android:layout_marginBottom="20dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -73,7 +74,9 @@
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
         android:id="@+id/set_destiny_btn"
-        android:background="@drawable/btn_blue"
+        android:background="@drawable/btn_pink_reverse"
         android:text="이 위치를 목적지로 설정"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 </FrameLayout>
