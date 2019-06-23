@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/follow_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="70dp"
+        android:paddingTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/toolbar_gradation">
+
         <TextView
             android:id="@+id/follow_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="159dp"
+            android:layout_marginEnd="159dp"
             android:fontFamily="@font/bamin_font"
-            android:text="팔로우하기"
-            android:textColor="#000000"
+            android:text="팔로우 하기"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,28 +39,26 @@
             android:background="@drawable/backspace"
             app:layout_constraintBottom_toBottomOf="@+id/follow_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/follow_title" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/follow_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/follow_title" />
+            app:layout_constraintTop_toTopOf="@+id/follow_title"
+            app:layout_constraintVertical_bias="0.392" />
 
         <Button
             android:id="@+id/follow_searchButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginEnd="20dp"
-            android:text="Button"
+            android:background="@drawable/ic_search_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/follow_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/follow_title" />
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/follow_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/follow_toolbar"
+        android:layout_marginTop="30dp"/>
 
     <br.com.mauker.materialsearchview.MaterialSearchView
         android:id="@+id/search_view"
@@ -64,6 +71,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

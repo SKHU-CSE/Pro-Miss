@@ -18,24 +18,46 @@
                 android:id="@+id/map"
                 android:name="com.naver.maps.map.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:layout_below="@id/atd_detail_toolbar" />
 
-            <Button
-                android:id="@+id/atd_detail_backBtn"
-                android:layout_width="60dp"
-                android:layout_height="55dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginEnd="86dp"
-                android:layout_marginRight="86dp"
-                android:layout_toStartOf="@+id/atd_detail_title"
-                android:layout_toLeftOf="@+id/atd_detail_title"
-                android:background="@drawable/backspace"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/atd_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/toolbar_gradation"
+                android:paddingTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/atd_detail_toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="159dp"
+                    android:layout_marginEnd="159dp"
+                    android:fontFamily="@font/bamin_font"
+                    android:text="약속 상세 보기"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/atd_detail_backBtn"
+                    android:layout_width="40dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/backspace"
+                    app:layout_constraintBottom_toBottomOf="@+id/atd_detail_toolbarTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/atd_detail_toolbarTitle"
+                    app:layout_constraintVertical_bias="0.392" />
+            </android.support.constraint.ConstraintLayout>
 
             <TextView
                 android:id="@+id/atd_detail_edit"
@@ -44,7 +66,8 @@
                 android:layout_alignTop="@+id/atd_detail_title"
                 android:layout_marginLeft="30dp"
                 android:text="수정하기"
-                android:textColor="#ff0000"/>
+                android:textColor="#ff0000" />
+
             <TextView
                 android:id="@+id/atd_detail_remove"
                 android:layout_width="wrap_content"
@@ -53,7 +76,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
                 android:text="삭제하기"
-                android:textColor="#ff0000"/>
+                android:textColor="#ff0000" />
 
             <TextView
                 android:id="@+id/atd_detail_title"
@@ -68,30 +91,13 @@
                 android:textColor="#000000"
                 android:textSize="21sp" />
 
-            <TextView
-                android:id="@+id/atd_detail_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/atd_detail_title"
-                android:layout_centerHorizontal="true"
-                android:text="서울시 마포구 도화동 123-1"
-                android:textColor="#000000" />
 
-            <ImageView
-                android:id="@+id/atd_detail_arriveBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_below="@+id/atd_detail_address"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/circle_button"
-                android:text="도착" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/atd_detail_card_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/atd_detail_arriveBtn"
+                android:layout_below="@id/atd_detail_title"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="20dp"
                 android:background="#ffffff"
@@ -188,6 +194,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:text="벌금"
+                        android:fontFamily="@font/bamin_font"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -262,6 +269,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/bamin_font"
                         android:layout_marginTop="10dp"
                         android:text="타이머"
                         android:textColor="#000000"
@@ -307,10 +315,52 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/atd_detail_card_member"
+                android:id="@+id/atd_detail_card_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/atd_detail_card_timer"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginBottom="20dp"
+                android:background="#ffffff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/atd_detail_notice_title"
+                        android:text="공지사항"
+                        android:fontFamily="@font/bamin_font"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/atd_detail_notice_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/atd_detail_notice_title"
+                        android:layout_alignLeft="@id/atd_detail_notice_title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="우산 챙겨오세요"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/atd_detail_card_member"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/atd_detail_card_notice"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginBottom="20dp"
                 android:background="#ffffff"
@@ -328,6 +378,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/bamin_font"
                         android:text="참석 인원"
                         android:textColor="#000000"
                         android:textSize="18sp"
@@ -342,12 +393,11 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                         android:orientation="horizontal"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/atd_detail_member_title"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/atd_detail_member_title" />
 
                 </android.support.constraint.ConstraintLayout>
 

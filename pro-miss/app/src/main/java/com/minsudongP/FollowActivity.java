@@ -170,7 +170,9 @@ public class FollowActivity extends BaseActivity {
         if (searchView.isOpen()) {
             searchView.closeSearch();
         } else {
-            super.onBackPressed();
+            setResult(RESULT_OK, new Intent());
+            finish();
+
         }
     }
 

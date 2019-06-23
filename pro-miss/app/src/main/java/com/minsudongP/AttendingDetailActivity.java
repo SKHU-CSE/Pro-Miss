@@ -52,6 +52,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
     TextView appointment_Fine_value;
     TextView appointment_address;
     TextView appointment_timer;
+    TextView notice;
 
     RecyclerView recyclerView;
     AllRecyclerAdapter adapter;
@@ -80,6 +81,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
 
             }
         });
+        notice=findViewById(R.id.atd_detail_notice_tv);
         appointment_address=findViewById(R.id.atd_detail_title);
         appointment_date=findViewById(R.id.atd_detail_card1_DateText);
         appointment_time=findViewById(R.id.atd_detail_card1_TimeText);
@@ -186,6 +188,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
                                 appointment_time.setText(object.getString("date_time").substring(0,5));
                                 appointment_Fine_time.setText(object.getString("Fine_time"));
                                 appointment_Fine_value.setText(object.getString("Fine_money"));
+                                notice.setText(object.getString("notice"));
                                 int timer=object.getInt("Timer");
                                 String time=timer/60+"시간 ";
                                 if(timer%60!=0)

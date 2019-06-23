@@ -59,6 +59,19 @@ public class MyPageActivity extends BaseActivity {
                 .error(R.drawable.face)
                 .into(imageView);
 
+        TextView successPercent=findViewById(R.id.mypage_rangeNum_text);
+        TextView successPercent_text=findViewById(R.id.mypage_rangePercent_text);
+        ProgressBar progressbar=findViewById(R.id.mypage_range_progress);
+
+        int success=UserInfor.shared.getSuccess_appoint_num();
+        int total=UserInfor.shared.getAppoint_num();
+        successPercent_text.setText(success+"/"+total);
+
+        int percent=success/total *100;
+
+        successPercent.setText(percent+"%");
+        progressbar.setProgress(percent);
+        progressbar.setMax(100);
 
         // 팔로우 목록 어뎁터
         adapter = new AllRecyclerAdapter(arrayList, MyPageActivity.this);

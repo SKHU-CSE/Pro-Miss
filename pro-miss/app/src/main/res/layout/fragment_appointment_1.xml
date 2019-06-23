@@ -24,8 +24,10 @@
                     android:id="@+id/textinput_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="50dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_alignStart="@id/name_view"
+                    android:layout_alignEnd="@id/iv_name"
                     android:textColorHint="@color/colorAccent">
 
                     <EditText
@@ -40,9 +42,21 @@
                         android:singleLine="true"
                         android:textColorHint="@color/colorAccent"
                         android:textSize="13dp" />
+
                 </android.support.design.widget.TextInputLayout>
 
+                <ImageView
+                    android:layout_alignBottom="@id/name_view"
+                    android:layout_alignEnd="@id/name_view"
+                    android:id="@+id/iv_name"
+                    android:layout_width="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_edit_24dp"
+                    android:backgroundTint="@color/colorAccent"/>
+
                 <View
+                    android:id="@+id/name_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/textinput_name"
@@ -75,12 +89,23 @@
                     android:textSize="13dp" />
 
                 <View
+                    android:id="@+id/date_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/appointment_date"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <ImageView
+                    android:id="@+id/iv_date"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_date_range24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_alignBottom="@id/date_view"
+                    android:layout_alignEnd="@id/date_view"/>
 
                 <TextView
                     android:id="@+id/upper_time"
@@ -107,12 +132,24 @@
                     android:textSize="13dp" />
 
                 <View
+                    android:id="@+id/time_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/appointment_time"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <ImageView
+                    android:id="@+id/iv_time"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_time_24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_alignBottom="@id/time_view"
+                    android:layout_alignEnd="@id/time_view"/>
+
 
                 <TextView
                     android:id="@+id/upper_timer"
@@ -151,12 +188,24 @@
                     android:textColor="@color/colorAccent" />
 
                 <View
+                    android:id="@+id/timer_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/appointment_timer"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <ImageView
+                    android:id="@+id/iv_timer"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_directions_walk_24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_alignBottom="@id/timer_view"
+                    android:layout_alignEnd="@id/timer_view"/>
+
 
                 <TextView
                     android:id="@+id/upper_address"
@@ -183,12 +232,24 @@
                     android:textSize="13dp" />
 
                 <View
+                    android:id="@+id/address_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/appointment_address"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <ImageView
+                    android:id="@+id/iv_address"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_location_on_24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_alignBottom="@id/address_view"
+                    android:layout_alignEnd="@id/address_view"/>
+
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textinput_memo"
@@ -214,12 +275,23 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <View
+                    android:id="@+id/memo_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/textinput_memo"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="3dp"
                     android:background="@color/colorAccent" />
+
+                <ImageView
+                    android:id="@+id/iv_memo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_memo_24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_alignBottom="@id/memo_view"
+                    android:layout_alignEnd="@id/memo_view"/>
 
                 <fragment
                     android:id="@+id/map"
@@ -236,7 +308,7 @@
                     android:layout_height="200dp"
                     android:layout_below="@id/textinput_memo"
                     android:layout_marginHorizontal="30dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginVertical="30dp"
                     android:background="#00000000"
                     android:foregroundGravity="center" />
 
