@@ -76,33 +76,34 @@ public class ChargeActivity extends BaseActivity {
                     case R.id.charge_deletebtn:
 
                         try {
-                            final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
-                            money.animate()
-                                    .alpha(0.1f)
-                                    .setDuration(200)
-                                    .setListener(new Animator.AnimatorListener() {
-                                        @Override
-                                        public void onAnimationStart(Animator animation) {
+                            if (layout.getChildCount()>0) {
+                                final TextView money = (TextView) layout.getChildAt(layout.getChildCount() - 1);
+                                money.animate()
+                                        .alpha(0.1f)
+                                        .setDuration(200)
+                                        .setListener(new Animator.AnimatorListener() {
+                                            @Override
+                                            public void onAnimationStart(Animator animation) {
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            layout.removeView(money);
-                                            moneytext.remove(moneytext.size() - 1);
-                                        }
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                layout.removeView(money);
+                                                moneytext.remove(moneytext.size() - 1);
+                                            }
 
-                                        @Override
-                                        public void onAnimationCancel(Animator animation) {
+                                            @Override
+                                            public void onAnimationCancel(Animator animation) {
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onAnimationRepeat(Animator animation) {
+                                            @Override
+                                            public void onAnimationRepeat(Animator animation) {
 
-                                        }
-                                    });
-
+                                            }
+                                        });
+                            }
                         } catch (IndexOutOfBoundsException e) {
                             e.printStackTrace();
                         }
