@@ -246,7 +246,8 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                 } else {
                     Log.d("gap",String.valueOf(getGapwithNow(m_year,m_month,m_date,m_hour,m_min)));
                     DialogSelectTimer dialogSelectTimer = new DialogSelectTimer(getActivity());
-                    dialogSelectTimer.callFunction(tvTimer, upperTimer, plusTime,getGapwithNow(m_year,m_month,m_date,m_hour,m_min));
+                    dialogSelectTimer.callFunction(tvTimer, upperTimer, plusTime,
+                            tvDate.getText().toString(),tvTime.getText().toString());
                 }
             }
         };
@@ -352,6 +353,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
         Calendar currentTime = Calendar.getInstance();
 
         try {
+            if (hour==24) hour=12;
             SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy.MM.dd kk:mm");
 
             String curStr = String.format("%04d.%02d.%02d %02d:%02d", currentTime.get(Calendar.YEAR), currentTime.get(Calendar.MONTH), currentTime.get(Calendar.DATE),currentTime.get(Calendar.HOUR_OF_DAY),currentTime.get(Calendar.MINUTE));
@@ -362,7 +364,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
 
 
             long duration = objDate.getTime() - curDate.getTime();
-            String tag = objDate.getTime()+"와 "+curDate.getTime()+"의 차이";
+            String tag = objDate.getTime()+"("+objStr+")와 "+curDate.getTime()+"("+curStr+")의 차이";
             Log.d(tag, String.valueOf(duration/60000));
             return duration/60000;
         }catch (ParseException e){
