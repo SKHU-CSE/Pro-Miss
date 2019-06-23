@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/main_final_appoint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_final_appoint_layout"
         android:background="@drawable/toolbar_gradation_vertical">
 
 
@@ -29,46 +29,89 @@
             android:layout_toLeftOf="@id/main_setting"
             android:background="@drawable/ic_notifications_white_24dp" />
 
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_below="@id/main_setting"
-            android:layout_marginTop="30dp"
-            android:id="@+id/main_current_date"
-            android:layout_marginLeft="35dp"
-            android:textColor="#ffffff"
-            android:text="2019.07.21"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="양민욱"
-            android:id="@+id/main_user_name"
-            android:textSize="30sp"
-            android:layout_marginTop="11dp"
-            android:textColor="#ffffff"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/bamin_font"
+        <ImageView
+            android:id="@+id/main_myinfo_image"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignBottom="@id/main_notify"
             android:layout_marginLeft="40dp"
-            android:layout_below="@id/main_current_date"/>
+            android:background="@drawable/btn_color_white" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/main_myinfo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/main_notify"
+            android:layout_toRightOf="@id/main_myinfo_image"
+            android:layout_marginLeft="10dp"
+            android:text="내 정보"
+            android:textColor="#FFF"
+            android:textStyle="bold" />
 
-                android:background="@drawable/white_corner_small"
-                android:text="약속 하러가기"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:id="@+id/main_makeAppointment"
-                android:padding="10dp"
-                android:layout_alignBottom="@id/main_user_name"
-                android:textSize="16sp"
-                android:textColor="#ffffff"/>
+        <TextView
+            android:id="@+id/main_current_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_setting"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="30dp"
+            android:text="2019.07.21"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/main_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_current_date"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/bamin_font"
+            android:text="이름"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/main_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_user_name"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="30dp"
+            android:text="ID : "
+            android:textColor="#FFF"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/main_appointmentList"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/main_current_date"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/white_corner_small"
+            android:padding="10dp"
+            android:text="약속 목록"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/main_makeAppointment"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/main_appointmentList"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/white_corner_small"
+            android:padding="10dp"
+            android:text="약속 하러가기"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>
@@ -84,39 +127,39 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/main_appoint_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:id="@+id/main_appoint_notice"
             android:layout_marginLeft="35dp"
+            android:text="다음에 진행 될 약속"
             android:textColor="#000000"
-            android:text="다음에 진행 될 약속"/>
+            android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/main_appoint_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="홍대 맛집 탐방"
-            android:id="@+id/main_appoint_name"
-            android:textSize="23sp"
-            android:layout_marginTop="11dp"
-            android:textColor="#000000"
-            android:fontFamily="@font/bamin_font"
+            android:layout_below="@id/main_appoint_notice"
             android:layout_marginLeft="40dp"
-            android:layout_below="@id/main_appoint_notice"/>
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/bamin_font"
+            android:text="홍대 맛집 탐방"
+            android:textColor="#000000"
+            android:textSize="23sp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_pink"
-            android:text="상세보기 >"
             android:id="@+id/main_more_btn"
-            android:padding="5dp"
-            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="15dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorAccent"/>
+            android:background="@drawable/btn_pink"
+            android:padding="5dp"
+            android:text="상세보기 >"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>
@@ -124,14 +167,13 @@
     <android.support.v7.widget.CardView
         android:id="@+id/main_money_view"
         android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_game_bar"
         android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="15dp"
         android:background="#ffffff"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
-       >
+        app:cardElevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -188,62 +230,76 @@
         android:id="@+id/main_appoint_percent_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_below="@id/main_money_view"
         android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:background="#ffffff"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
 
         <RelativeLayout
+            android:id="@+id/main_range_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/main_range_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/bamin_font"
-            android:text="약속 달성률"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/main_range_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/bamin_font"
+                android:text="약속 달성률"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/main_rangeNum_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/main_range_title"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:textSize="18sp"
-            android:text="46%" />
+            <TextView
+                android:id="@+id/main_rangeNum_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_range_title"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="46%"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/main_rangePercent_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:textSize="16sp"
-            android:text="6/13" />
+            <TextView
+                android:id="@+id/main_rangePercent_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/main_range_title"
+                android:text="6/13"
+                android:textSize="16sp" />
 
-        <ProgressBar
-            android:id="@+id/main_range_progress"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/main_range_title"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="15dp"
-            android:layout_toLeftOf="@id/main_rangePercent_text"
-            android:progress="46" />
+
+            <Button
+                android:id="@+id/main_range_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/btn_pink"
+                android:text="지난 약속"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/main_range_progress"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_range_title"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="15dp"
+                android:layout_toLeftOf="@id/main_rangePercent_text"
+                android:progress="46" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -252,40 +308,37 @@
         android:id="@+id/main_friendList_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/main_appoint_percent_view"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/bamin_font"
-        android:layout_below="@id/main_appoint_percent_view"
         android:text="팔로우 목록"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/main_recycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/main_friendList_title"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
-        android:layout_below="@id/main_friendList_title"
-        android:layout_marginRight="20dp"
-       ></android.support.v7.widget.RecyclerView>
+        android:layout_marginRight="20dp"></android.support.v7.widget.RecyclerView>
 
 
     <Button
         android:id="@+id/main_addFollow"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_toRightOf="@id/main_friendList_title"
         android:layout_alignBottom="@id/main_friendList_title"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/ic_person_add_black_24dp"
-        />
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/main_friendList_title"
+        android:background="@drawable/ic_person_add_black_24dp" />
     />
 
 </RelativeLayout>
