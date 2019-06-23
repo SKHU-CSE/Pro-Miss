@@ -1,6 +1,7 @@
 package com.minsudongP.Model;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.Resource;
 import com.minsudongP.App;
 import com.minsudongP.FollowActivity;
 import com.minsudongP.Model.PromissItem;
@@ -285,8 +287,10 @@ public class AllRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //        }
 
         holder.followButton.setText("추가하기");
-        if(arrayList.get(position).getIsFollowing()==0)
-        holder.followButton.setBackgroundResource(R.drawable.btn_color_pink);
+        if(arrayList.get(position).getIsFollowing()==0) {
+            holder.followButton.setTextColor(((Context)activity).getResources().getColor(R.color.colorPrimaryDark));
+            holder.followButton.setBackgroundResource(R.drawable.btn_color_pink);
+        }
         else {
             holder.followButton.setTextColor(Color.rgb(255,255,255));
             holder.followButton.setBackgroundResource(R.drawable.click_btn_color_pink);

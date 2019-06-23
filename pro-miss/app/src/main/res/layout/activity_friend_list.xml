@@ -6,57 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".FriendListActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/friend_list_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:background="@drawable/toolbar_gradation"
-        android:layout_height="58dp">
-    <Button
-        android:id="@+id/friend_backButton"
-        android:layout_width="40dp"
-        android:layout_centerVertical="true"
-        android:layout_height="35dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:background="@drawable/backspace"
-         />
+        android:paddingTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/friend_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:text="멤버 추가하기"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        android:textStyle="bold"
-       />
-
-        <Button
+        <TextView
+            android:id="@+id/friend_itle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="완료"
-            android:id="@+id/friend_final_add"
-            android:layout_centerVertical="true"
-            android:textSize="17sp"
-            android:textColor="#ffffff"
-            android:background="@null"
+            android:layout_marginStart="159dp"
+            android:layout_marginEnd="159dp"
             android:fontFamily="@font/bamin_font"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"/>
+            android:text="멤버 추가 하기"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/friend_backButton"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/backspace"
+            app:layout_constraintBottom_toBottomOf="@+id/friend_itle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/friend_itle"
+            app:layout_constraintVertical_bias="0.392" />
+    </android.support.constraint.ConstraintLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friend_recycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/friend_list_toolbar"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_below="@id/friend_list_toolbar"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-       ></android.support.v7.widget.RecyclerView>
+        android:layout_marginRight="15dp">
 
+    </android.support.v7.widget.RecyclerView>
+
+
+    <Button
+        android:id="@+id/friend_final_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_pink"
+        android:fontFamily="@font/bamin_font"
+        android:text="완료"
+        android:textColor="@color/colorAccent"
+        android:textSize="17sp" />
 </RelativeLayout>

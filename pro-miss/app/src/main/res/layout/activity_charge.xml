@@ -10,11 +10,12 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/charge_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
+        android:background="@drawable/toolbar_gradation"
+        android:paddingTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/toolbar_gradation">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/charge_title"

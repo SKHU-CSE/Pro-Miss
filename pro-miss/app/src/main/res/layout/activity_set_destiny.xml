@@ -17,7 +17,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/white_corner"
         android:orientation="vertical">
 
@@ -27,10 +28,10 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/set_destiny_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/set_destiny_edit"
                 android:background="@null"
                 android:hint="검색"
                 android:imeOptions="actionSearch"
@@ -48,16 +49,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:animateLayoutChanges="true"
-            android:visibility="gone"
             android:id="@+id/set_destiny_search_layout"
-            android:layout_height="210dp">
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:animateLayoutChanges="true"
+            android:visibility="gone">
+
             <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/set_destiny_recle"
-                ></android.support.v7.widget.RecyclerView>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </LinearLayout>
 
@@ -65,18 +66,18 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:src="@drawable/destination"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/destination" />
 
     <Button
+        android:id="@+id/set_destiny_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
-        android:id="@+id/set_destiny_btn"
         android:background="@drawable/btn_pink_reverse"
         android:text="이 위치를 목적지로 설정"
         android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:textStyle="bold" />
 </FrameLayout>
