@@ -213,7 +213,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginVertical="20dp"
-                    android:src="@drawable/ic_lock_outline_black_24dp" />
+                    android:src="@drawable/ic_exit_to_app_24dp"
+                    android:tint="@color/black"/>
             </LinearLayout>
 
             <LinearLayout

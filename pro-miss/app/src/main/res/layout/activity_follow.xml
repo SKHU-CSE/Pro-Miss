@@ -51,8 +51,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/follow_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/follow_title" />
-
-
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
