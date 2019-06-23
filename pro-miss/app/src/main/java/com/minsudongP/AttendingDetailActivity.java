@@ -168,6 +168,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
         public void onResponse(Call call, Response response) throws IOException {
 
             String s=response.body().string();
+            System.out.println(s);
 
             try{
                 final JSONObject data=new JSONObject(s);
