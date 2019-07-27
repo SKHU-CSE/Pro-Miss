@@ -26,7 +26,13 @@
 
 ## 앱화면
  
-  
+ <img width="350" height="700" src="/Image/app_screen_1.jpg"></img>
+
+
+ <img width="350" height="700" src="/Image/app_screen_2.jpg"></img>
+
+
+ <img width="350" height="700" src="/Image/app_screen_3.jpg"></img>
 
 
 
