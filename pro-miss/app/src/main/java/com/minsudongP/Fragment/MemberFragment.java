@@ -95,10 +95,11 @@ public class MemberFragment extends Fragment {
                 ArrayList<Integer> id = data.getIntegerArrayListExtra("id");
 
                 for (int i = 0; i < name.size(); i++) {
-                    arrayList.add(1, new PromissItem(PromissType.FriendList_Grid, id.get(i), Image.get(i), name.get(i)));
+                    arrayList.add(i+1, new PromissItem(PromissType.FriendList_Grid, id.get(i), Image.get(i), name.get(i)));
+                    adapter.notifyItemInserted(i+1);
                 }
 
-                adapter.notifyDataSetChanged();
+
             }catch (NullPointerException e)
             {
                 e.printStackTrace();

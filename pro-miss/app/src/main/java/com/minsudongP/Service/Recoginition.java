@@ -122,7 +122,7 @@ public class Recoginition extends RecognitionService {
             Notification notification=new NotificationCompat.Builder(this,CHAANEL_ID)
                     .setContentTitle("Promiss Service")
                     .setContentText("프로미스를 불러주세요")
-                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setSmallIcon(R.drawable.logo)
                     .setContentIntent(pendingIntent)
                     .build();
 
@@ -266,6 +266,7 @@ public class Recoginition extends RecognitionService {
                     public void run() {
                         UserInfor userInfor=UserInfor.shared;
                         UrlConnection connection = UrlConnection.shardUrl;
+                        Log.d("음성인식 id는",userInfor.getId_num()+"입니다");
                         connection.PostSpeekRequest(rs[0],userInfor.getId_num(), new
 
                                 okhttp3.Callback() {

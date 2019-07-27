@@ -67,7 +67,7 @@ public class MyPageActivity extends BaseActivity {
         int total=UserInfor.shared.getAppoint_num();
         successPercent_text.setText(success+"/"+total);
 
-        int percent=success/total *100;
+        int percent=(int)(success/(double)total *100);
 
         successPercent.setText(percent+"%");
         progressbar.setProgress(percent);

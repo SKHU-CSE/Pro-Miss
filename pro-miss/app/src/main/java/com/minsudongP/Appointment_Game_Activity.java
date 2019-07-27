@@ -146,12 +146,45 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                         final JSONObject data2=data.getJSONObject("data");
                         if(object.getInt("IsPage")==1)
                         {
-                            notice.setVisibility(View.VISIBLE);
-                        }else if(object.getInt("IsPage")==0)
-                            notice.setVisibility(View.GONE);
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notice.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+
+                        }else if(object.getInt("IsPage")==0) {
+
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notice.setVisibility(View.GONE);
+                                }
+                            });
+
+                        }
                         else{
-                            notice.setVisibility(View.VISIBLE);
-                            notice.setText("약속이 종료되었습니다.\n ");
+                            Appointment_Game_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notice.setVisibility(View.VISIBLE);
+                                    notice.setText("약속이 종료되었습니다.\n 5분 후 화면이 종료됩니다.");
+                                }
+                            });
+
+                            pusher.disconnect();
+
+
+                            new Handler().postDelayed(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    //여기에 딜레이 후 시작할 작업들을 입력
+                                    finish();
+                                }
+                            }, 1000*60*5);// 0.5초 정도 딜레이를 준 후 시작
                         }
                         if(circle!=null)
                             MapReSetting(data2.getDouble("radius"),data2.getString("Member"));
@@ -219,8 +252,8 @@ public class Appointment_Game_Activity extends AppCompatActivity implements OnMa
                             try {
                                 circle = new CircleOverlay();
                                 circle.setColor(Color.alpha(0)); //투명
-                                circle.setOutlineWidth(5);
-                                circle.setOutlineColor(Color.GREEN);
+                                circle.setOutlineWidth(10);
+                                circle.setOutlineColor(getResources().getColor(R.color.colorAccent));
                             final LatLng coord = new LatLng(appoint.getDouble("latitude"),appoint.getDouble("longitude"));
 
                             circle.setCenter(coord); // 약속 장소 위치

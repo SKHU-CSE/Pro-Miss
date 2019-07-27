@@ -92,7 +92,7 @@ public class SettingsActivity extends BaseActivity {
                 String message;
 
                 if (isChecked) {
-
+                    setSetting_Voice(getApplicationContext(),1);
                     // 녹음 권한 허용 필요
                     new MommooPermission.Builder(getApplicationContext())
                             .setPermissions(Manifest.permission.RECORD_AUDIO)
@@ -126,6 +126,7 @@ public class SettingsActivity extends BaseActivity {
                 } else {
                     message = "음성인식이 꺼졌습니다";
                     stopService(intent);
+                    setSetting_Voice(getApplicationContext(),0);
                 }
                 Toast.makeText(SettingsActivity.this, message, Toast.LENGTH_SHORT).show();
 

@@ -147,6 +147,7 @@ public class AttendingDetailActivity extends BaseActivity implements OnMapReadyC
                         Intent intent = new Intent(AttendingDetailActivity.this, Appointment_Game_Activity.class);
                         intent.putExtra("id",Appointment_id);
                         startActivity(intent);
+                        finish();
                     }else
                     {
                         Toast.makeText(AttendingDetailActivity.this,"약속이 시작하지 않았습니다.",Toast.LENGTH_LONG).show();

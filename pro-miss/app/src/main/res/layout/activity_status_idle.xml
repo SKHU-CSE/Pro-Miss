@@ -298,7 +298,7 @@
                 android:layout_below="@id/main_range_title"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="15dp"
-                android:layout_toLeftOf="@id/main_rangePercent_text"
+                android:layout_toLeftOf="@id/main_rangeNum_text"
                 android:progress="46" />
 
         </RelativeLayout>

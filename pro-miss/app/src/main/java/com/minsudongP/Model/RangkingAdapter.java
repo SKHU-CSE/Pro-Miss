@@ -31,19 +31,24 @@ public class RangkingAdapter extends RecyclerView.Adapter<RangkingViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RangkingViewHolder rangkingViewHolder, int i) {
-        RangkingItem item= arrayList.get(i);
+        try {
+            RangkingItem item = arrayList.get(i);
 
-        rangkingViewHolder.rangking.setText((i+1)+" 순위");
-        rangkingViewHolder.name.setText(item.getName());
-        rangkingViewHolder.seekBar.setProgress(item.percent);
-        rangkingViewHolder.progressBar.setProgress(item.percent);
+            rangkingViewHolder.rangking.setText((i + 1) + " 순위");
+            rangkingViewHolder.name.setText(item.getName());
+            rangkingViewHolder.seekBar.setProgress(item.percent);
+            rangkingViewHolder.progressBar.setProgress(item.percent);
 
-        rangkingViewHolder.seekBar.setOnTouchListener(new View.OnTouchListener() { //사용자 터치 막기
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+            rangkingViewHolder.seekBar.setOnTouchListener(new View.OnTouchListener() { //사용자 터치 막기
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+        }catch (IndexOutOfBoundsException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

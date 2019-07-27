@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 // 파라미터 2개와 미리정의해논 콜백함수를 매개변수로 전달하여 호출
                 String php = "api/userId/"+userinfo.getId();
-                Log.d("php = ",php);
+
                 UrlConnection.shardUrl.GetRequest(php, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -160,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         String s = response.body().string();
 
-                        Log.d("response = ",s);
                         try {
                             JSONObject result = new JSONObject(s);
 
@@ -365,6 +364,7 @@ public class LoginActivity extends AppCompatActivity {
                     clearUserInfo(getApplicationContext());
                     int result = errorResult.getErrorCode();
 
+
                     if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
                         Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
                         finish();
@@ -394,7 +394,6 @@ public class LoginActivity extends AppCompatActivity {
         public void onSessionOpenFailed(KakaoException e) {
             clearUserInfo(getApplicationContext());
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
-            Log.d("로그인 에러",e.toString());
         }
     }
 

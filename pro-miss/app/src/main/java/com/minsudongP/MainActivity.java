@@ -74,8 +74,10 @@ public class MainActivity extends BaseActivity {
     AllRecyclerAdapter adapter;
     ArrayList<PromissItem> arrayList;
     ArrayList<RangkingItem> rangkingItems;
+    ArrayList<RangkingItem> subItems;
     RangkingAdapter adapter_rangking;
     TextView FIne;
+    RecyclerView rangkingRecycle;
     TextView totalTime;
     TextView money;
     TextView lastTime;
@@ -127,11 +129,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(subView!=null)
-        {
-            ((ViewGroup)view).removeView(subView);
-        }
+        if(pusher!=null)
+        pusher.disconnect();
+        ((ViewGroup)view).removeAllViews();
 
+        UserInfor.shared.setAppointment_status(0);
+
+        UserInfor.shared.setAppointment_address(null);
         new Thread(){
             @Override
             public void run() {
@@ -155,7 +159,6 @@ public class MainActivity extends BaseActivity {
         public void onResponse(Call call, Response response) throws IOException {
 
             String s=response.body().string();
-            System.out.println(s);
             try {
                 JSONObject jsonObject=new JSONObject(s);
                 if(!jsonObject.isNull("data")) {
@@ -170,6 +173,8 @@ public class MainActivity extends BaseActivity {
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+
                             if(UserInfor.shared.getAppointment_status()==1)
                             {
 
@@ -354,27 +359,30 @@ public class MainActivity extends BaseActivity {
     void Status_Appointment()
     {
         subView=getLayoutInflater().inflate(R.layout.activity_status_appoint, (ViewGroup) view,false);
+
         ((ViewGroup) view).addView(subView);
+        appoint_marker=subView.findViewById(R.id.main_Seekbar);
+       // setSeekberThumb(appoint_marker,getResources());
         setContentView(view);
 
 
-        RecyclerView recyclerView = subView.findViewById(R.id.main_recycleview);
+         rangkingRecycle= subView.findViewById(R.id.main_recycleview);
         rangkingItems=new ArrayList<RangkingItem>();
 
         adapter_rangking = new RangkingAdapter(rangkingItems, MainActivity.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter_rangking);
+        rangkingRecycle.setLayoutManager(new LinearLayoutManager(this));
+        rangkingRecycle.setAdapter(adapter_rangking);
 
         FIne =findViewById(R.id.main_game_Fine_tv);
         lastTime=findViewById(R.id.main_game_Time_tv);
         totalTime=findViewById(R.id.main_game_Time_Subtv);
-        appoint_marker=findViewById(R.id.main_Seekbar);
+
         appoint_progress=findViewById(R.id.main_progressbar);
         ((Button) subView.findViewById(R.id.main_more_btn)).setOnClickListener(AttendingDetailListener);
         ((TextView)subView.findViewById(R.id.main_appoint_date)).setText(UserInfor.shared.getAppintment_date());
         ((TextView)subView.findViewById(R.id.main_appoint_name)).setText(UserInfor.shared.getAppointment_address());
 
-        setSeekberThumb(appoint_marker,getResources());
+
         //Game Pusher Event Alert///////////////////////////////////////////////////////////////////////////////////////////////
         PusherOptions options = new PusherOptions();
         options.setCluster("ap3");
@@ -385,14 +393,29 @@ public class MainActivity extends BaseActivity {
         channel.bind("event_game"+ UserInfor.shared.getAppointment_id(), new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String Receivedata) {
-                System.out.println(Receivedata);
+             //   System.out.println(Receivedata);
 
-                rangkingItems.clear();
+                if(subItems!=null) {
+                    rangkingItems.clear();
+                    rangkingItems.addAll(subItems);
+
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter_rangking.notifyDataSetChanged();
+                        }
+                    });
+
+                }
+
+//                rangkingRecycle.setAdapter(adapter_rangking);
+
                 try{
                     JSONObject object=new JSONObject(Receivedata);
 
                     if(object.getInt("result")==2000)
                     {
+                        subItems=new ArrayList<>();
                         final String time_r=object.getString("time");
                         final String total=object.getString("totalTime");
                         final int appoint_radius=object.getInt("appoint_radius");
@@ -408,6 +431,13 @@ public class MainActivity extends BaseActivity {
                                 totalTime.setText("/"+total+"분");
                             }
                         });
+
+                        if(object.getInt("IsPage")==2) {
+                            pusher.disconnect();
+                            UserInfor.shared.setAppointment_address(null);
+                            onResume();
+
+                        }
 
                         object=object.getJSONObject("data");
                         object=object.getJSONObject("data");
@@ -432,16 +462,11 @@ public class MainActivity extends BaseActivity {
                                 });
                             }
 
-                                rangkingItems.add(new RangkingItem(user_o.getInt("user_radius"), user_o.getString("name")));
+                                subItems.add(new RangkingItem(user_o.getInt("user_radius"), user_o.getString("name")));
 
                         }
-                        Collections.sort(rangkingItems);
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter_rangking.notifyDataSetChanged();
-                            }
-                        });
+                        Collections.sort(subItems);
+
 
                     }else{
                         MainActivity.this.runOnUiThread(new Runnable() {
@@ -630,7 +655,7 @@ public class MainActivity extends BaseActivity {
             public boolean onPreDraw() {
 
                 Drawable thumb = res.getDrawable(R.drawable.marker_me);
-                int h = seekBar.getMeasuredHeight() * 1; // 8 * 1.5 = 12
+                int h =(int) (seekBar.getMeasuredHeight() * 1.5); // 8 * 1.5 = 12
                 int w = h;
                 Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
                 Bitmap bmpScaled = Bitmap.createScaledBitmap(bmpOrg, w, h, true);

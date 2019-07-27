@@ -107,8 +107,7 @@ public class PromissService extends Service implements LocationListener {
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("벌금이 누적되었습니다.")
                     .setVisibility(VISIBILITY_PUBLIC)
-                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
-                    .setContentIntent(FinePendingIntent)
+                    .setSmallIcon(R.drawable.logo)
                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 
             Init=new NotificationCompat.Builder(this,CHAANEL_ID)
@@ -116,7 +115,7 @@ public class PromissService extends Service implements LocationListener {
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("반갑습니다. "+name+"님")
                     .setVisibility(VISIBILITY_PUBLIC)
-                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setSmallIcon(R.drawable.logo)
                     .setContentIntent(FinePendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
@@ -125,7 +124,7 @@ public class PromissService extends Service implements LocationListener {
                     .setVisibility(VISIBILITY_PUBLIC)
                     .setAutoCancel(true)// 사용자가 알람을 탭했을 때, 알람이 사라짐
                     .setContentText("사용자에게 새로운 알림이 도착했습니다.")
-                    .setSmallIcon(R.drawable.ic_add_alarm_black_24dp)
+                    .setSmallIcon(R.drawable.logo)
                     .setContentIntent(AlertPendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 

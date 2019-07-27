@@ -143,7 +143,7 @@ public class AppointmentFragemnt extends Fragment implements OnMapReadyCallback 
                             m_hour = -1;
                             m_min = -1;
                             m_timer = -1;
-                            Toast.makeText(getContext(),m_year+"년 "+(m_month+1)+"월 "+m_date+"일\n"+m_hour+"시 "+m_date+"",Toast.LENGTH_LONG).show();
+
                         }
 
                         Log.d("현재날짜", cal.get(Calendar.YEAR) + "-" +(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.DATE));
